@@ -9,7 +9,7 @@ public enum Tictactoe {
 
 	CIRCLE("O","images/o.png"),
 	CROSS("X", "images/x.png"),
-	EMPTY(" ", "images/r.png");
+	EMPTY("gr", "images/r.png");
 	private String pion = "";
 	private final BufferedImage image;
 	

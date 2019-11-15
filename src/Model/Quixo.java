@@ -105,6 +105,11 @@ public class Quixo {
 		return Quixo.instance;
 	}
 	
+	public Tictactoe[][] getBoard() { 
+		return this.plateau; 
+	}
+	
+	
 	public Tictactoe Current() {
 		return this.current;
 	}
