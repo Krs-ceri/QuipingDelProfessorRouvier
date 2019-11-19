@@ -65,30 +65,53 @@ public class Quixo {
 		return false;
 	}
 	
-	public void addTac(int x_pos, int y_pos, int xx, int yy) {
-		
+	public static void swap(Tictactoe c1, Tictactoe c2) 
+    { 
+        Tictactoe temp = c1; 
+        c1 = c2; 
+        c2 = temp; 
+    } 
+	
+	public boolean pushRowNegative(int xi, int yi, int xx, int yy) {
+		if(xi < xx && yi == yy) return false;
+		do {
+			Tictactoe tmp = this.current;
+			swap(tmp, this.plateau[xx][yy]);
+			xx--;
+		}while(xx != xi);
+		return true;
 	}
 	
-	public void pushRow(int x_pos, int y_pos, int xx, int yy) {
-		if(xx == 4) {
-			
-			for (int i = 0; i < plateau.length; i++) {
-				
-			}
-		}
-		if(xx == 0) {
-			
-		}
+	public boolean pushRowPositive(int xi, int yi, int xx, int yy) {
+		if(xi > xx && yi == yy) return false;
+		do {
+			Tictactoe tmp = this.current;
+			swap(tmp, this.plateau[xx][yy]);
+			xx++;
+		}while(xx != xi);
+		return true;
 	}
 	
-	public void pushCol(int x_pos, int y_pos, int xx, int yy) {
-		if(yy == 4) {
-			
-		}
-		if(yy == 0) {
-			
-		}
+	public boolean pushColNegative(int xi, int yi, int xx, int yy) {
+		if(xi == xx && yi < yy) return false;
+		do {
+			Tictactoe tmp = this.current;
+			swap(tmp, this.plateau[xx][yy]);
+			yy--;
+		}while(yy != yi);
+		return true;
 	}
+	
+	public boolean pushColPositive(int xi, int yi, int xx, int yy) {
+		if(xi == xx && yi > yy) return false;
+		do {
+			Tictactoe tmp = this.current;
+			swap(tmp, this.plateau[xx][yy]);
+			yy++;
+		}while(yy != yi);
+		return true;
+	}
+	
 
 	public final static Quixo getInstance()
 	{
@@ -117,7 +140,7 @@ public class Quixo {
 	public void Reset() {
 		for (int i = 0; i < plateau.length; i++) {
 			for (int j = 0; j < plateau.length; j++) {
-				this.plateau[i][j] = null;
+				this.plateau[i][j] = Tictactoe.EMPTY;
 			}
 		}
 		this.clique = 0;
@@ -143,7 +166,7 @@ public class Quixo {
     	
     	return tmp;
 	}
-	protected boolean isEmpty(int x , int y) {
+	public boolean isEmpty(int x , int y) {
 		if(this.plateau[x][y] == null)	return true;
 		return false;
 	}

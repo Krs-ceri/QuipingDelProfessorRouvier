@@ -26,8 +26,7 @@ public final class Engine
 	 * 			y represent the line of the pyramid
 	 * @return Return true if position is empty or return false
 	 */
-	static boolean verifyPlace(int x, int y)
-	{
+	static boolean verifyEmpty(int x, int y) {
 		Quixo b = Quixo.getInstance();
 
 		if(!b.getBoard()[x][y].toString().equals("gr"))
@@ -36,95 +35,70 @@ public final class Engine
 		return true;
 	}
 
-	/**
-	 * This method verify if we can put a Tictactoe in a position
-	 *
-	 * @param c
-	 * 			c represent a Tictactoe
-	 * @param x
-	 * 			x represent the column of the pyramid
-	 * @param y
-	 * 			y represent the line of the pyramid
-	 *
-	 * @return true if we can put the Tictactoe or return false
-	 */
-	static boolean verifyTictactoeSecond(int x_pos, int y_pos, int xx, int yy)
-	{
+	static boolean verifyTictactoe(int x_pos, int y_pos) {
+		Quixo b = Quixo.getInstance();
+
+		if(b.getBoard()[x_pos][y_pos].toString().equals("gr")) {
+			if(x_pos == 0 || y_pos == 0 || y_pos == 4 || x_pos == 4)	return true;
+		}
+		return false;
+	}
+	
+	static boolean verifyTictactoeSecond(int x_pos, int y_pos, int xx, int yy) {
 		Quixo b = Quixo.getInstance();
 
 		if(b.getBoard()[x_pos][y_pos].toString().equals("gr")) {
 			if(x_pos == xx && (yy == 0 || yy == 4))	return true;
-			if(y_pos == yy && (xx == 0 || xx == 4))	return true;
+			else if(y_pos == yy && (xx == 0 || xx == 4))	return true;
+		}
+		else {
+			return false;
 		}
 		return false;
 	}
 
-	/**
-	 * @param p
-	 * @param c
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	static boolean rule(Player p, Tictactoe c,int x,int y, int message)
-	{
+	
+
+	static boolean rule(Player p, Tictactoe c,int x,int y , int xi, int yi)	{
 
 		Quixo b = Quixo.getInstance();
-		int floor = b.getBoard().length - y;
-		int column = x + 1;
-		if(Engine.verifyPosition(x, y))
+		if(Engine.verifyPosition(x, y) && Engine.verifyPosition(xi, yi))
 		{
-			if(Engine.verifyPlace(x, y))
+			if(Engine.verifyEmpty(x, y))
 			{
-				if(!Engine.verifyTictactoeSecond(c, x, y))
+				if(!Engine.verifyTictactoeSecond(xi, yi , x, y))
 				{
-					if(message == 1)
-					{
-						
-							if(p == g.getLocalPlayer())
+
+							if(c != b.getCurrent())
 							{
-								System.out.println("Impossible to put the Tictactoe in : Floor " + floor + ", Column " + column );
+								System.out.println("Impossible to put the Tictactoe in : Floor " + xi + ", Column " + yi );
 							}
 							else
 							{
-								//server.sendMessageToClient(p.getSocket(), "Impossible to put the Tictactoe in : Floor " + floor + ", Column " + column);
-						
+								return true;
+							}
+				}
+				else {
+
+					System.out.println("Position out of bound : Floor " + x + ", Column " + y );
 					return false;
 				}
 			}
-			else
-			{
-				if(message == 1)
-				{
-					
-						if(p == g.getLocalPlayer())
-						{
-							System.out.println("There is all ready a Tictactoe in : Floor " + floor + ", Column " + column );
-						}
-						else
-						{
-							//server.sendMessageToClient(p.getSocket(), "There is all ready a Tictactoe in : Floor " + floor + ", Column " + column );
-						}
-
+			else{
+			
+				System.out.println("There is all ready a Tictactoe in : Floor " + xi + ", Column " + yi );
+				
 				return false;
-			}
 		}
-		else
-		{
-			if(message == 1)
-			{
-					if(p == g.getLocalPlayer())
-					{
-						System.out.println("Position out of bound : Floor " + floor + ", Column " + column );
-					}
-					else
-					{
-						//server.sendMessageToClient(p.getSocket(), "Position out of bound : Floor " + floor + ", Column " + column );
-					}
 
-			return false;
-		}
-		return true;
 
 	}
+	else {
+			System.out.println("Position out of bound : Floor " + xi + ", Column " + yi );
+			return false;
+		}
+		return false;
+	}
+	
+	
 }
