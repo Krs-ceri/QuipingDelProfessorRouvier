@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -107,9 +108,8 @@ import javafx.concurrent.Worker;
 public class GameController implements Initializable{
 	
 	@FXML
-	private GridPane grid;
-	@FXML
-	private TableView<?> table;
+	private GridPane[][] grid;
+	
     /*
     final TableColumn<Car, String> brandColumn = new TableColumn<>("Marque"); 
     final TableColumn<Car, Color> colorColumn = new TableColumn<>("Couleur"); 
@@ -121,24 +121,56 @@ public class GameController implements Initializable{
 	private AnchorPane f;
 	
 	@FXML
-	private Button a0;
+	private ImageView a0;
+	@FXML
+	private ImageView a1;
+	@FXML
+	private ImageView a2;
+	@FXML
+	private ImageView a3;
+	@FXML
+	private ImageView a4;
+	@FXML
+	private ImageView b0;
+	@FXML
+	private ImageView b1;
+	@FXML
+	private ImageView b2;
+	@FXML
+	private ImageView b3;
+	@FXML
+	private ImageView b4;
+	@FXML
+	private ImageView c0;
+	@FXML
+	private ImageView c1;
+	@FXML
+	private ImageView c2;
+	@FXML
+	private ImageView c3;
+	@FXML
+	private ImageView c4;
+	@FXML
+	private ImageView d0;
+	@FXML
+	private ImageView d1;
+	@FXML
+	private ImageView d2;
+	@FXML
+	private ImageView d3;
+	@FXML
+	private ImageView d4;
+	@FXML
+	private ImageView e0;
+	@FXML
+	private ImageView e1;
+	@FXML
+	private ImageView e2;
+	@FXML
+	private ImageView e3;
+	@FXML
+	private ImageView e4;
 	
-	@FXML
-	private Button a1;
-	@FXML
-	private Button a2;
-	@FXML
-	private Button b0;
-	@FXML
-	private Button b1;
-	@FXML
-	private Button b2;
-	@FXML
-	private Button c0;
-	@FXML
-	private Button c1;
-	@FXML
-	private Button c2;
 	@FXML
 	private ImageView current;
 	
@@ -146,7 +178,7 @@ public class GameController implements Initializable{
 
 	Image cercle = new Image("images/o.png") ;
 	Image croix = new Image("images/x.png") ;
-	Quixo game = Quixo.getInstance();
+	Quixo game = new Quixo();
 	Main main = Main.getInstance();
 	
     @FXML
@@ -174,7 +206,7 @@ public class GameController implements Initializable{
 			System.exit(0);
 		}); 
 	}
-	
+	/*
 	
 	@FXML
 	void a0(ActionEvent event) {
@@ -211,295 +243,16 @@ public class GameController implements Initializable{
 		if(game.Current().toString().equals("X")) current.setImage(croix);
 		else current.setImage(cercle);
 		}
-	}
+	}*/
 	
-	@FXML
-	void a1(ActionEvent event) {
-			//a1.setDisable(true);
-		if(this.game.isEmpty(0, 1)) {
-			if(this.game.Current().toString().equals("X")) {
-				a1.setBackground(
-					new Background(
-						new BackgroundImage(
-							new Image("images/x.png", a1.getWidth(), a1.getHeight(), false, true)
-								,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-								, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-			}
-			else {
-				a1.setBackground(
-					new Background(
-						new BackgroundImage(
-							new Image("images/o.png", a1.getWidth(), a1.getHeight(), false, true)
-								,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-								, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-			}
-			this.game.addTac(this.game.Current(), 0, 1);
-			if(this.game.winCondition() != null)
-			{
-				this.afficheTrait(this.game.WinningAnim());
+	public void clickGrid(javafx.scene.input.MouseEvent event) {
+	    Node clickedNode = event.getPickResult().getIntersectedNode();
 
-				this.win() ;
-				
-			}
-			else if(this.game.nulRound())
-			{
-				this.gameNull() ;
-			}
-			if(game.Current().toString().equals("X")) current.setImage(croix);
-			else current.setImage(cercle);
-		}
-	}
-	@FXML
-	void a2(ActionEvent event) {
-		//a2.setDisable(true);
-		if(this.game.isEmpty(0, 2)) {
-		if(this.game.Current().toString().equals("X")) {
-			a2.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/x.png", a2.getWidth(), a2.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		else {
-			a2.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/o.png", a1.getWidth(), a1.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		this.game.addTac(this.game.Current(), 0, 2);
-		if(this.game.winCondition() != null)
-		{
-			this.afficheTrait(this.game.WinningAnim());
+	        // click on descendant node
+	        Integer colIndex = GridPane.getColumnIndex(clickedNode);
+	        Integer rowIndex = GridPane.getRowIndex(clickedNode);
+	        System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
 
-			this.win() ;
-		}
-		else if(this.game.nulRound())
-		{
-			this.gameNull() ;
-		}
-		if(game.Current().toString().equals("X")) current.setImage(croix);
-		else current.setImage(cercle);
-	}
-	}
-	@FXML
-	void b0(ActionEvent event) {
-		//b0.setDisable(true);
-		
-		if(this.game.isEmpty(1, 0)) {
-			if(this.game.Current().toString().equals("X")) {
-				b0.setBackground(
-					new Background(
-						new BackgroundImage(
-							new Image("images/x.png", b0.getWidth(), b0.getHeight(), false, true)
-								,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-								, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-			}
-			else {
-				b0.setBackground(
-					new Background(
-						new BackgroundImage(
-								new Image("images/o.png", b0.getWidth(), b0.getHeight(), false, true)
-								,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-								, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-			}
-			this.game.addTac(this.game.Current(), 1, 0);
-			if(this.game.winCondition() != null)
-			{
-				this.afficheTrait(this.game.WinningAnim());
-
-				this.win() ;
-			}
-			else if(this.game.nulRound())
-			{
-				this.gameNull() ;
-			}
-			if(game.Current().toString().equals("X")) current.setImage(croix);
-			else current.setImage(cercle);
-		}
-		//------------------------------------------------------------------------------------------------------at use
-		//a0.getStyleClass().add("image");
-	}
-	
-	@FXML
-	void b1(ActionEvent event) {
-		//b1.setDisable(true);
-		if(this.game.isEmpty(1, 1)) {
-		if(this.game.Current().toString().equals("X")) {
-			b1.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/x.png", b1.getWidth(), b1.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		else {
-			b1.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/o.png", b1.getWidth(), b1.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		this.game.addTac(this.game.Current(), 1, 1);
-		if(this.game.winCondition() != null)
-		{
-			this.afficheTrait(this.game.WinningAnim());
-
-			this.win() ;
-		}
-		else if(this.game.nulRound())
-		{
-			this.gameNull() ;
-		}
-		if(game.Current().toString().equals("X")) current.setImage(croix);
-		else current.setImage(cercle);
-		}
-	}
-	
-	@FXML
-	void b2(ActionEvent event) {
-		//b2.setDisable(true);
-		if(this.game.isEmpty(1, 2)) {
-		if(this.game.Current().toString().equals("X")) {
-			b2.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/x.png", b2.getWidth(), b2.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		else {
-			b2.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/o.png", b2.getWidth(), b2.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		this.game.addTac(this.game.Current(), 1, 2);
-		if(this.game.winCondition() != null)
-		{
-			this.afficheTrait(this.game.WinningAnim());
-
-			this.win() ;
-		}
-		else if(this.game.nulRound())
-		{
-			this.gameNull() ;
-		}	
-		if(game.Current().toString().equals("X")) current.setImage(croix);
-		else current.setImage(cercle);
-		}
-	}
-	@FXML
-	void c0(ActionEvent event) {
-		//c0.setDisable(true);
-		if(this.game.isEmpty(2, 0)) {
-		if(this.game.Current().toString().equals("X")) {
-			c0.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/x.png", c0.getWidth(), c0.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		else {
-			c0.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/o.png", c0.getWidth(), c0.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		this.game.addTac(this.game.Current(), 2, 0);
-		if(this.game.winCondition() != null)
-		{
-			this.afficheTrait(this.game.WinningAnim());
-
-			this.win() ;
-		}
-		else if(this.game.nulRound())
-		{
-			this.gameNull() ;
-		}
-		if(game.Current().toString().equals("X")) current.setImage(croix);
-		else current.setImage(cercle);
-		}
-	}
-	
-	@FXML
-	void c1(ActionEvent event) {
-		//c1.setDisable(true);
-		if(this.game.isEmpty(2, 1)) {
-		if(this.game.Current().toString().equals("X")) {
-			c1.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/x.png", c1.getWidth(), c1.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		else {
-			c1.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/o.png", c1.getWidth(), c1.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		this.game.addTac(this.game.Current(), 2, 1);
-		if(this.game.winCondition() != null)
-		{
-			this.afficheTrait(this.game.WinningAnim());
-
-			this.win() ;
-		}
-		else if(this.game.nulRound())
-		{
-			this.gameNull() ;
-		}
-		if(game.Current().toString().equals("X")) current.setImage(croix);
-		else current.setImage(cercle);
-		}
-	}
-	
-	@FXML
-	void c2(ActionEvent event) {
-		//c2.setDisable(true);
-		if(this.game.isEmpty(2, 2)) {
-		if(this.game.Current().toString().equals("X")) {
-			c2.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/x.png", c2.getWidth(), c2.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		else {
-			c2.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/o.png", c2.getWidth(), c2.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		this.game.addTac(this.game.Current(), 2, 2);
-		if(this.game.winCondition() != null)
-		{
-			this.afficheTrait(this.game.WinningAnim());
-
-			this.win() ;
-		}
-		else if(this.game.nulRound())
-		{
-			this.gameNull() ;
-		}
-		if(game.Current().toString().equals("X")) current.setImage(croix);
-		else current.setImage(cercle);
-		}
 	}
 	
 	public void gameNull()
@@ -562,21 +315,70 @@ public class GameController implements Initializable{
 	
 	void eraseImage()
 	{
-		this.a0.setBackground(null);
-		this.a1.setBackground(null);
-		this.a2.setBackground(null);
-		this.b0.setBackground(null);
-		this.b1.setBackground(null);
-		this.b2.setBackground(null);
-		this.c0.setBackground(null);
-		this.c1.setBackground(null);
-		this.c2.setBackground(null);
-
-
-
+		this.a0.setImage(null);
+		this.a1.setImage(null);
+		this.a2.setImage(null);
+		this.a3.setImage(null);
+		this.a4.setImage(null);
 		
+		this.b0.setImage(null);
+		this.b1.setImage(null);
+		this.b2.setImage(null);
+		this.b3.setImage(null);
+		this.b4.setImage(null);
+		
+		this.c0.setImage(null);
+		this.c1.setImage(null);
+		this.c2.setImage(null);
+		this.c3.setImage(null);
+		this.c4.setImage(null);
+		
+		this.d0.setImage(null);
+		this.d1.setImage(null);
+		this.d2.setImage(null);
+		this.d3.setImage(null);
+		this.d4.setImage(null);
+		
+		this.e0.setImage(null);
+		this.e1.setImage(null);
+		this.e2.setImage(null);
+		this.e3.setImage(null);
+		this.e4.setImage(null);
 	}
-	//
+	
+	void Refresh() {
+		this.a0.setImage(this.game.getBoard()[0][0].getImage());
+		this.a1.setImage(this.game.getBoard()[1][0].getImage());
+		this.a2.setImage(this.game.getBoard()[2][0].getImage());
+		this.a3.setImage(this.game.getBoard()[3][0].getImage());
+		this.a4.setImage(this.game.getBoard()[4][0].getImage());
+		
+		this.b0.setImage(this.game.getBoard()[0][1].getImage());
+		this.b1.setImage(this.game.getBoard()[1][1].getImage());
+		this.b2.setImage(this.game.getBoard()[2][1].getImage());
+		this.b3.setImage(this.game.getBoard()[3][1].getImage());
+		this.b4.setImage(this.game.getBoard()[4][1].getImage());
+		
+		this.c0.setImage(this.game.getBoard()[0][2].getImage());
+		this.c1.setImage(this.game.getBoard()[1][2].getImage());
+		this.c2.setImage(this.game.getBoard()[2][2].getImage());
+		this.c3.setImage(this.game.getBoard()[3][2].getImage());
+		this.c4.setImage(this.game.getBoard()[4][2].getImage());
+		
+		this.d0.setImage(this.game.getBoard()[0][3].getImage());
+		this.d1.setImage(this.game.getBoard()[1][3].getImage());
+		this.d2.setImage(this.game.getBoard()[2][3].getImage());
+		this.d3.setImage(this.game.getBoard()[3][3].getImage());
+		this.d4.setImage(this.game.getBoard()[4][3].getImage());
+		
+		this.e0.setImage(this.game.getBoard()[0][4].getImage());
+		this.e1.setImage(this.game.getBoard()[1][4].getImage());
+		this.e2.setImage(this.game.getBoard()[2][4].getImage());
+		this.e3.setImage(this.game.getBoard()[3][4].getImage());
+		this.e4.setImage(this.game.getBoard()[4][4].getImage());
+	}
+	
+	
 	public void win()
 	{
 			Alert alert = new Alert(AlertType.CONFIRMATION);

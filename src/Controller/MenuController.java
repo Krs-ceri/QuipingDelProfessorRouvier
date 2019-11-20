@@ -60,11 +60,9 @@ public class MenuController implements Initializable{
     @FXML
 	void showSolo(ActionEvent event) throws IOException{
     	Main main = Main.getInstance();
-    	Quixo r = Quixo.getInstance();
-    	r.Reset();
     	
     	FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("../View/GameSolo.fxml"));
+		loader.setLocation(getClass().getResource("../View/GameView.fxml"));
 		main.setRoot(loader.load());
 
 		Scene scene = new Scene(main.getRoot());

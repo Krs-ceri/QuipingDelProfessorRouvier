@@ -5,19 +5,21 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+import javafx.scene.image.Image;
+
 public enum Tictactoe {
 
 	CIRCLE("O","images/o.png"),
 	CROSS("X", "images/x.png"),
 	EMPTY("gr", "images/r.png");
 	private String pion = "";
-	private final BufferedImage image;
+	private final Image image;
 	
 	Tictactoe(String a, String filename) {
 			this.pion = a;
-	        BufferedImage tempImage = null;
+	        Image tempImage = null;
 	        try {
-	             tempImage = ImageIO.read(new File(filename));
+	             tempImage = new Image(filename);
 	        } catch (Exception e) {
 	             tempImage = null;
 	        }
@@ -26,7 +28,7 @@ public enum Tictactoe {
 	public String toString() {
 		return this.pion;
 	}
-	public BufferedImage getImage() {
+	public Image getImage() {
 		return this.image;
 	}
 }

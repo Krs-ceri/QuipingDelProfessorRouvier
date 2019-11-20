@@ -15,6 +15,11 @@ public class Quixo {
 	
 	public Quixo() {
 		this.plateau = new Tictactoe[5][5];
+		for (int i = 0; i < plateau.length; i++) {
+			for (int j = 0; j < plateau.length; j++) {
+				this.plateau[i][j]  = Tictactoe.EMPTY;
+			}
+		}
 		boolean choice = Math.random() < 0.5;					// Ramdom, could have be the last player
 		if(choice == true)	this.current = playerO;
 		else {
@@ -65,7 +70,7 @@ public class Quixo {
 		return false;
 	}
 	
-	public static void swap(Tictactoe c1, Tictactoe c2) 
+	public void swap(Tictactoe c1, Tictactoe c2) 
     { 
         Tictactoe temp = c1; 
         c1 = c2; 
@@ -113,20 +118,7 @@ public class Quixo {
 	}
 	
 
-	public final static Quixo getInstance()
-	{
-		if(Quixo.instance == null)
-		{
-			synchronized(Quixo.class)
-			{
-				if(Quixo.instance == null)
-				{
-					Quixo.instance = new Quixo();
-				}
-			}
-		}
-		return Quixo.instance;
-	}
+
 	
 	public Tictactoe[][] getBoard() { 
 		return this.plateau; 
