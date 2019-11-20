@@ -252,6 +252,7 @@ public class GameController implements Initializable{
 	        Integer colIndex = GridPane.getColumnIndex(clickedNode);
 	        Integer rowIndex = GridPane.getRowIndex(clickedNode);
 	        System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
+	        
 
 	}
 	
