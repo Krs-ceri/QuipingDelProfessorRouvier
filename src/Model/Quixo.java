@@ -70,6 +70,11 @@ public class Quixo {
 		return false;
 	}
 	
+	
+	public void addTac(int i, int j) {
+		this.plateau[i][j] = this.current;
+		this.switchPlayer();
+	}
 	public void swap(Tictactoe c1, Tictactoe c2) 
     { 
         Tictactoe temp = c1; 
@@ -119,6 +124,11 @@ public class Quixo {
 	
 
 
+	public Tictactoe getCase(int i, int j) {
+		//System.out.println(i+ "  " + j);
+		return this.plateau[i][j];
+
+	}
 	
 	public Tictactoe[][] getBoard() { 
 		return this.plateau; 

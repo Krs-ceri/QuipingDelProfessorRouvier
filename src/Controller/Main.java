@@ -1,8 +1,6 @@
 package Controller;
 
 
-
-
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -11,6 +9,8 @@ import javafx.stage.Modality;
 
 import javafx.fxml.FXMLLoader;
 import java.io.IOException;
+
+
 
 public class Main extends Application {
 	
@@ -36,7 +36,7 @@ public class Main extends Application {
 		{
 			// Permet de charger le menuPrincipal.fxml
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(Main.class.getResource("../view/MenuView.fxml"));
+			loader.setLocation(Main.class.getResource("../View/MenuView.fxml"));
 			root = (AnchorPane) loader.load();
 
 			// Affiche la scne du menu

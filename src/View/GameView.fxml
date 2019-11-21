@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" style="-fx-background-color: #ffffff;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.GameController">
+  <children>
+    <GridPane fx:id="grid" gridLinesVisible="true" layoutX="45.0" layoutY="34.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#clickGrid" prefHeight="345.0" prefWidth="345.0" styleClass="grid">
+      <children>
+            <ImageView fx:id="a0" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="a1" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="1" />
+            <ImageView fx:id="a2" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="2" />
+            <ImageView fx:id="a3" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="3" />
+            <ImageView fx:id="a4" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="4" />
+            <ImageView fx:id="b0" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.rowIndex="1" />
+            <ImageView fx:id="b1" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ImageView fx:id="b2" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <ImageView fx:id="b3" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <ImageView fx:id="b4" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <ImageView fx:id="c0" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.rowIndex="2" />
+            <ImageView fx:id="c1" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ImageView fx:id="c2" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <ImageView fx:id="c3" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <ImageView fx:id="c4" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <ImageView fx:id="d0" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.rowIndex="3" />
+            <ImageView fx:id="d1" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ImageView fx:id="d2" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <ImageView fx:id="d3" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <ImageView fx:id="d4" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <ImageView fx:id="e0" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.rowIndex="4" />
+            <ImageView fx:id="e1" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <ImageView fx:id="e2" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <ImageView fx:id="e3" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <ImageView fx:id="e4" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+            <ImageView fx:id="a4" fitHeight="65.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="4" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <effect>
+        <Bloom threshold="0.2" />
+      </effect>
+      <rowConstraints>
+        <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+    <Button fx:id="back" alignment="TOP_LEFT" layoutY="1.0" mnemonicParsing="false" onAction="#goBack" text="Back" />
+    <ImageView fx:id="current" fitHeight="78.0" fitWidth="78.0" layoutX="508.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-color: transparent;" />
+      <Text id="move" fx:id="moveId" layoutX="469.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="78.00000365078449" />
+  </children>
+</AnchorPane>

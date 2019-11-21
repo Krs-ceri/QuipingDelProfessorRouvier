@@ -1,7 +1,7 @@
 package Controller;
 
 
-
+import Controller.Main;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import com.sun.javafx.scene.EnteredExitedHandler;
 
 import Model.*; 
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,13 +21,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import org.omg.PortableInterceptor.SUCCESSFUL;
-
-import com.sun.prism.shader.Texture_Color_AlphaTest_Loader;
-
-import javafx.animation.Interpolator;
-import javafx.animation.RotateTransition;
-import javafx.animation.TranslateTransition;
 
 import javafx.application.Platform;
 
@@ -34,10 +28,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -48,14 +39,16 @@ import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 
 
+
 public class MenuController implements Initializable{
 
 	Main main = Main.getInstance();
 
     @FXML
     private AnchorPane fenetre;
-	@FXML
-	private GridPane grid;
+    @FXML
+    private Button solo;
+
 	
     @FXML
 	void showSolo(ActionEvent event) throws IOException{

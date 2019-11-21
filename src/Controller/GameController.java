@@ -50,11 +50,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
+import Model.Engine;
 import Model.Quixo;
 import images.*;
 
@@ -108,17 +110,20 @@ import javafx.concurrent.Worker;
 public class GameController implements Initializable{
 	
 	@FXML
-	private GridPane[][] grid;
+	private GridPane grid;
 	
     /*
     final TableColumn<Car, String> brandColumn = new TableColumn<>("Marque"); 
     final TableColumn<Car, Color> colorColumn = new TableColumn<>("Couleur"); 
-    final TableColumn<Car, Integer> seatsColumn = new TableColumn<>("Sièges"); 
+    final TableColumn<Car, Integer> seatsColumn = new TableColumn<>("Siï¿½ges"); 
     final TableColumn<Car, Integer> doorsColumn = new TableColumn<>("Portes"); 
     tableView.getColumns().addAll(brandColumn, colorColumn, seatsColumn, doorsColumn);*/
 	
 	@FXML
 	private AnchorPane f;
+	
+	@FXML
+	private Text moveId;
 	
 	@FXML
 	private ImageView a0;
@@ -174,7 +179,7 @@ public class GameController implements Initializable{
 	@FXML
 	private ImageView current;
 	
-
+	private ImageView[][] gridImg;
 
 	Image cercle = new Image("images/o.png") ;
 	Image croix = new Image("images/x.png") ;
@@ -186,7 +191,7 @@ public class GameController implements Initializable{
     {
     	Main main = Main.getInstance();
     	FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("../View/APIView.fxml"));
+		loader.setLocation(getClass().getResource("../View/MenuView.fxml"));
     	main.setRoot(loader.load());
 
     	Scene scene = new Scene(main.getRoot());
@@ -197,63 +202,86 @@ public class GameController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		
+		gridImg =  new ImageView[5][5];
+		gridImg[0][0] = this.a0;
+		gridImg[0][1] = this.a1;
+		gridImg[0][2] = this.a2;
+		gridImg[0][3] = this.a3;
+		gridImg[0][4] = this.a4;
+		
+		gridImg[1][0] = this.b0;
+		gridImg[1][1] = this.b1;
+		gridImg[1][2] = this.b2;
+		gridImg[1][3] = this.b3;
+		gridImg[1][4] = this.b4;
+		
+		gridImg[2][0] = this.c0;
+		gridImg[2][1] = this.c1;
+		gridImg[2][2] = this.c2;
+		gridImg[2][3] = this.c3;
+		gridImg[2][4] = this.c4;
+		
+		gridImg[3][0] = this.d0;
+		gridImg[3][1] = this.d1;
+		gridImg[3][2] = this.d2;
+		gridImg[3][3] = this.d3;
+		gridImg[3][4] = this.d4;
+		
+		gridImg[4][0] = this.e0;
+		gridImg[4][1] = this.e1;
+		gridImg[4][2] = this.e2;
+		gridImg[4][3] = this.e3;
+		gridImg[4][4] = this.e4;
+		
+		this.Refresh();
+
 		if(game.Current().toString().equals("X")) current.setImage(croix);
 		else current.setImage(cercle);
+
 		Main.getInstance().getWindow().setOnCloseRequest( event ->
 		{
 			Platform.exit();
 			System.exit(0);
 		}); 
 	}
-	/*
-	
-	@FXML
-	void a0(ActionEvent event) {
-		//a0.setDisable(true);
-		if(this.game.isEmpty(0, 0)) {
-		if(this.game.Current().toString().equals("X")) {
-			a0.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/x.png", a0.getWidth(), a0.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		else {
-			
-			a0.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/o.png", a0.getWidth(), a0.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		this.game.addTac(this.game.Current(), 0, 0);
-		if(this.game.winCondition() != null)
-		{
-			this.afficheTrait(this.game.WinningAnim());
 
-			this.win() ;
-		}
-		else if(this.game.nulRound())
-		{
-			this.gameNull() ;
-		}
-		if(game.Current().toString().equals("X")) current.setImage(croix);
-		else current.setImage(cercle);
-		}
-	}*/
-	
+	@FXML
 	public void clickGrid(javafx.scene.input.MouseEvent event) {
 	    Node clickedNode = event.getPickResult().getIntersectedNode();
-
+	    if(clickedNode != grid) {
 	        // click on descendant node
 	        Integer colIndex = GridPane.getColumnIndex(clickedNode);
 	        Integer rowIndex = GridPane.getRowIndex(clickedNode);
-	        System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
+	        if(colIndex == null)colIndex = 0;
+	        if(rowIndex == null)rowIndex = 0;
 	        
+	        System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
+	        System.out.println(game.getCase(rowIndex, colIndex).toString());
+	        if(this.moveId ==  null)	this.moveId.setId(Integer.toString(rowIndex)+Integer.toString(colIndex));
+	        else {
+		        //moveId.setId(Integer.toString(rowIndex) + Integer.toString(colIndex));
+	        	//this.setPosPossible(rowIndex, colIndex);
+		        //game.addTac(colIndex, rowIndex);
 
+	        	game.pushColNegative(this.moveId.), yi, rowIndex, colIndex)
+	        	
+		        this.Refresh();
+	        }
+
+	    }
+
+	}
+	
+	public void setPosPossible(int i, int j) {
+		Engine g = new Engine();
+		for (int j2 = 0; j2 < gridImg.length; j2++) {
+			for (int k = 0; k < gridImg.length; k++) {
+				if(g.verifyTictactoeSecond(i, j, j2, k, game)) gridImg[j2][k].setStyle("-fx-background-color: #fff7ad;");
+				else  gridImg[j2][k].setStyle("-fx-background-color: #000000;");
+
+			}
+		}
 	}
 	
 	public void gameNull()
@@ -288,17 +316,36 @@ public class GameController implements Initializable{
 			// ... user chose CANCEL or closed the dialog
 		}
 	}
-	void disableBoard()
-	{
+	void disableBoard() {
 		this.a0.setMouseTransparent(true);
 		this.a1.setMouseTransparent(true);
 		this.a2.setMouseTransparent(true);
+		this.a3.setMouseTransparent(true);
+		this.a4.setMouseTransparent(true);
+	
 		this.b0.setMouseTransparent(true);
 		this.b1.setMouseTransparent(true);
 		this.b2.setMouseTransparent(true);
+		this.b3.setMouseTransparent(true);
+		this.b4.setMouseTransparent(true);
+	
 		this.c0.setMouseTransparent(true);
 		this.c1.setMouseTransparent(true);
 		this.c2.setMouseTransparent(true);
+		this.c3.setMouseTransparent(true);
+		this.c4.setMouseTransparent(true);
+	
+		this.d0.setMouseTransparent(true);
+		this.d1.setMouseTransparent(true);
+		this.d2.setMouseTransparent(true);
+		this.d3.setMouseTransparent(true);
+		this.d4.setMouseTransparent(true);
+	
+		this.e0.setMouseTransparent(true);
+		this.e1.setMouseTransparent(true);
+		this.e2.setMouseTransparent(true);
+		this.e3.setMouseTransparent(true);
+		this.e4.setMouseTransparent(true);
 	}
 	
 	void ableBoard()
@@ -306,12 +353,32 @@ public class GameController implements Initializable{
 		this.a0.setMouseTransparent(false);
 		this.a1.setMouseTransparent(false);
 		this.a2.setMouseTransparent(false);
+		this.a3.setMouseTransparent(false);
+		this.a4.setMouseTransparent(false);
+	
 		this.b0.setMouseTransparent(false);
 		this.b1.setMouseTransparent(false);
 		this.b2.setMouseTransparent(false);
+		this.b3.setMouseTransparent(false);
+		this.b4.setMouseTransparent(false);
+	
 		this.c0.setMouseTransparent(false);
 		this.c1.setMouseTransparent(false);
 		this.c2.setMouseTransparent(false);
+		this.c3.setMouseTransparent(false);
+		this.c4.setMouseTransparent(false);
+	
+		this.d0.setMouseTransparent(false);
+		this.d1.setMouseTransparent(false);
+		this.d2.setMouseTransparent(false);
+		this.d3.setMouseTransparent(false);
+		this.d4.setMouseTransparent(false);
+	
+		this.e0.setMouseTransparent(false);
+		this.e1.setMouseTransparent(false);
+		this.e2.setMouseTransparent(false);
+		this.e3.setMouseTransparent(false);
+		this.e4.setMouseTransparent(false);
 	}
 	
 	void eraseImage()
@@ -377,8 +444,50 @@ public class GameController implements Initializable{
 		this.e2.setImage(this.game.getBoard()[2][4].getImage());
 		this.e3.setImage(this.game.getBoard()[3][4].getImage());
 		this.e4.setImage(this.game.getBoard()[4][4].getImage());
+		
+		this.current.setImage(this.game.getCurrent().getImage());
+		
+		this.moveId.setId(null);
 	}
 	
+	/*
+	
+	@FXML
+	void a0(ActionEvent event) {
+		//a0.setDisable(true);
+		if(this.game.isEmpty(0, 0)) {
+		if(this.game.Current().toString().equals("X")) {
+			a0.setBackground(
+				new Background(
+					new BackgroundImage(
+						new Image("images/x.png", a0.getWidth(), a0.getHeight(), false, true)
+							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
+							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+		}
+		else {
+			
+			a0.setBackground(
+				new Background(
+					new BackgroundImage(
+						new Image("images/o.png", a0.getWidth(), a0.getHeight(), false, true)
+							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
+							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+		}
+		this.game.addTac(this.game.Current(), 0, 0);
+		if(this.game.winCondition() != null)
+		{
+			this.afficheTrait(this.game.WinningAnim());
+
+			this.win() ;
+		}
+		else if(this.game.nulRound())
+		{
+			this.gameNull() ;
+		}
+		if(game.Current().toString().equals("X")) current.setImage(croix);
+		else current.setImage(cercle);
+		}
+	}*/
 	
 	public void win()
 	{
@@ -406,9 +515,9 @@ public class GameController implements Initializable{
 				try {
 		    	Main main = Main.getInstance();
 		    	FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../View/APIView.fxml"));
+				loader.setLocation(getClass().getResource("../View/MenuView.fxml"));
 		    	
-					main.setRoot(loader.load());
+				main.setRoot(loader.load());
 				
 		    	Scene scene = new Scene(main.getRoot());
 		    	main.getWindow().setScene(scene);

@@ -5,11 +5,10 @@ import Players.*;
 public final class Engine
 {
 
-	private Engine() {}
+	public Engine() {}
 
 	static boolean verifyPosition(int x, int y)
 	{
-		Quixo b = Quixo.getInstance();
 		if(y < 0 || y > 5 || x < 0 || x > 5)
 		{
 			return false;
@@ -26,8 +25,8 @@ public final class Engine
 	 * 			y represent the line of the pyramid
 	 * @return Return true if position is empty or return false
 	 */
-	static boolean verifyEmpty(int x, int y) {
-		Quixo b = Quixo.getInstance();
+	public boolean verifyEmpty(int x, int y, Quixo b) {
+
 
 		if(!b.getBoard()[x][y].toString().equals("gr"))
 			return false;
@@ -35,8 +34,8 @@ public final class Engine
 		return true;
 	}
 
-	static boolean verifyTictactoe(int x_pos, int y_pos) {
-		Quixo b = Quixo.getInstance();
+	public boolean verifyTictactoe(int x_pos, int y_pos, Quixo b) {
+
 
 		if(b.getBoard()[x_pos][y_pos].toString().equals("gr")) {
 			if(x_pos == 0 || y_pos == 0 || y_pos == 4 || x_pos == 4)	return true;
@@ -44,10 +43,10 @@ public final class Engine
 		return false;
 	}
 	
-	static boolean verifyTictactoeSecond(int x_pos, int y_pos, int xx, int yy) {
-		Quixo b = Quixo.getInstance();
+	public boolean verifyTictactoeSecond(int x_pos, int y_pos, int xx, int yy, Quixo b) {
 
-		if(b.getBoard()[x_pos][y_pos].toString().equals("gr")) {
+		if(x_pos == xx && y_pos == yy) return false;
+		if(b.getBoard()[x_pos][y_pos].toString().equals("gr") || b.getBoard()[x_pos][y_pos].equals(b.Current())) {
 			if(x_pos == xx && (yy == 0 || yy == 4))	return true;
 			else if(y_pos == yy && (xx == 0 || xx == 4))	return true;
 		}
@@ -59,14 +58,14 @@ public final class Engine
 
 	
 
-	static boolean rule(Player p, Tictactoe c,int x,int y , int xi, int yi)	{
+	public boolean rule(Player p, Tictactoe c,int x,int y , int xi, int yi, Quixo b)	{
 
-		Quixo b = Quixo.getInstance();
+
 		if(Engine.verifyPosition(x, y) && Engine.verifyPosition(xi, yi))
 		{
-			if(Engine.verifyEmpty(x, y))
+			if(this.verifyEmpty(x, y,b))
 			{
-				if(!Engine.verifyTictactoeSecond(xi, yi , x, y))
+				if(!this.verifyTictactoeSecond(xi, yi , x, y,b))
 				{
 
 							if(c != b.getCurrent())
