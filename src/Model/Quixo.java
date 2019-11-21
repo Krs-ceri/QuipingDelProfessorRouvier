@@ -84,8 +84,9 @@ public class Quixo {
 	
 	public boolean pushRowNegative(int xi, int yi, int xx, int yy) {
 		if(xi < xx && yi == yy) return false;
+		Tictactoe tmp = this.current;
 		do {
-			Tictactoe tmp = this.current;
+
 			swap(tmp, this.plateau[xx][yy]);
 			xx--;
 		}while(xx != xi);
@@ -94,8 +95,9 @@ public class Quixo {
 	
 	public boolean pushRowPositive(int xi, int yi, int xx, int yy) {
 		if(xi > xx && yi == yy) return false;
+		Tictactoe tmp = this.current;
 		do {
-			Tictactoe tmp = this.current;
+
 			swap(tmp, this.plateau[xx][yy]);
 			xx++;
 		}while(xx != xi);
@@ -104,8 +106,9 @@ public class Quixo {
 	
 	public boolean pushColNegative(int xi, int yi, int xx, int yy) {
 		if(xi == xx && yi < yy) return false;
+		Tictactoe tmp = this.current;
 		do {
-			Tictactoe tmp = this.current;
+			
 			swap(tmp, this.plateau[xx][yy]);
 			yy--;
 		}while(yy != yi);
@@ -114,8 +117,9 @@ public class Quixo {
 	
 	public boolean pushColPositive(int xi, int yi, int xx, int yy) {
 		if(xi == xx && yi > yy) return false;
+		Tictactoe tmp = this.current;
 		do {
-			Tictactoe tmp = this.current;
+			
 			swap(tmp, this.plateau[xx][yy]);
 			yy++;
 		}while(yy != yi);

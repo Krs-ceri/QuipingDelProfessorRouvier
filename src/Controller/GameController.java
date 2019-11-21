@@ -234,11 +234,13 @@ public class GameController implements Initializable{
 		gridImg[4][3] = this.e3;
 		gridImg[4][4] = this.e4;
 		
-		this.Refresh();
+		
 
 		if(game.Current().toString().equals("X")) current.setImage(croix);
 		else current.setImage(cercle);
-
+		
+		this.Refresh();
+		
 		Main.getInstance().getWindow().setOnCloseRequest( event ->
 		{
 			Platform.exit();
@@ -248,6 +250,7 @@ public class GameController implements Initializable{
 
 	@FXML
 	public void clickGrid(javafx.scene.input.MouseEvent event) {
+		Engine engine = new Engine();
 	    Node clickedNode = event.getPickResult().getIntersectedNode();
 	    if(clickedNode != grid) {
 	        // click on descendant node
@@ -258,13 +261,19 @@ public class GameController implements Initializable{
 	        
 	        System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
 	        System.out.println(game.getCase(rowIndex, colIndex).toString());
-	        if(this.moveId ==  null)	this.moveId.setId(Integer.toString(rowIndex)+Integer.toString(colIndex));
+	        if(this.moveId.getId() == null)	this.moveId.setId(Integer.toString(rowIndex)+Integer.toString(colIndex));
 	        else {
 		        //moveId.setId(Integer.toString(rowIndex) + Integer.toString(colIndex));
 	        	//this.setPosPossible(rowIndex, colIndex);
 		        //game.addTac(colIndex, rowIndex);
-
-	        	game.pushColNegative(this.moveId.), yi, rowIndex, colIndex)
+	        	String mv = this.moveId.getId();
+	        	int r = Character.getNumericValue(mv.charAt(0));
+	        	int c = Character.getNumericValue(mv.charAt(1));
+	        	System.out.println(r + " " + c);
+	        	//game.pushColNegative(r, c , rowIndex, colIndex);
+	        	game.pushColPositive(r, c, rowIndex, colIndex);
+	        	game.pushRowNegative(r, c, rowIndex, colIndex);
+	        	game.pushRowPositive(r, c, rowIndex, colIndex);
 	        	
 		        this.Refresh();
 	        }
