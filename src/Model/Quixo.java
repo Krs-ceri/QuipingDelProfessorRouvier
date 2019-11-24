@@ -45,7 +45,9 @@ public class Quixo {
 						&& this.plateau[2][i] == this.plateau[0][i] 
 						&& this.plateau[3][i] == this.plateau[0][i]
 						&& this.plateau[4][i] == this.plateau[0][i] )) 
-				{ winner = this.plateau[0][i]; }
+				{
+					winner = this.plateau[0][i]; 
+				}
 			}
 		}
 		if(this.plateau[2][2] == Tictactoe.CIRCLE || this.plateau[1][1] == Tictactoe.CROSS) {
@@ -60,6 +62,7 @@ public class Quixo {
 				 { winner = this.plateau[1][1]; }
 		}
 		return winner;
+
 	}
 	
 	public boolean addTic(int x_pos, int y_pos, int xx, int yy) {
@@ -84,45 +87,53 @@ public class Quixo {
 	
 	public boolean pushRowNegative(int xi, int yi, int xx, int yy) {
 		if(xi < xx && yi == yy) return false;
-		Tictactoe tmp = this.current;
-		do {
+		System.out.println(xi +"  "+ yi);
+		Tictactoe tmp = this.plateau[xi][yi];
+		while(xi < xx) {
 
-			swap(tmp, this.plateau[xx][yy]);
-			xx--;
-		}while(xx != xi);
+			swap(tmp, this.plateau[xi+1][yy]);
+			xi++;
+		}
+		this.plateau[xx][yy] = this.current;
 		return true;
 	}
 	
 	public boolean pushRowPositive(int xi, int yi, int xx, int yy) {
 		if(xi > xx && yi == yy) return false;
-		Tictactoe tmp = this.current;
-		do {
+		Tictactoe tmp = this.plateau[xi][yi];
+		System.out.println(xi +"  "+ yi);
+		while(xi > xx) {
 
-			swap(tmp, this.plateau[xx][yy]);
-			xx++;
-		}while(xx != xi);
+			swap(tmp, this.plateau[xi-1][yy]);
+			xi--;
+		}
+		this.plateau[xx][yy] = this.current;
 		return true;
 	}
 	
 	public boolean pushColNegative(int xi, int yi, int xx, int yy) {
 		if(xi == xx && yi < yy) return false;
-		Tictactoe tmp = this.current;
-		do {
-			
-			swap(tmp, this.plateau[xx][yy]);
-			yy--;
-		}while(yy != yi);
+		Tictactoe tmp = this.plateau[xi][yi];
+		System.out.println(xi +"  "+ yi);
+		while(yi < yy) {
+
+			swap(tmp, this.plateau[xi][yy+1]);
+			yi++;
+		}
+		this.plateau[xx][yy] = this.current;
 		return true;
 	}
 	
 	public boolean pushColPositive(int xi, int yi, int xx, int yy) {
 		if(xi == xx && yi > yy) return false;
-		Tictactoe tmp = this.current;
-		do {
-			
-			swap(tmp, this.plateau[xx][yy]);
-			yy++;
-		}while(yy != yi);
+		Tictactoe tmp = this.plateau[xi][yi];
+		System.out.println(xi +"  "+ yi);
+		while(yi > yy) {
+
+			swap(tmp, this.plateau[xi][yy-1]);
+			yi--;
+		}
+		this.plateau[xx][yy] = this.current;
 		return true;
 	}
 	

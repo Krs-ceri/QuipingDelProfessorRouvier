@@ -259,7 +259,7 @@ public class GameController implements Initializable{
 	        if(colIndex == null)colIndex = 0;
 	        if(rowIndex == null)rowIndex = 0;
 	        
-	        System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
+	        System.out.println("Mouse clicked cell: " + rowIndex + " And: " + colIndex );
 	        System.out.println(game.getCase(rowIndex, colIndex).toString());
 	        if(this.moveId.getId() == null)	this.moveId.setId(Integer.toString(rowIndex)+Integer.toString(colIndex));
 	        else {
@@ -270,11 +270,12 @@ public class GameController implements Initializable{
 	        	int r = Character.getNumericValue(mv.charAt(0));
 	        	int c = Character.getNumericValue(mv.charAt(1));
 	        	System.out.println(r + " " + c);
-	        	//game.pushColNegative(r, c , rowIndex, colIndex);
-	        	game.pushColPositive(r, c, rowIndex, colIndex);
-	        	game.pushRowNegative(r, c, rowIndex, colIndex);
-	        	game.pushRowPositive(r, c, rowIndex, colIndex);
+	        	game.pushColNegative(r, c , rowIndex , colIndex );
+	        	game.pushColPositive(r, c , rowIndex , colIndex );
+	        	game.pushRowNegative(r, c , rowIndex , colIndex );
+	        	game.pushRowPositive(r, c , rowIndex , colIndex );
 	        	
+	        	this.game.switchPlayer();
 		        this.Refresh();
 	        }
 
@@ -424,35 +425,12 @@ public class GameController implements Initializable{
 	}
 	
 	void Refresh() {
-		this.a0.setImage(this.game.getBoard()[0][0].getImage());
-		this.a1.setImage(this.game.getBoard()[1][0].getImage());
-		this.a2.setImage(this.game.getBoard()[2][0].getImage());
-		this.a3.setImage(this.game.getBoard()[3][0].getImage());
-		this.a4.setImage(this.game.getBoard()[4][0].getImage());
-		
-		this.b0.setImage(this.game.getBoard()[0][1].getImage());
-		this.b1.setImage(this.game.getBoard()[1][1].getImage());
-		this.b2.setImage(this.game.getBoard()[2][1].getImage());
-		this.b3.setImage(this.game.getBoard()[3][1].getImage());
-		this.b4.setImage(this.game.getBoard()[4][1].getImage());
-		
-		this.c0.setImage(this.game.getBoard()[0][2].getImage());
-		this.c1.setImage(this.game.getBoard()[1][2].getImage());
-		this.c2.setImage(this.game.getBoard()[2][2].getImage());
-		this.c3.setImage(this.game.getBoard()[3][2].getImage());
-		this.c4.setImage(this.game.getBoard()[4][2].getImage());
-		
-		this.d0.setImage(this.game.getBoard()[0][3].getImage());
-		this.d1.setImage(this.game.getBoard()[1][3].getImage());
-		this.d2.setImage(this.game.getBoard()[2][3].getImage());
-		this.d3.setImage(this.game.getBoard()[3][3].getImage());
-		this.d4.setImage(this.game.getBoard()[4][3].getImage());
-		
-		this.e0.setImage(this.game.getBoard()[0][4].getImage());
-		this.e1.setImage(this.game.getBoard()[1][4].getImage());
-		this.e2.setImage(this.game.getBoard()[2][4].getImage());
-		this.e3.setImage(this.game.getBoard()[3][4].getImage());
-		this.e4.setImage(this.game.getBoard()[4][4].getImage());
+
+		for (int i = 0; i < gridImg.length; i++) {
+			for (int j = 0; j < gridImg.length; j++) {
+				gridImg[i][j].setImage(this.game.getBoard()[i][j].getImage());
+			}
+		}
 		
 		this.current.setImage(this.game.getCurrent().getImage());
 		
