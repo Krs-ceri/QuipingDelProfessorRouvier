@@ -106,7 +106,13 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 
-
+/*
+ * Pattern utiliser: 
+ * 			-MVC
+ * 			-Observer
+ * 			-stratégie
+ * 			-composite
+ */
 
 public class GameController implements Initializable{
 	
@@ -182,8 +188,7 @@ public class GameController implements Initializable{
 	
 	private ImageView[][] gridImg;
 
-	Image cercle = new Image("images/o.png") ;
-	Image croix = new Image("images/x.png") ;
+
 	Quixo game = new Quixo();
 	Main main = Main.getInstance();
 	
@@ -266,7 +271,7 @@ public class GameController implements Initializable{
 	        if(colIndex == null)colIndex = 0;
 	        if(rowIndex == null)rowIndex = 0;
 	        
-	        System.out.println("Mouse clicked cell: " + rowIndex + " And: " + colIndex );
+	        System.out.println("Clique " + rowIndex + " et " + colIndex );
 	        System.out.println(game.getCase(rowIndex, colIndex).toString());
 	        if(this.moveId.getId() == null)	this.moveId.setId(Integer.toString(rowIndex)+Integer.toString(colIndex));
 	        else {
@@ -276,14 +281,11 @@ public class GameController implements Initializable{
 	        	String mv = this.moveId.getId();
 	        	int ri = Character.getNumericValue(mv.charAt(0));
 	        	int ci = Character.getNumericValue(mv.charAt(1));
-	        	System.out.println(ri + " " + ci);
+	        	System.out.println("Premier clique "+ ri + " " + ci);
 	        	if(engine.rule( game.Current(), ri, ci, rowIndex, colIndex, game)) {
-		        	game.pushColNegative(ri, ci , rowIndex , colIndex );
-		        	game.pushColPositive(ri, ci , rowIndex , colIndex );
-		        	game.pushRowNegative(ri, ci , rowIndex , colIndex );
-		        	game.pushRowPositive(ri, ci , rowIndex , colIndex );
+	        		game.ConcretePlay(ri, ci , rowIndex , colIndex );
 		        	//game.Print();
-		        	
+	        		this.Refresh();
 		        	if(this.game.winCondition() != null) {
 		        		this.win();
 		        	}

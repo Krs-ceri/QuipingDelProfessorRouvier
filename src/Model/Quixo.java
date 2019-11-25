@@ -8,7 +8,7 @@ import Players.Player;
 import Players.PlayerAi;
 import Players.PlayerHumain;
 
-public class Quixo {
+public class Quixo implements Cloneable{
 
 
 	private Tictactoe current;
@@ -19,6 +19,12 @@ public class Quixo {
 
 	private Player human;
 	private Player ai;
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return super.clone();
+	}
 	
 	public Quixo() {
 		this.setHuman(new PlayerHumain("Shox", 0, playerX));
@@ -71,7 +77,56 @@ public class Quixo {
 				 { winner = this.plateau[1][1]; }
 		}
 		return winner;
-
+	}
+	
+	/**
+	 * "O" est l'IA
+	 * @return	valeur 
+	 */
+	public int eval() {
+		Tictactoe winner = null;		//Nobody win
+		for (int i = 0; i < plateau.length; i++) { // ligne verification
+			if(this.plateau[i][0] == Tictactoe.CIRCLE || this.plateau[i][0] == Tictactoe.CROSS) {
+				if((this.plateau[i][1] == this.plateau[i][0] 
+						&& this.plateau[i][2] == this.plateau[i][0] 
+						&& this.plateau[i][3] == this.plateau[i][0] 
+						&& this.plateau[i][4] == this.plateau[i][0] )) 
+				{ 
+					winner = this.plateau[i][0]; 
+					if(winner == Tictactoe.CIRCLE)	return +100;
+					else return -105;
+				}
+			}
+		}
+		for (int i = 0; i < plateau.length; i++) { // colonne verification
+			if(this.plateau[0][i] == Tictactoe.CIRCLE || this.plateau[0][i] == Tictactoe.CROSS) {
+				if((this.plateau[1][i] == this.plateau[0][i] 
+						&& this.plateau[2][i] == this.plateau[0][i] 
+						&& this.plateau[3][i] == this.plateau[0][i]
+						&& this.plateau[4][i] == this.plateau[0][i] )) 
+				{ 
+					winner = this.plateau[0][i]; 
+					if(winner == Tictactoe.CIRCLE)	return +100;
+					else return -105;
+				}
+			}
+		}
+		if(this.plateau[2][2] == Tictactoe.CIRCLE || this.plateau[1][1] == Tictactoe.CROSS) {
+			if((this.plateau[0][0] == this.plateau[2][2] 
+					&& this.plateau[1][1] == this.plateau[2][2] 
+							&& this.plateau[3][3] == this.plateau[2][2] 
+									&& this.plateau[4][4] == this.plateau[2][2])  //barre centrale verticale
+					|| (this.plateau[0][4] == this.plateau[2][2] 
+							&& this.plateau[1][3] == this.plateau[2][2] 
+									&& this.plateau[3][1] == this.plateau[2][2] 
+											&& this.plateau[4][0] == this.plateau[2][2])) 	//barre centrale horizontal
+			{ 
+				winner = this.plateau[0][0]; 
+				if(winner == Tictactoe.CIRCLE)	return +100;
+				else return -105;
+			}
+		}
+		return 0;
 	}
 	
 	
@@ -97,56 +152,44 @@ public class Quixo {
 	}
 	
 	
-	public void addTac(int i, int j) {
-		this.plateau[i][j] = this.current;
-		//this.switchPlayer();
+	public void ConcretePlay(int xi, int yi, int xx, int yy) {
+    	this.pushColNegative(xi, yi , xx , yy );
+    	this.pushColPositive(xi, yi , xx , yy );
+    	this.pushRowNegative(xi, yi , xx , yy );
+    	this.pushRowPositive(xi, yi , xx , yy );
 	}
-	public void swap(Tictactoe c1, Tictactoe c2) 
-    { 
-        Tictactoe temp = c1; 
-        c1 = c2; 
-        c2 = temp; 
-    } 
 	
-	
-	public boolean pushColPositive(int xi, int yi, int xx, int yy) {	
+	public void pushColPositive(int xi, int yi, int xx, int yy) {	
 		if(xi < xx && yi == yy) {
 			System.out.println("col pos");
 			for (int i = xi; i < xx; i++) {
-				this.plateau[i][yi] = this.plateau[i+1][yi];
-				
+				this.plateau[i][yi] = this.plateau[i+1][yi];			
 			}
 			this.plateau[xx][yy] = this.current;
 		}
-		return true;
 	}
 	
-	public boolean pushColNegative(int xi, int yi, int xx, int yy) {
+	public void pushColNegative(int xi, int yi, int xx, int yy) {
 		if(xi > xx && yi == yy) {
 			System.out.println("col neg");
 			for (int i = xi; i > xx; i--) {
 				this.plateau[i][yi] = this.plateau[i-1][yi];
-				
 			}
 			this.plateau[xx][yy] = this.current;
 		}
-
-		return true;
 	}
 	
-	public boolean pushRowNegative(int xi, int yi, int xx, int yy) {
+	public void pushRowNegative(int xi, int yi, int xx, int yy) {
 		if(xi == xx && yi < yy) {
 			System.out.println("row neg");
 			for (int i = yi; i < yy; i++) {
 				this.plateau[xx][i] = this.plateau[xx][i+1];
-				
 			}
 			this.plateau[xx][yy] = this.current;
 		}
-		return true;
 	}
 	
-	public boolean pushRowPositive(int xi, int yi, int xx, int yy) {
+	public void pushRowPositive(int xi, int yi, int xx, int yy) {
 		if(xi == xx && yi > yy) {
 			System.out.println("row pos ");
 			for (int i = yi; i > yy; i--) {
@@ -154,7 +197,6 @@ public class Quixo {
 			}
 			this.plateau[xx][yy] = this.current;
 		}
-		return true;
 	}
 	
 	public void Print() {
