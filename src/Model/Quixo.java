@@ -87,12 +87,13 @@ public class Quixo {
 	
 	public boolean pushRowNegative(int xi, int yi, int xx, int yy) {
 		if(xi < xx && yi == yy) return false;
-		System.out.println(xi +"  "+ yi);
+		System.out.println("row neg");
 		Tictactoe tmp = this.plateau[xi][yi];
-		while(xi < xx) {
-
-			swap(tmp, this.plateau[xi+1][yy]);
-			xi++;
+		int varx = xi;
+		int vary = yi;
+		while(varx < xx) {
+			this.plateau[varx][vary] =   this.current; //this.plateau[varx+1][vary];
+			varx++;
 		}
 		this.plateau[xx][yy] = this.current;
 		return true;
@@ -101,7 +102,7 @@ public class Quixo {
 	public boolean pushRowPositive(int xi, int yi, int xx, int yy) {
 		if(xi > xx && yi == yy) return false;
 		Tictactoe tmp = this.plateau[xi][yi];
-		System.out.println(xi +"  "+ yi);
+		System.out.println("row positive");
 		while(xi > xx) {
 
 			swap(tmp, this.plateau[xi-1][yy]);
@@ -114,7 +115,7 @@ public class Quixo {
 	public boolean pushColNegative(int xi, int yi, int xx, int yy) {
 		if(xi == xx && yi < yy) return false;
 		Tictactoe tmp = this.plateau[xi][yi];
-		System.out.println(xi +"  "+ yi);
+		System.out.println("col neg");
 		while(yi < yy) {
 
 			swap(tmp, this.plateau[xi][yy+1]);
@@ -127,7 +128,7 @@ public class Quixo {
 	public boolean pushColPositive(int xi, int yi, int xx, int yy) {
 		if(xi == xx && yi > yy) return false;
 		Tictactoe tmp = this.plateau[xi][yi];
-		System.out.println(xi +"  "+ yi);
+		System.out.println("col positive  ");
 		while(yi > yy) {
 
 			swap(tmp, this.plateau[xi][yy-1]);
@@ -137,7 +138,14 @@ public class Quixo {
 		return true;
 	}
 	
-
+	public void Print() {
+		for (int i = 0; i < plateau.length; i++) {
+			for (int j = 0; j < plateau.length; j++) {
+				System.out.print(this.plateau[i][j]);
+			}
+			System.out.println();
+		}
+	}
 
 	public Tictactoe getCase(int i, int j) {
 		//System.out.println(i+ "  " + j);

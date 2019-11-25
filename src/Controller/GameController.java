@@ -234,10 +234,10 @@ public class GameController implements Initializable{
 		gridImg[4][3] = this.e3;
 		gridImg[4][4] = this.e4;
 		
-		
+		this.moveId.setVisible(true);
 
-		if(game.Current().toString().equals("X")) current.setImage(croix);
-		else current.setImage(cercle);
+		if(game.Current().toString().equals("X")) current.setImage(game.Current().getImage());
+		else current.setImage(game.Current().getImage());
 		
 		this.Refresh();
 		
@@ -267,22 +267,27 @@ public class GameController implements Initializable{
 	        	//this.setPosPossible(rowIndex, colIndex);
 		        //game.addTac(colIndex, rowIndex);
 	        	String mv = this.moveId.getId();
-	        	int r = Character.getNumericValue(mv.charAt(0));
-	        	int c = Character.getNumericValue(mv.charAt(1));
-	        	System.out.println(r + " " + c);
-	        	game.pushColNegative(r, c , rowIndex , colIndex );
-	        	game.pushColPositive(r, c , rowIndex , colIndex );
-	        	game.pushRowNegative(r, c , rowIndex , colIndex );
-	        	game.pushRowPositive(r, c , rowIndex , colIndex );
+	        	int ri = Character.getNumericValue(mv.charAt(0));
+	        	int ci = Character.getNumericValue(mv.charAt(1));
+	        	System.out.println(ri + " " + ci);
+	        	if(engine.rule( game.Current(), ri, ci, rowIndex, colIndex, game)) {
+		        	//game.pushColNegative(ri, ci , rowIndex , colIndex );
+		        	//game.pushColPositive(ri, ci , rowIndex , colIndex );
+		        	game.pushRowNegative(ri, ci , rowIndex , colIndex );
+		        	//game.pushRowPositive(ri, ci , rowIndex , colIndex );
+		        	this.game.switchPlayer();
+		        	game.Print();
+	        	}
 	        	
-	        	this.game.switchPlayer();
+	        	
+	        	
 		        this.Refresh();
 	        }
 
 	    }
 
 	}
-	
+	/*
 	public void setPosPossible(int i, int j) {
 		Engine g = new Engine();
 		for (int j2 = 0; j2 < gridImg.length; j2++) {
@@ -292,7 +297,7 @@ public class GameController implements Initializable{
 
 			}
 		}
-	}
+	}*/
 	
 	public void gameNull()
 	{
