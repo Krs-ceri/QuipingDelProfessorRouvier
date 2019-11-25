@@ -39,7 +39,7 @@ public final class Engine
 	
 
 	public boolean rule( Tictactoe c,int xi,int yi , int x, int y, Quixo b)	{
-
+		
 		if(Engine.verifyPosition(xi, yi) && Engine.verifyPosition(x, y)){
 			if(Engine.verifyEmpty(xi, yi, b, c) ){
 				if(Engine.verifyTictactoe(x, y, b) ){

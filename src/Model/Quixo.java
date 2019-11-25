@@ -3,17 +3,26 @@ package Model;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import Players.MinMax;
+import Players.Player;
+import Players.PlayerAi;
+import Players.PlayerHumain;
+
 public class Quixo {
 
-	private static volatile Quixo instance = null;
+
 	private Tictactoe current;
 	protected Tictactoe plateau[][];
 	private Tictactoe playerX = Tictactoe.CROSS;
 	private Tictactoe playerO = Tictactoe.CIRCLE;
 	private int clique = 0;
-	private boolean ai = false;
+
+	private Player human;
+	private Player ai;
 	
 	public Quixo() {
+		this.setHuman(new PlayerHumain("Shox", 0, playerX));
+		this.setAi(new MinMax("MinMax", 3, playerO));
 		this.plateau = new Tictactoe[5][5];
 		for (int i = 0; i < plateau.length; i++) {
 			for (int j = 0; j < plateau.length; j++) {
@@ -65,6 +74,20 @@ public class Quixo {
 
 	}
 	
+	
+	/**
+	 * 	le joueur "X" est le joueur humain
+	 * le joueur "O" est l'IA créer
+	 */
+	public void switchPlayer() {
+		if(this.current == playerX) {
+			this.current = playerO;
+			//this.ai.execute(this);
+			//this.switchPlayer();
+		}
+		else this.current = playerX;
+	}
+	
 	public boolean addTic(int x_pos, int y_pos, int xx, int yy) {
 		if(this.plateau[x_pos][y_pos] == null) {
 			if(x_pos == xx && (yy == 0 || yy == 4))	return true;
@@ -76,7 +99,7 @@ public class Quixo {
 	
 	public void addTac(int i, int j) {
 		this.plateau[i][j] = this.current;
-		this.switchPlayer();
+		//this.switchPlayer();
 	}
 	public void swap(Tictactoe c1, Tictactoe c2) 
     { 
@@ -85,56 +108,52 @@ public class Quixo {
         c2 = temp; 
     } 
 	
-	public boolean pushRowNegative(int xi, int yi, int xx, int yy) {
-		if(xi < xx && yi == yy) return false;
-		System.out.println("row neg");
-		Tictactoe tmp = this.plateau[xi][yi];
-		int varx = xi;
-		int vary = yi;
-		while(varx < xx) {
-			this.plateau[varx][vary] =   this.current; //this.plateau[varx+1][vary];
-			varx++;
-		}
-		this.plateau[xx][yy] = this.current;
-		return true;
-	}
 	
-	public boolean pushRowPositive(int xi, int yi, int xx, int yy) {
-		if(xi > xx && yi == yy) return false;
-		Tictactoe tmp = this.plateau[xi][yi];
-		System.out.println("row positive");
-		while(xi > xx) {
-
-			swap(tmp, this.plateau[xi-1][yy]);
-			xi--;
+	public boolean pushColPositive(int xi, int yi, int xx, int yy) {	
+		if(xi < xx && yi == yy) {
+			System.out.println("col pos");
+			for (int i = xi; i < xx; i++) {
+				this.plateau[i][yi] = this.plateau[i+1][yi];
+				
+			}
+			this.plateau[xx][yy] = this.current;
 		}
-		this.plateau[xx][yy] = this.current;
 		return true;
 	}
 	
 	public boolean pushColNegative(int xi, int yi, int xx, int yy) {
-		if(xi == xx && yi < yy) return false;
-		Tictactoe tmp = this.plateau[xi][yi];
-		System.out.println("col neg");
-		while(yi < yy) {
-
-			swap(tmp, this.plateau[xi][yy+1]);
-			yi++;
+		if(xi > xx && yi == yy) {
+			System.out.println("col neg");
+			for (int i = xi; i > xx; i--) {
+				this.plateau[i][yi] = this.plateau[i-1][yi];
+				
+			}
+			this.plateau[xx][yy] = this.current;
 		}
-		this.plateau[xx][yy] = this.current;
+
 		return true;
 	}
 	
-	public boolean pushColPositive(int xi, int yi, int xx, int yy) {
-		if(xi == xx && yi > yy) return false;
-		Tictactoe tmp = this.plateau[xi][yi];
-		System.out.println("col positive  ");
-		while(yi > yy) {
-
-			swap(tmp, this.plateau[xi][yy-1]);
-			yi--;
+	public boolean pushRowNegative(int xi, int yi, int xx, int yy) {
+		if(xi == xx && yi < yy) {
+			System.out.println("row neg");
+			for (int i = yi; i < yy; i++) {
+				this.plateau[xx][i] = this.plateau[xx][i+1];
+				
+			}
+			this.plateau[xx][yy] = this.current;
 		}
-		this.plateau[xx][yy] = this.current;
+		return true;
+	}
+	
+	public boolean pushRowPositive(int xi, int yi, int xx, int yy) {
+		if(xi == xx && yi > yy) {
+			System.out.println("row pos ");
+			for (int i = yi; i > yy; i--) {
+				this.plateau[xx][i] = this.plateau[xx][i-1];
+			}
+			this.plateau[xx][yy] = this.current;
+		}
 		return true;
 	}
 	
@@ -195,10 +214,7 @@ public class Quixo {
 		if(this.plateau[x][y] == null)	return true;
 		return false;
 	}
-	public void switchPlayer() {
-		if(this.current == playerX)	this.current = playerO;
-		else this.current = playerX;
-	}
+
 	public boolean nulRound() {
 		if( this.clique == 16)	return true;
 		return false;
@@ -220,11 +236,20 @@ public class Quixo {
 		this.clique = clique;
 	}
 
-	public boolean isAi() {
+	public Player getHuman() {
+		return human;
+	}
+
+	public void setHuman(Player human) {
+		this.human = human;
+	}
+
+	public Player getAi() {
 		return ai;
 	}
 
-	public void setAi(boolean ai) {
+	public void setAi(Player ai) {
 		this.ai = ai;
 	}
+
 }

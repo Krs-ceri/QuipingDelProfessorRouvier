@@ -58,6 +58,7 @@ import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import Model.Engine;
 import Model.Quixo;
+import Model.Tictactoe;
 import images.*;
 
 
@@ -189,6 +190,10 @@ public class GameController implements Initializable{
     @FXML
     void goBack(ActionEvent event) throws IOException
     {
+		this.game.Reset();
+		this.eraseImage();
+		this.ableBoard();
+		
     	Main main = Main.getInstance();
     	FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("../View/MenuView.fxml"));
@@ -252,9 +257,11 @@ public class GameController implements Initializable{
 	public void clickGrid(javafx.scene.input.MouseEvent event) {
 		Engine engine = new Engine();
 	    Node clickedNode = event.getPickResult().getIntersectedNode();
-	    if(clickedNode != grid) {
-	        // click on descendant node
-	        Integer colIndex = GridPane.getColumnIndex(clickedNode);
+	    if(clickedNode != grid ) {
+	        
+	    	//if(this.game.getCurrent().toString().equals("O"))	return ;
+	        
+	    	Integer colIndex = GridPane.getColumnIndex(clickedNode);
 	        Integer rowIndex = GridPane.getRowIndex(clickedNode);
 	        if(colIndex == null)colIndex = 0;
 	        if(rowIndex == null)rowIndex = 0;
@@ -271,21 +278,25 @@ public class GameController implements Initializable{
 	        	int ci = Character.getNumericValue(mv.charAt(1));
 	        	System.out.println(ri + " " + ci);
 	        	if(engine.rule( game.Current(), ri, ci, rowIndex, colIndex, game)) {
-		        	//game.pushColNegative(ri, ci , rowIndex , colIndex );
-		        	//game.pushColPositive(ri, ci , rowIndex , colIndex );
+		        	game.pushColNegative(ri, ci , rowIndex , colIndex );
+		        	game.pushColPositive(ri, ci , rowIndex , colIndex );
 		        	game.pushRowNegative(ri, ci , rowIndex , colIndex );
-		        	//game.pushRowPositive(ri, ci , rowIndex , colIndex );
-		        	this.game.switchPlayer();
-		        	game.Print();
+		        	game.pushRowPositive(ri, ci , rowIndex , colIndex );
+		        	//game.Print();
+		        	
+		        	if(this.game.winCondition() != null) {
+		        		this.win();
+		        	}
+		        	else {
+			        	this.game.switchPlayer();
+			        	this.Refresh();
+		        	}	        	
 	        	}
-	        	
-	        	
-	        	
-		        this.Refresh();
+	        	else {
+	        		this.Refresh();
+	        	} 
 	        }
-
 	    }
-
 	}
 	/*
 	public void setPosPossible(int i, int j) {
@@ -299,38 +310,7 @@ public class GameController implements Initializable{
 		}
 	}*/
 	
-	public void gameNull()
-	{
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Fin de la aprtie");
-		alert.setHeaderText("Match null ! Personne n'a gagner");
-		alert.setContentText("Choose your option.");
 
-		ButtonType buttonTypeOne = new ButtonType("Recommencer");
-		ButtonType buttonTypeTwo = new ButtonType("Back");
-		ButtonType buttonTypeThree = new ButtonType("Quit");
-		ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-
-		alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeCancel);
-
-		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == buttonTypeOne)
-		{
-			this.eraseImage() ;
-		}
-		else if (result.get() == buttonTypeTwo) 
-		{
-			// ... user chose "Two"
-		} 
-		else if (result.get() == buttonTypeThree) 
-		{
-			// ... user chose "Three"
-		}
-		else 
-		{
-			// ... user chose CANCEL or closed the dialog
-		}
-	}
 	void disableBoard() {
 		this.a0.setMouseTransparent(true);
 		this.a1.setMouseTransparent(true);
@@ -483,9 +463,13 @@ public class GameController implements Initializable{
 	
 	public void win()
 	{
+			String name;
+			if (this.game.winCondition() == Tictactoe.CIRCLE) 	name = this.game.getAi().getName();
+			else name = this.game.getHuman().getName();
+
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Congratulations");
-			alert.setHeaderText("Le joueur "+ this.game.winCondition().toString() +" a gagner ");
+			alert.setHeaderText(name + "  Le joueur "+ this.game.winCondition().toString() +" a gagner ");
 			alert.setContentText("Choose your option.");
 
 			ButtonType buttonTypeOne = new ButtonType("Recommencer");
@@ -530,4 +514,54 @@ public class GameController implements Initializable{
 				
 			}
 		}
+	
+	public void gameNull() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Fin de la aprtie");
+		alert.setHeaderText("Match null ! Personne n'a gagner");
+		alert.setContentText("Choose your option.");
+
+		ButtonType buttonTypeOne = new ButtonType("Recommencer");
+		ButtonType buttonTypeTwo = new ButtonType("Back");
+		ButtonType buttonTypeThree = new ButtonType("Quit");
+		ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+		alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeCancel);
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == buttonTypeOne)
+		{
+			this.game.Reset();
+			this.eraseImage();
+			this.ableBoard();
+		}
+		else if (result.get() == buttonTypeTwo) 
+		{
+			try {
+		    	Main main = Main.getInstance();
+		    	FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../View/MenuView.fxml"));
+		    	
+				main.setRoot(loader.load());
+				
+		    	Scene scene = new Scene(main.getRoot());
+		    	main.getWindow().setScene(scene);
+		    	main.getWindow().show();
+				} catch (IOException e) {
+
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				}
+
+		} 
+		else if (result.get() == buttonTypeThree) 
+		{
+			Platform.exit();
+			System.exit(0);
+		}
+		else 
+		{
+			// ... user chose CANCEL or closed the dialog
+		}
+	}
 }
