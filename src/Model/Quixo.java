@@ -21,9 +21,9 @@ public class Quixo implements Cloneable{
 	private Player ai;
 	
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
+	public Quixo clone() throws CloneNotSupportedException {
 		// TODO Auto-generated method stub
-		return super.clone();
+		return (Quixo) super.clone();
 	}
 	
 	public Quixo() {
@@ -132,13 +132,13 @@ public class Quixo implements Cloneable{
 	
 	/**
 	 * 	le joueur "X" est le joueur humain
-	 * le joueur "O" est l'IA créer
+	 * le joueur "O" est l'IA crï¿½er
 	 */
 	public void switchPlayer() {
 		if(this.current == playerX) {
 			this.current = playerO;
-			//this.ai.execute(this);
-			//this.switchPlayer();
+			this.ai.execute(this);
+			this.switchPlayer();
 		}
 		else this.current = playerX;
 	}

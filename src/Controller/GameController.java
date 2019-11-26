@@ -110,7 +110,7 @@ import javafx.concurrent.Worker;
  * Pattern utiliser: 
  * 			-MVC
  * 			-Observer
- * 			-stratégie
+ * 			-strategie
  * 			-composite
  */
 
@@ -264,7 +264,7 @@ public class GameController implements Initializable{
 	    Node clickedNode = event.getPickResult().getIntersectedNode();
 	    if(clickedNode != grid ) {
 	        
-	    	//if(this.game.getCurrent().toString().equals("O"))	return ;
+	    	if(this.game.getCurrent().toString().equals("O"))	return ;
 	        
 	    	Integer colIndex = GridPane.getColumnIndex(clickedNode);
 	        Integer rowIndex = GridPane.getRowIndex(clickedNode);
