@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -8,38 +9,38 @@ import Players.Player;
 import Players.PlayerAi;
 import Players.PlayerHumain;
 
-public class Quixo implements Cloneable{
+public class Quixo{
 
 
 	private Tictactoe current;
 	protected Tictactoe plateau[][];
 	private Tictactoe playerX = Tictactoe.CROSS;
 	private Tictactoe playerO = Tictactoe.CIRCLE;
-	private int clique = 0;
-
+	private ArrayList<Move> move;
 	private Player human;
 	private Player ai;
 	
-	@Override
-	public Quixo clone() throws CloneNotSupportedException {
+
+	public Quixo clone()  {
 		// TODO Auto-generated method stub
-		return (Quixo) super.clone();
+		Quixo tmp = new Quixo();
+		tmp = this;
+		return (tmp);
 	}
 	
 	public Quixo() {
 		this.setHuman(new PlayerHumain("Shox", 0, playerX));
-		this.setAi(new MinMax("MinMax", 3, playerO));
+		this.setAi(new MinMax("MinMax", 2, playerO));
+		
+		this.move = new ArrayList<Move>();
+		
 		this.plateau = new Tictactoe[5][5];
 		for (int i = 0; i < plateau.length; i++) {
 			for (int j = 0; j < plateau.length; j++) {
 				this.plateau[i][j]  = Tictactoe.EMPTY;
 			}
 		}
-		boolean choice = Math.random() < 0.5;					// Ramdom, could have be the last player
-		if(choice == true)	this.current = playerO;
-		else {
-			this.current = playerX;
-		}
+		this.current = playerX;		
 		System.out.println("le joueur "+  this.current.toString() + " commence.");
 	}
 	
@@ -128,8 +129,6 @@ public class Quixo implements Cloneable{
 		}
 		return 0;
 	}
-	
-	
 	/**
 	 * 	le joueur "X" est le joueur humain
 	 * le joueur "O" est l'IA cr�er
@@ -137,26 +136,21 @@ public class Quixo implements Cloneable{
 	public void switchPlayer() {
 		if(this.current == playerX) {
 			this.current = playerO;
-			this.ai.execute(this);
-			this.switchPlayer();
 		}
 		else this.current = playerX;
 	}
 	
-	public boolean addTic(int x_pos, int y_pos, int xx, int yy) {
-		if(this.plateau[x_pos][y_pos] == null) {
-			if(x_pos == xx && (yy == 0 || yy == 4))	return true;
-			if(y_pos == yy && (xx == 0 || xx == 4))	return true;
-		}
-		return false;
-	}
-	
-	
 	public void ConcretePlay(int xi, int yi, int xx, int yy) {
+		Tictactoe tmpi = this.getCase(xi, yi);
     	this.pushColNegative(xi, yi , xx , yy );
     	this.pushColPositive(xi, yi , xx , yy );
     	this.pushRowNegative(xi, yi , xx , yy );
     	this.pushRowPositive(xi, yi , xx , yy );
+    	Tictactoe tmpf = this.getCase(xx, yy);
+    	Move e = new Move(tmpi, xi, yi, tmpf, xx, yy);
+    	System.out.println(e.getSigneFinal()+" "+ e.getXf()+" "+ e.getYf()+" "+ 
+    						e.getSigneInitial()+" "+ e.getXi()+" "+ e.getYi());
+    	this.move.add(e);
 	}
 	
 	public void pushColPositive(int xi, int yi, int xx, int yy) {	
@@ -199,6 +193,65 @@ public class Quixo implements Cloneable{
 		}
 	}
 	
+	public void undoMove() {
+		if(!this.move.isEmpty()) {
+			Move e = this.move.remove(move.size()-1);
+			this.Undo(e);
+			this.current = e.getSigneFinal();
+		}
+	}
+
+	public void Undo(Move e) {
+    	this.pushColNegative( e.getSigneFinal(), e.getXf(), e.getYf(), e.getSigneInitial(), e.getXi(), e.getYi());
+    	this.pushColPositive( e.getSigneFinal(), e.getXf(), e.getYf(), e.getSigneInitial(), e.getXi(), e.getYi());
+    	this.pushRowNegative( e.getSigneFinal(), e.getXf(), e.getYf(), e.getSigneInitial(), e.getXi(), e.getYi());
+    	this.pushRowPositive( e.getSigneFinal(), e.getXf(), e.getYf(), e.getSigneInitial(), e.getXi(), e.getYi());
+	}
+	
+	public void pushColPositive(Tictactoe si, int xi, int yi, Tictactoe sf, int xx, int yy) {	
+		if(xi < xx && yi == yy) {
+			System.out.println("col pos");
+			this.plateau[xi][yi] = si;
+			for (int i = xi; i < xx; i++) {
+				this.plateau[i][yi] = this.plateau[i+1][yi];			
+			}
+			this.plateau[xx][yy] = sf;
+		}
+	}
+	
+	public void pushColNegative(Tictactoe si, int xi, int yi, Tictactoe sf, int xx, int yy) {
+		if(xi > xx && yi == yy) {
+			System.out.println("col neg");
+			this.plateau[xi][yi] = si;
+			for (int i = xi; i > xx; i--) {
+				this.plateau[i][yi] = this.plateau[i-1][yi];
+			}
+			this.plateau[xx][yy] = sf;
+		}
+	}
+	
+	public void pushRowNegative(Tictactoe si, int xi, int yi, Tictactoe sf, int xx, int yy) {
+		if(xi == xx && yi < yy) {
+			System.out.println("row neg");
+			this.plateau[xi][yi] = si;
+			for (int i = yi; i < yy; i++) {
+				this.plateau[xx][i] = this.plateau[xx][i+1];
+			}
+			this.plateau[xx][yy] = sf;	
+		}
+	}
+	
+	public void pushRowPositive(Tictactoe si, int xi, int yi, Tictactoe sf, int xx, int yy) {
+		if(xi == xx && yi > yy) {
+			System.out.println("row pos ");
+			this.plateau[xi][yi] = si;
+			for (int i = yi; i > yy; i--) {
+				this.plateau[xx][i] = this.plateau[xx][i-1];
+			} 
+			this.plateau[xx][yy] = sf;
+		}
+	}
+	
 	public void Print() {
 		for (int i = 0; i < plateau.length; i++) {
 			for (int j = 0; j < plateau.length; j++) {
@@ -223,13 +276,17 @@ public class Quixo implements Cloneable{
 		return this.current;
 	}
 	
+	public void addMove(Move e) {
+		this.move.add(e);
+	}
+	
 	public void Reset() {
 		for (int i = 0; i < plateau.length; i++) {
 			for (int j = 0; j < plateau.length; j++) {
 				this.plateau[i][j] = Tictactoe.EMPTY;
 			}
 		}
-		this.clique = 0;
+		this.move.clear();
 	}
 	@SuppressWarnings("resource")
 	public int Catch(int max) {
@@ -257,25 +314,12 @@ public class Quixo implements Cloneable{
 		return false;
 	}
 
-	public boolean nulRound() {
-		if( this.clique == 16)	return true;
-		return false;
-	}
-
 	public Tictactoe getCurrent() {
 		return current;
 	}
 
 	public void setCurrent(Tictactoe current) {
 		this.current = current;
-	}
-
-	public int getClique() {
-		return clique;
-	}
-
-	public void setClique(int clique) {
-		this.clique = clique;
 	}
 
 	public Player getHuman() {
@@ -292,6 +336,14 @@ public class Quixo implements Cloneable{
 
 	public void setAi(Player ai) {
 		this.ai = ai;
+	}
+
+	public ArrayList<Move> getMove() {
+		return move;
+	}
+
+	public void setMove(ArrayList<Move> move) {
+		this.move = move;
 	}
 
 }

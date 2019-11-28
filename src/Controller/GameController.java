@@ -186,6 +186,12 @@ public class GameController implements Initializable{
 	@FXML
 	private ImageView current;
 	
+	@FXML
+	private Button undo;
+
+	@FXML
+	private Button play;
+	
 	private ImageView[][] gridImg;
 
 
@@ -247,7 +253,10 @@ public class GameController implements Initializable{
 		this.moveId.setVisible(true);
 
 		if(game.Current().toString().equals("X")) current.setImage(game.Current().getImage());
-		else current.setImage(game.Current().getImage());
+		else {
+			current.setImage(game.Current().getImage());
+			
+		}
 		
 		this.Refresh();
 		
@@ -264,7 +273,7 @@ public class GameController implements Initializable{
 	    Node clickedNode = event.getPickResult().getIntersectedNode();
 	    if(clickedNode != grid ) {
 	        
-	    	if(this.game.getCurrent().toString().equals("O"))	return ;
+	    	//if(this.game.getCurrent().toString().equals("O"))	return ;
 	        
 	    	Integer colIndex = GridPane.getColumnIndex(clickedNode);
 	        Integer rowIndex = GridPane.getRowIndex(clickedNode);
@@ -300,19 +309,23 @@ public class GameController implements Initializable{
 	        }
 	    }
 	}
-	/*
-	public void setPosPossible(int i, int j) {
-		Engine g = new Engine();
-		for (int j2 = 0; j2 < gridImg.length; j2++) {
-			for (int k = 0; k < gridImg.length; k++) {
-				if(g.verifyTictactoeSecond(i, j, j2, k, game)) gridImg[j2][k].setStyle("-fx-background-color: #fff7ad;");
-				else  gridImg[j2][k].setStyle("-fx-background-color: #000000;");
+	
+	void Refresh() {
 
+		for (int i = 0; i < gridImg.length; i++) {
+			for (int j = 0; j < gridImg.length; j++) {
+				gridImg[i][j].setImage(this.game.getBoard()[i][j].getImage());
 			}
 		}
-	}*/
+		
+		this.current.setImage(this.game.getCurrent().getImage());
+	/*	if(this.game.getCurrent().equals(Tictactoe.CIRCLE))	{
+			this.game.getAi().execute(game);
+			this.game.switchPlayer();
+		}*/
+		this.moveId.setId(null);
+	}
 	
-
 	void disableBoard() {
 		this.a0.setMouseTransparent(true);
 		this.a1.setMouseTransparent(true);
@@ -411,57 +424,17 @@ public class GameController implements Initializable{
 		this.e4.setImage(null);
 	}
 	
-	void Refresh() {
 
-		for (int i = 0; i < gridImg.length; i++) {
-			for (int j = 0; j < gridImg.length; j++) {
-				gridImg[i][j].setImage(this.game.getBoard()[i][j].getImage());
-			}
-		}
-		
-		this.current.setImage(this.game.getCurrent().getImage());
-		
-		this.moveId.setId(null);
+	@FXML
+	void undo() {
+		this.game.undoMove();
+		Refresh();
 	}
 	
-	/*
-	
 	@FXML
-	void a0(ActionEvent event) {
-		//a0.setDisable(true);
-		if(this.game.isEmpty(0, 0)) {
-		if(this.game.Current().toString().equals("X")) {
-			a0.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/x.png", a0.getWidth(), a0.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		else {
-			
-			a0.setBackground(
-				new Background(
-					new BackgroundImage(
-						new Image("images/o.png", a0.getWidth(), a0.getHeight(), false, true)
-							,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
-							, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-		}
-		this.game.addTac(this.game.Current(), 0, 0);
-		if(this.game.winCondition() != null)
-		{
-			this.afficheTrait(this.game.WinningAnim());
-
-			this.win() ;
-		}
-		else if(this.game.nulRound())
-		{
-			this.gameNull() ;
-		}
-		if(game.Current().toString().equals("X")) current.setImage(croix);
-		else current.setImage(cercle);
-		}
-	}*/
+	void play() {
+		
+	}
 	
 	public void win()
 	{
@@ -484,9 +457,11 @@ public class GameController implements Initializable{
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == buttonTypeOne)
 			{
-				this.game.Reset();
+				this.game.undoMove();
+				Refresh();
+			/*	this.game.Reset();
 				this.eraseImage();
-				this.ableBoard();
+				this.ableBoard();*/
 			}
 			else if (result.get() == buttonTypeTwo) 
 			{
