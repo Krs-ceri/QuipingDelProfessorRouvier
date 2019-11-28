@@ -3,6 +3,7 @@ package Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Ref;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -118,13 +119,6 @@ public class GameController implements Initializable{
 	
 	@FXML
 	private GridPane grid;
-	
-    /*
-    final TableColumn<Car, String> brandColumn = new TableColumn<>("Marque"); 
-    final TableColumn<Car, Color> colorColumn = new TableColumn<>("Couleur"); 
-    final TableColumn<Car, Integer> seatsColumn = new TableColumn<>("Si�ges"); 
-    final TableColumn<Car, Integer> doorsColumn = new TableColumn<>("Portes"); 
-    tableView.getColumns().addAll(brandColumn, colorColumn, seatsColumn, doorsColumn);*/
 	
 	@FXML
 	private AnchorPane f;
@@ -319,9 +313,10 @@ public class GameController implements Initializable{
 		}
 		
 		this.current.setImage(this.game.getCurrent().getImage());
-	/*	if(this.game.getCurrent().equals(Tictactoe.CIRCLE))	{
+		/*if(this.game.getCurrent().equals(Tictactoe.CIRCLE))	{
 			this.game.getAi().execute(game);
 			this.game.switchPlayer();
+			Refresh();
 		}*/
 		this.moveId.setId(null);
 	}
@@ -433,7 +428,7 @@ public class GameController implements Initializable{
 	
 	@FXML
 	void play() {
-		
+		Refresh();
 	}
 	
 	public void win()
@@ -455,16 +450,12 @@ public class GameController implements Initializable{
 			alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeCancel);
 
 			Optional<ButtonType> result = alert.showAndWait();
-			if (result.get() == buttonTypeOne)
-			{
-				this.game.undoMove();
-				Refresh();
-			/*	this.game.Reset();
+			if (result.get() == buttonTypeOne) {
+				this.game.Reset();
 				this.eraseImage();
-				this.ableBoard();*/
+				this.ableBoard();
 			}
-			else if (result.get() == buttonTypeTwo) 
-			{
+			else if (result.get() == buttonTypeTwo) {
 				try {
 		    	Main main = Main.getInstance();
 		    	FXMLLoader loader = new FXMLLoader();
@@ -481,13 +472,11 @@ public class GameController implements Initializable{
 				e.printStackTrace();
 				}
 			} 
-			else if (result.get() == buttonTypeThree) 
-			{
+			else if (result.get() == buttonTypeThree) {
 				Platform.exit();
 				System.exit(0);
 			}
-			else 
-			{
+			else {
 				
 			}
 		}
@@ -512,8 +501,7 @@ public class GameController implements Initializable{
 			this.eraseImage();
 			this.ableBoard();
 		}
-		else if (result.get() == buttonTypeTwo) 
-		{
+		else if (result.get() == buttonTypeTwo) {
 			try {
 		    	Main main = Main.getInstance();
 		    	FXMLLoader loader = new FXMLLoader();
@@ -531,13 +519,11 @@ public class GameController implements Initializable{
 				}
 
 		} 
-		else if (result.get() == buttonTypeThree) 
-		{
+		else if (result.get() == buttonTypeThree) {
 			Platform.exit();
 			System.exit(0);
 		}
-		else 
-		{
+		else {
 			// ... user chose CANCEL or closed the dialog
 		}
 	}

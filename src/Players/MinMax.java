@@ -48,10 +48,7 @@ public class MinMax extends Player{
 	                { 
 	                	for (int i2 = 0; i2 < 5; i2++) {
 							for (int j2 = 0; j2 < 5; j2++) {
-								if(engine.rule(getSigne(), i, j, i2, j2, game)) {
-									
-									
-									
+								if(engine.rule(getSigne(), i, j, i2, j2, game)) {	
 									game.ConcretePlay(i, i, i2, j2);
 									game.setCurrent(Tictactoe.CROSS);
 				                    best = max( best, minimax(game, profondeur+1, !isMax) );

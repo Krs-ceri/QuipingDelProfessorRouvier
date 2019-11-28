@@ -64,7 +64,8 @@
     <ImageView fx:id="current" fitHeight="78.0" fitWidth="78.0" layoutX="508.0" layoutY="12.0" pickOnBounds="true" preserveRatio="false" style="-fx-background-color: transparent;">
          <effect>
             <DropShadow spread="0.52" />
-         </effect></ImageView>
+         </effect>
+      </ImageView>
     <Text id="move" fx:id="moveId" layoutX="469.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="78.00000365078449" />
       <Button fx:id="undo" layoutX="499.0" layoutY="175.0" mnemonicParsing="false" onAction="#undo" text="Undo" />
       <Button fx:id="play" layoutX="503.0" layoutY="242.0" mnemonicParsing="false" onAction="#play" text="Play" />
