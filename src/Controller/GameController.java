@@ -44,11 +44,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -195,9 +198,9 @@ public class GameController implements Initializable{
     @FXML
     void goBack(ActionEvent event) throws IOException
     {
-		this.game.Reset();
-		this.eraseImage();
-		this.ableBoard();
+		this.game = new Quixo();
+		Refresh();
+		this.setBoard(false);
 		
     	Main main = Main.getInstance();
     	FXMLLoader loader = new FXMLLoader();
@@ -276,7 +279,12 @@ public class GameController implements Initializable{
 	        
 	        System.out.println("Clique " + rowIndex + " et " + colIndex );
 	        System.out.println(game.getCase(rowIndex, colIndex).toString());
-	        if(this.moveId.getId() == null)	this.moveId.setId(Integer.toString(rowIndex)+Integer.toString(colIndex));
+	        if(this.moveId.getId() == null)	{
+	        	
+	        	this.moveId.setId(Integer.toString(rowIndex)+Integer.toString(colIndex));
+	        	Sparkling(rowIndex, colIndex);
+	        	Gray(rowIndex, colIndex);
+	        }
 	        else {
 		        //moveId.setId(Integer.toString(rowIndex) + Integer.toString(colIndex));
 	        	//this.setPosPossible(rowIndex, colIndex);
@@ -304,11 +312,42 @@ public class GameController implements Initializable{
 	    }
 	}
 	
+	void Sparkling(int x, int y) {
+		Light.Spot L = new Light.Spot();
+		L.setColor(Color.KHAKI);
+	    L.setX(70); 
+	    L.setY(70); 
+	    L.setZ(70); 
+	    Lighting lighting = new Lighting(); 
+	    lighting.setLight(L);  
+	    Engine e = new Engine();
+		for (int i = 0; i < gridImg.length; i++) {
+			for (int j = 0; j < gridImg.length; j++) {
+				if(e.rule(this.game.getCurrent(), x, y, i, j, this.game)) gridImg[i][j].setEffect(lighting); 
+			}
+		}
+	}
+	
+	void Gray(int x, int y) {
+		Light.Spot L = new Light.Spot();
+
+	    L.setX(70); 
+	    L.setY(55); 
+	    L.setZ(45); 
+	    Lighting lighting = new Lighting(); 
+	    lighting.setLight(L); 
+		
+		L.setColor(Color.GRAY);
+		lighting.setLight(L);  
+		gridImg[x][y].setEffect(lighting); 
+	}
+	
 	void Refresh() {
 
 		for (int i = 0; i < gridImg.length; i++) {
 			for (int j = 0; j < gridImg.length; j++) {
 				gridImg[i][j].setImage(this.game.getBoard()[i][j].getImage());
+				gridImg[i][j].setEffect(null); 
 			}
 		}
 		
@@ -321,104 +360,37 @@ public class GameController implements Initializable{
 		this.moveId.setId(null);
 	}
 	
-	void disableBoard() {
-		this.a0.setMouseTransparent(true);
-		this.a1.setMouseTransparent(true);
-		this.a2.setMouseTransparent(true);
-		this.a3.setMouseTransparent(true);
-		this.a4.setMouseTransparent(true);
+	void setBoard(boolean value) {
+		this.a0.setMouseTransparent(value);
+		this.a1.setMouseTransparent(value);
+		this.a2.setMouseTransparent(value);
+		this.a3.setMouseTransparent(value);
+		this.a4.setMouseTransparent(value);
 	
-		this.b0.setMouseTransparent(true);
-		this.b1.setMouseTransparent(true);
-		this.b2.setMouseTransparent(true);
-		this.b3.setMouseTransparent(true);
-		this.b4.setMouseTransparent(true);
+		this.b0.setMouseTransparent(value);
+		this.b1.setMouseTransparent(value);
+		this.b2.setMouseTransparent(value);
+		this.b3.setMouseTransparent(value);
+		this.b4.setMouseTransparent(value);
 	
-		this.c0.setMouseTransparent(true);
-		this.c1.setMouseTransparent(true);
-		this.c2.setMouseTransparent(true);
-		this.c3.setMouseTransparent(true);
-		this.c4.setMouseTransparent(true);
+		this.c0.setMouseTransparent(value);
+		this.c1.setMouseTransparent(value);
+		this.c2.setMouseTransparent(value);
+		this.c3.setMouseTransparent(value);
+		this.c4.setMouseTransparent(value);
 	
-		this.d0.setMouseTransparent(true);
-		this.d1.setMouseTransparent(true);
-		this.d2.setMouseTransparent(true);
-		this.d3.setMouseTransparent(true);
-		this.d4.setMouseTransparent(true);
+		this.d0.setMouseTransparent(value);
+		this.d1.setMouseTransparent(value);
+		this.d2.setMouseTransparent(value);
+		this.d3.setMouseTransparent(value);
+		this.d4.setMouseTransparent(value);
 	
-		this.e0.setMouseTransparent(true);
-		this.e1.setMouseTransparent(true);
-		this.e2.setMouseTransparent(true);
-		this.e3.setMouseTransparent(true);
-		this.e4.setMouseTransparent(true);
+		this.e0.setMouseTransparent(value);
+		this.e1.setMouseTransparent(value);
+		this.e2.setMouseTransparent(value);
+		this.e3.setMouseTransparent(value);
+		this.e4.setMouseTransparent(value);
 	}
-	
-	void ableBoard()
-	{
-		this.a0.setMouseTransparent(false);
-		this.a1.setMouseTransparent(false);
-		this.a2.setMouseTransparent(false);
-		this.a3.setMouseTransparent(false);
-		this.a4.setMouseTransparent(false);
-	
-		this.b0.setMouseTransparent(false);
-		this.b1.setMouseTransparent(false);
-		this.b2.setMouseTransparent(false);
-		this.b3.setMouseTransparent(false);
-		this.b4.setMouseTransparent(false);
-	
-		this.c0.setMouseTransparent(false);
-		this.c1.setMouseTransparent(false);
-		this.c2.setMouseTransparent(false);
-		this.c3.setMouseTransparent(false);
-		this.c4.setMouseTransparent(false);
-	
-		this.d0.setMouseTransparent(false);
-		this.d1.setMouseTransparent(false);
-		this.d2.setMouseTransparent(false);
-		this.d3.setMouseTransparent(false);
-		this.d4.setMouseTransparent(false);
-	
-		this.e0.setMouseTransparent(false);
-		this.e1.setMouseTransparent(false);
-		this.e2.setMouseTransparent(false);
-		this.e3.setMouseTransparent(false);
-		this.e4.setMouseTransparent(false);
-	}
-	
-	void eraseImage()
-	{
-		this.a0.setImage(null);
-		this.a1.setImage(null);
-		this.a2.setImage(null);
-		this.a3.setImage(null);
-		this.a4.setImage(null);
-		
-		this.b0.setImage(null);
-		this.b1.setImage(null);
-		this.b2.setImage(null);
-		this.b3.setImage(null);
-		this.b4.setImage(null);
-		
-		this.c0.setImage(null);
-		this.c1.setImage(null);
-		this.c2.setImage(null);
-		this.c3.setImage(null);
-		this.c4.setImage(null);
-		
-		this.d0.setImage(null);
-		this.d1.setImage(null);
-		this.d2.setImage(null);
-		this.d3.setImage(null);
-		this.d4.setImage(null);
-		
-		this.e0.setImage(null);
-		this.e1.setImage(null);
-		this.e2.setImage(null);
-		this.e3.setImage(null);
-		this.e4.setImage(null);
-	}
-	
 
 	@FXML
 	void undo() {
@@ -446,14 +418,14 @@ public class GameController implements Initializable{
 			ButtonType buttonTypeTwo = new ButtonType("Back");
 			ButtonType buttonTypeThree = new ButtonType("Quit");
 			ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-			this.disableBoard();
+			this.setBoard(true);
 			alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeCancel);
 
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == buttonTypeOne) {
-				this.game.Reset();
-				this.eraseImage();
-				this.ableBoard();
+				this.game = new Quixo();
+				Refresh();
+				this.setBoard(false);
 			}
 			else if (result.get() == buttonTypeTwo) {
 				try {
@@ -497,9 +469,9 @@ public class GameController implements Initializable{
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonTypeOne)
 		{
-			this.game.Reset();
-			this.eraseImage();
-			this.ableBoard();
+			this.game = new Quixo();
+			Refresh();
+			this.setBoard(false);
 		}
 		else if (result.get() == buttonTypeTwo) {
 			try {
