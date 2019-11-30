@@ -4,39 +4,16 @@ package Controller;
 import Controller.Main;
 import java.io.IOException;
 import java.net.URL;
-import java.time.Duration;
 import java.util.ResourceBundle;
-
-import com.sun.javafx.scene.EnteredExitedHandler;
-
-import Model.*; 
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-
-
 import javafx.application.Platform;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-
-import javafx.scene.layout.GridPane;
-
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.stage.WindowEvent;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 
 
 
@@ -48,6 +25,8 @@ public class MenuController implements Initializable{
     private AnchorPane fenetre;
     @FXML
     private Button solo;
+    @FXML
+    private Button quit;
 
 	
     @FXML
@@ -77,7 +56,7 @@ public class MenuController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1)
 	{
-
+		this.quit.setCancelButton(true);
 		Main.getInstance().getWindow().setOnCloseRequest( event ->
 		{
 			Platform.exit();

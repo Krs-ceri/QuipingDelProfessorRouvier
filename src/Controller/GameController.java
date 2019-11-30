@@ -3,7 +3,6 @@ package Controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Ref;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -12,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -20,95 +18,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.stage.Stage;
-
-import org.omg.PortableInterceptor.SUCCESSFUL;
-
-
-import javafx.animation.Interpolator;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.WindowEvent;
-import javafx.util.Duration;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import Model.Engine;
 import Model.Quixo;
 import Model.Tictactoe;
-import images.*;
 
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import com.sun.javafx.scene.EnteredExitedHandler;
-
-
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-
-import org.omg.PortableInterceptor.SUCCESSFUL;
-
-import com.sun.prism.shader.Texture_Color_AlphaTest_Loader;
-
-import javafx.animation.Interpolator;
-import javafx.animation.RotateTransition;
-import javafx.animation.TranslateTransition;
-
-import javafx.application.Platform;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.stage.WindowEvent;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 
 /*
  * Pattern utiliser: 
@@ -181,6 +102,9 @@ public class GameController implements Initializable{
 	private ImageView e4;
 	
 	@FXML
+	private Button back;
+	
+	@FXML
 	private ImageView current;
 	
 	@FXML
@@ -198,9 +122,9 @@ public class GameController implements Initializable{
     @FXML
     void goBack(ActionEvent event) throws IOException
     {
-		this.game = new Quixo();
+		//this.game = null;
 		Refresh();
-		this.setBoard(false);
+		//this.setBoard(false);
 		
     	Main main = Main.getInstance();
     	FXMLLoader loader = new FXMLLoader();
@@ -248,13 +172,13 @@ public class GameController implements Initializable{
 		gridImg[4][4] = this.e4;
 		
 		this.moveId.setVisible(true);
-
+		this.back.setCancelButton(true);
 		if(game.Current().toString().equals("X")) current.setImage(game.Current().getImage());
 		else {
 			current.setImage(game.Current().getImage());
 			
 		}
-		
+		this.Board();
 		this.Refresh();
 		
 		Main.getInstance().getWindow().setOnCloseRequest( event ->
@@ -262,6 +186,11 @@ public class GameController implements Initializable{
 			Platform.exit();
 			System.exit(0);
 		}); 
+	}
+	
+	void btnUndo() {
+		if(this.game.moveEmpty())	this.undo.setDisable(true);
+		else  this.undo.setDisable(false);
 	}
 
 	@FXML
@@ -271,7 +200,7 @@ public class GameController implements Initializable{
 	    if(clickedNode != grid ) {
 	        
 	    	//if(this.game.getCurrent().toString().equals("O"))	return ;
-	        
+
 	    	Integer colIndex = GridPane.getColumnIndex(clickedNode);
 	        Integer rowIndex = GridPane.getRowIndex(clickedNode);
 	        if(colIndex == null)colIndex = 0;
@@ -357,7 +286,17 @@ public class GameController implements Initializable{
 			this.game.switchPlayer();
 			Refresh();
 		}*/
+		btnUndo();
 		this.moveId.setId(null);
+	}
+	
+	void Board() {
+		for (int i = 0; i < gridImg.length; i++) {
+			for (int j = 0; j < gridImg.length; j++) {
+				if(i == 0 || i == 4 || j == 0 || j == 4) {}
+				else gridImg[i][j].setMouseTransparent(true);
+			}
+		}
 	}
 	
 	void setBoard(boolean value) {

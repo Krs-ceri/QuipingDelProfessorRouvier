@@ -4,8 +4,9 @@ package Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
+
 
 import javafx.fxml.FXMLLoader;
 import java.io.IOException;
@@ -31,7 +32,14 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		window = primaryStage;
-		window.setTitle("Quixo CERI");
+		window.setTitle("Quixo CERI");	
+		Image tempImage = null;
+		try {
+            tempImage = new Image("images/menu.png");
+       } catch (Exception e) {
+            tempImage = null;
+       }
+		window.getIcons().add(tempImage);
 		try
 		{
 			// Permet de charger le menuPrincipal.fxml
@@ -44,6 +52,7 @@ public class Main extends Application {
 			window.setScene(scene);
 			window.setResizable(false);
 			window.show();
+	
 		}
 		catch(IOException e)
 		{

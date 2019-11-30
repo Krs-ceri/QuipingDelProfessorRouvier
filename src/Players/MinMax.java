@@ -137,4 +137,10 @@ public class MinMax extends Player{
 		   if(best < minmax )	return best;
 		   else return minmax;
 	}
+	public int getBest() {
+		return best;
+	}
+	public void setBest(int best) {
+		this.best = best;
+	}
 }

@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import Players.MinMax;
-import Players.Player;
-import Players.PlayerAi;
-import Players.PlayerHumain;
+import Players.*;
+
 
 public class Quixo{
 
@@ -191,6 +189,10 @@ public class Quixo{
 			}
 			this.plateau[xx][yy] = this.current;
 		}
+	}
+	public boolean moveEmpty() { 
+		if(this.move.isEmpty())	return true ;
+		return false;
 	}
 	
 	public void undoMove() {

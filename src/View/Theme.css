@@ -45,3 +45,15 @@
 .button:default:hover {
     -fx-background-color: derive(-fx-focus-color,30%);
 }
+
+.title{
+
+
+    -fx-font-size: 56pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: white;
+    -fx-opacity: 1;
+    -fx-alignment: center ;
+
+}
+

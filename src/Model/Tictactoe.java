@@ -1,7 +1,5 @@
 package Model;
 
-import javax.imageio.ImageIO;
-
 import javafx.scene.image.Image;
 
 public enum Tictactoe {
