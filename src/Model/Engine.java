@@ -17,7 +17,8 @@ public final class Engine
 	}
 
 	static boolean verifyEmpty(int x, int y, Quixo b, Tictactoe c) {
-		if(b.getBoard()[x][y].toString().equals("gr") || b.getBoard()[x][y].toString().equals(c.toString())) return true;
+		if(b.getBoard()[x][y].toString().equals("gr") 
+			|| b.getBoard()[x][y].toString().equals(c.toString())) return true;
 		return false;
 	}
 
@@ -44,30 +45,28 @@ public final class Engine
 			if(Engine.verifyEmpty(xi, yi, b, c) ){
 				if(Engine.verifyTictactoe(x, y, b) ){
 					if(Engine.verifyTictactoeSecond(xi, yi , x, y,b)){
-						if(c != b.getCurrent()) {
-							System.out.println("Not your Turn !" );
-						}
-						else{
+						if(c == b.getCurrent()) {
+							//System.out.println("Not your Turn !" );
 							return true;
 						}
 					}
 					else {
-						System.out.println("Position out of bound : Floor " + x + ", Column " + y );
+						//System.out.println("Position out of bound : Floor " + x + ", Column " + y );
 						return false;
 					}
 				}
 				else{
-					System.out.println("Position out of bound : Floor " + xi + ", Column " + yi );
+					//System.out.println("Position out of bound : Floor " + xi + ", Column " + yi );
 					return false;
 				}
 
 			}
 			else {
-				System.out.println("Position not playable : Floor " + xi + ", Column " + yi );
+				//System.out.println("Position not playable : Floor " + xi + ", Column " + yi );
 				return false;
 			}
 		}
-		System.out.println("Position not on the board !");
+		//System.out.println("Position not on the board !");
 		return false;
 	}
 		

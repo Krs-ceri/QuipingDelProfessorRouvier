@@ -93,7 +93,34 @@ public class Quixo{
 				{ 
 					winner = this.plateau[i][0]; 
 					if(winner == Tictactoe.CIRCLE)	return +100;
-					else return -105;
+					else return -100;
+				}
+				if((this.plateau[i][1] == this.plateau[i][0] 
+						&& this.plateau[i][2] == this.plateau[i][0] 
+						&& this.plateau[i][3] == this.plateau[i][0] 
+						&& this.plateau[i][4] != this.plateau[i][0] )) 
+				{ 
+					winner = this.plateau[i][0]; 
+					if(winner == Tictactoe.CIRCLE)	return +70;
+					else return -70;
+				}
+				if((this.plateau[i][1] == this.plateau[i][0] 
+						&& this.plateau[i][2] == this.plateau[i][0] 
+						&& this.plateau[i][3] != this.plateau[i][0] 
+						&& this.plateau[i][4] != this.plateau[i][0] )) 
+				{ 
+					winner = this.plateau[i][0]; 
+					if(winner == Tictactoe.CIRCLE)	return +50;
+					else return -50;
+				}
+				if((this.plateau[i][1] == this.plateau[i][0] 
+						&& this.plateau[i][2] != this.plateau[i][0] 
+						&& this.plateau[i][3] != this.plateau[i][0] 
+						&& this.plateau[i][4] != this.plateau[i][0] )) 
+				{ 
+					winner = this.plateau[i][0]; 
+					if(winner == Tictactoe.CIRCLE)	return +25;
+					else return -25;
 				}
 			}
 		}
@@ -106,7 +133,34 @@ public class Quixo{
 				{ 
 					winner = this.plateau[0][i]; 
 					if(winner == Tictactoe.CIRCLE)	return +100;
-					else return -105;
+					else return -100;
+				}
+				if((this.plateau[1][i] == this.plateau[0][i] 
+						&& this.plateau[2][i] == this.plateau[0][i] 
+						&& this.plateau[3][i] == this.plateau[0][i]
+						&& this.plateau[4][i] != this.plateau[0][i] )) 
+				{ 
+					winner = this.plateau[0][i];
+					if(winner == Tictactoe.CIRCLE)	return +70;
+					else return -70;
+				}
+				if((this.plateau[1][i] == this.plateau[0][i] 
+						&& this.plateau[2][i] == this.plateau[0][i] 
+						&& this.plateau[3][i] != this.plateau[0][i]
+						&& this.plateau[4][i] != this.plateau[0][i] )) 
+				{ 
+					winner = this.plateau[0][i];
+					if(winner == Tictactoe.CIRCLE)	return +50;
+					else return -50;
+				}
+				if((this.plateau[1][i] == this.plateau[0][i] 
+						&& this.plateau[2][i] != this.plateau[0][i] 
+						&& this.plateau[3][i] != this.plateau[0][i]
+						&& this.plateau[4][i] != this.plateau[0][i] )) 
+				{ 
+					winner = this.plateau[0][i];
+					if(winner == Tictactoe.CIRCLE)	return +25;
+					else return -25;
 				}
 			}
 		}
@@ -122,7 +176,7 @@ public class Quixo{
 			{ 
 				winner = this.plateau[0][0]; 
 				if(winner == Tictactoe.CIRCLE)	return +100;
-				else return -105;
+				else return -100;
 			}
 		}
 		return 0;
@@ -199,7 +253,7 @@ public class Quixo{
 		if(!this.move.isEmpty()) {
 			Move e = this.move.remove(move.size()-1);
 			this.Undo(e);
-			this.current = e.getSigneFinal();
+			this.switchPlayer();
 		}
 	}
 

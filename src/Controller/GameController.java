@@ -215,9 +215,7 @@ public class GameController implements Initializable{
 	        	Gray(rowIndex, colIndex);
 	        }
 	        else {
-		        //moveId.setId(Integer.toString(rowIndex) + Integer.toString(colIndex));
-	        	//this.setPosPossible(rowIndex, colIndex);
-		        //game.addTac(colIndex, rowIndex);
+
 	        	String mv = this.moveId.getId();
 	        	int ri = Character.getNumericValue(mv.charAt(0));
 	        	int ci = Character.getNumericValue(mv.charAt(1));
@@ -288,6 +286,10 @@ public class GameController implements Initializable{
 		}*/
 		btnUndo();
 		this.moveId.setId(null);
+		
+		
+		/*if(this.game.getCurrent().equals(Tictactoe.CIRCLE)) setBoard(true);	
+		else setBoard(false);*/
 	}
 	
 	void Board() {
@@ -300,37 +302,13 @@ public class GameController implements Initializable{
 	}
 	
 	void setBoard(boolean value) {
-		this.a0.setMouseTransparent(value);
-		this.a1.setMouseTransparent(value);
-		this.a2.setMouseTransparent(value);
-		this.a3.setMouseTransparent(value);
-		this.a4.setMouseTransparent(value);
-	
-		this.b0.setMouseTransparent(value);
-		this.b1.setMouseTransparent(value);
-		this.b2.setMouseTransparent(value);
-		this.b3.setMouseTransparent(value);
-		this.b4.setMouseTransparent(value);
-	
-		this.c0.setMouseTransparent(value);
-		this.c1.setMouseTransparent(value);
-		this.c2.setMouseTransparent(value);
-		this.c3.setMouseTransparent(value);
-		this.c4.setMouseTransparent(value);
-	
-		this.d0.setMouseTransparent(value);
-		this.d1.setMouseTransparent(value);
-		this.d2.setMouseTransparent(value);
-		this.d3.setMouseTransparent(value);
-		this.d4.setMouseTransparent(value);
-	
-		this.e0.setMouseTransparent(value);
-		this.e1.setMouseTransparent(value);
-		this.e2.setMouseTransparent(value);
-		this.e3.setMouseTransparent(value);
-		this.e4.setMouseTransparent(value);
+		for (int i = 0; i < gridImg.length; i++) {
+			for (int j = 0; j < gridImg.length; j++) {
+				if(i == 0 || i == 4 || j == 0 || j == 4) gridImg[i][j].setMouseTransparent(value);
+			}
+		}
 	}
-
+	
 	@FXML
 	void undo() {
 		this.game.undoMove();
@@ -339,7 +317,10 @@ public class GameController implements Initializable{
 	
 	@FXML
 	void play() {
+		this.game.getAi().execute(game);
+		this.game.switchPlayer();
 		Refresh();
+		
 	}
 	
 	public void win()

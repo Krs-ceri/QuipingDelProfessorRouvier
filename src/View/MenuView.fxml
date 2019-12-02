@@ -10,14 +10,14 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainMenu" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="Controller.MenuController">
+<AnchorPane fx:id="fenetre" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="Controller.MenuController">
   <children>
     <Label disable="false" layoutX="189.0" layoutY="14.0" prefHeight="94.0" prefWidth="224.0" style="" styleClass="title" text="Quixo" textAlignment="CENTER" textFill="#e2e2e2">
       <font>
         <Font name="Wingdings" size="62.0" />
       </font>
     </Label>
-    <Button fx:id="Solo" contentDisplay="CENTER" layoutX="236.0" layoutY="178.0" mnemonicParsing="false" onAction="#showSolo" prefHeight="44.0" prefWidth="129.0" text="Partie" textAlignment="CENTER" />
+    <Button fx:id="solo" contentDisplay="CENTER" layoutX="236.0" layoutY="178.0" mnemonicParsing="false" onAction="#showSolo" prefHeight="44.0" prefWidth="129.0" text="Partie" textAlignment="CENTER" />
     <Button fx:id="quit" contentDisplay="CENTER" layoutX="236.0" layoutY="245.0" mnemonicParsing="false" onAction="#handleQuit" prefHeight="44.0" prefWidth="129.0" text="Quitter" textAlignment="CENTER" />
   </children>
   <stylesheets>
