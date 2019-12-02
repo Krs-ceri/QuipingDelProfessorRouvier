@@ -17,8 +17,8 @@
         <Font name="Wingdings" size="62.0" />
       </font>
     </Label>
-    <Button fx:id="solo" contentDisplay="CENTER" layoutX="236.0" layoutY="178.0" mnemonicParsing="false" onAction="#showSolo" prefHeight="44.0" prefWidth="129.0" text="Partie" textAlignment="CENTER" />
-    <Button fx:id="quit" contentDisplay="CENTER" layoutX="236.0" layoutY="245.0" mnemonicParsing="false" onAction="#handleQuit" prefHeight="44.0" prefWidth="129.0" text="Quitter" textAlignment="CENTER" />
+    <Button fx:id="solo" contentDisplay="CENTER" layoutX="236.0" layoutY="178.0" mnemonicParsing="false" onAction="#showSolo" prefHeight="44.0" prefWidth="129.0" text="Play" textAlignment="CENTER" />
+    <Button fx:id="quit" contentDisplay="CENTER" layoutX="236.0" layoutY="245.0" mnemonicParsing="false" onAction="#handleQuit" prefHeight="44.0" prefWidth="129.0" text="Quit" textAlignment="CENTER" />
   </children>
   <stylesheets>
     <URL value="@Theme.css" />

@@ -331,10 +331,10 @@ public class GameController implements Initializable{
 
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Congratulations");
-			alert.setHeaderText(name + "  Le joueur "+ this.game.winCondition().toString() +" a gagner ");
+			alert.setHeaderText("The player "+ name + " with ["+this.game.winCondition().toString() +"] won the game !");
 			alert.setContentText("Choose your option.");
 
-			ButtonType buttonTypeOne = new ButtonType("Recommencer");
+			ButtonType buttonTypeOne = new ButtonType("Try again");
 			ButtonType buttonTypeTwo = new ButtonType("Back");
 			ButtonType buttonTypeThree = new ButtonType("Quit");
 			ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
