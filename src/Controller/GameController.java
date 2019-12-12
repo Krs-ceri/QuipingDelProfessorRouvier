@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
+
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -115,6 +115,8 @@ public class GameController implements Initializable{
 	private Button play;
 	
 	private ImageView[][] gridImg;
+	
+	private Thread t = null;
 
 
 	private Quixo game = new Quixo();
@@ -197,9 +199,6 @@ public class GameController implements Initializable{
 	void btnPlay() {
 		if(!this.game.getCurrent().equals(Tictactoe.CIRCLE)) this.play.setDisable(true);
 		else this.play.setDisable(false); 
-		if(this.game.winCondition() != null) {
-    		this.win();
-    	}
 	}
 
 	@FXML
@@ -218,7 +217,6 @@ public class GameController implements Initializable{
 	        //System.out.println("Clique " + rowIndex + " et " + colIndex );
 	        //System.out.println(game.getCase(rowIndex, colIndex).toString());
 	        if(this.moveId.getId() == null)	{
-	        	
 	        	this.moveId.setId(Integer.toString(rowIndex)+Integer.toString(colIndex));
 	        	Sparkling(rowIndex, colIndex);
 	        	Gray(rowIndex, colIndex);
@@ -231,18 +229,11 @@ public class GameController implements Initializable{
 	        	//System.out.println("Premier clique "+ ri + " " + ci);
 	        	if(engine.rule( game.Current(), ri, ci, rowIndex, colIndex, game)) {
 	        		game.ConcretePlay(ri, ci , rowIndex , colIndex );
+	        		this.game.switchPlayer();
 	        		this.Refresh();
-		        	if(this.game.winCondition() != null) {
-		        		this.win();
-		        	}
-		        	else {
-			        	this.game.switchPlayer();
-			        	AiPlay();
-		        	}	        	
+		        	AiPlay();
 	        	}
-	        	else {
-	        		this.Refresh();
-	        	} 
+	        	this.Refresh();
 	        }
 	    }
 	}
@@ -280,17 +271,23 @@ public class GameController implements Initializable{
 	}
 	
 	void AiPlay() {
-		if(this.game.getCurrent().equals(Tictactoe.CIRCLE))	{
+		this.t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				if(game.getCurrent().equals(Tictactoe.CIRCLE))	{
+					game.getAi().execute(game);
+					
+					game.switchPlayer();
+					RefreshGrid();
+				}
+				play.setDefaultButton(true);
+			}
+		});
+    	t.start();		
+ 
+	}	
+	
 
-			this.game.getAi().execute(game);
-			this.game.switchPlayer();
-			Refresh();
-		}
-		this.play.setDefaultButton(true);
-		if(this.game.winCondition() != null) {
-    		this.win();
-    	}
-	}
 	
 	void Refresh() {
 
@@ -307,9 +304,38 @@ public class GameController implements Initializable{
 		btnPlay();
 		this.moveId.setId(null);
 		
+		if(game.winCondition() != null) {
+    		win();
+    	}
 		
-		if(this.game.getCurrent().equals(Tictactoe.CIRCLE)) setBoard(true);	
+		if(this.game.getCurrent().equals(Tictactoe.CIRCLE)) {
+			setBoard(true);	
+			
+		}
 		else setBoard(false);
+	}
+	
+	void RefreshGrid() {
+
+		for (int i = 0; i < gridImg.length; i++) {
+			for (int j = 0; j < gridImg.length; j++) {
+				gridImg[i][j].setImage(this.game.getBoard()[i][j].getImage());
+				gridImg[i][j].setEffect(null); 
+			}
+		}
+		
+		this.current.setImage(this.game.getCurrent().getImage());
+
+		btnUndo();
+		btnPlay();
+		this.moveId.setId(null);
+		
+		if(this.game.getCurrent().equals(Tictactoe.CIRCLE)) {
+			setBoard(true);	
+		}
+		else setBoard(false);
+
+
 	}
 	
 	void Board() {

@@ -4,7 +4,7 @@ import Model.Engine;
 import Model.Quixo;
 import Model.Tictactoe;
 
-public class MinMaxOnefunction extends Player{
+public class MinMaxOnefunction extends PlayerAi{
 	private int xi = -1;
 	private int yi = -1;
 	private int xx = -1;
@@ -25,14 +25,15 @@ public class MinMaxOnefunction extends Player{
 	public void execute(Quixo game) {
 		// TODO Auto-generated method stub
 		this.setVariable();
-		this.calcIA(game, this.getProfondeur());
+		
 		do {
-			game.ConcretePlay(this.xi, this.yi, this.xx, this.yy);
+			this.IA(game, this.getProfondeur());
 		}while(xi == -1);
+		game.ConcretePlay(this.xi, this.yi, this.xx, this.yy);
 		
 	}
 	
-	public void calcIA(Quixo game, int prof) {
+	public void IA(Quixo game, int prof) {
 	    int tmp;
 	    int max = -10000;
 	    Engine engine = new Engine();
@@ -49,7 +50,7 @@ public class MinMaxOnefunction extends Player{
 	 							if(engine.rule(getSigne(), i, j, i2, j2, game)) {	
 	 								game.ConcretePlay(i, i, i2, j2);
 	 								game.switchPlayer();
-	 								tmp = calcMin(game, prof-1);
+	 								tmp = Min(game, prof-1);
 	 								if(game.getBoard()[i][j].equals(Tictactoe.EMPTY ))	tmp+=5;
 	 								if((tmp>max)||(tmp==max )) {
 	 									max = tmp;
@@ -69,7 +70,7 @@ public class MinMaxOnefunction extends Player{
 	    
 	}
 	
-	private int calcMin(Quixo game, int prof)
+	private int Min(Quixo game, int prof)
 	{
 		 Engine engine = new Engine();
 	    int min = 1000;
@@ -89,8 +90,8 @@ public class MinMaxOnefunction extends Player{
 							if(engine.rule(game.Current(), i, j, i2, j2, game)) {
 								game.ConcretePlay(i, i, i2, j2);
  								game.switchPlayer();
- 								int tmp = calcMax(game, prof-1);
- 								if(game.getBoard()[i][j].equals(Tictactoe.EMPTY ))	tmp+=5;
+ 								int tmp = Max(game, prof-1);
+ 								if(game.getBoard()[i][j].equals(Tictactoe.EMPTY ))	tmp-=5;
  								if(tmp<min) {
  									min = tmp;
  								}
@@ -104,7 +105,7 @@ public class MinMaxOnefunction extends Player{
 	    return min;
 	}
 	
-	private int calcMax(Quixo game, int prof)
+	private int Max(Quixo game, int prof)
 	{
 		 Engine engine = new Engine();
 	    int tmp;
@@ -126,7 +127,7 @@ public class MinMaxOnefunction extends Player{
 							if(engine.rule(getSigne(), i, j, i2, j2, game)) {
 								game.ConcretePlay(i, i, i2, j2);
  								game.switchPlayer();
- 								tmp = calcMin(game, prof-1);
+ 								tmp = Min(game, prof-1);
  								if(game.getBoard()[i][j].equals(Tictactoe.EMPTY ))	tmp+=5;
  								if(tmp>max) {
  									max = tmp;

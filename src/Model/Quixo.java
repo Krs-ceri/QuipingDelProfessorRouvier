@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import Controller.Main;
 import Players.*;
 
 
+/**
+ * @author Nizar
+ *
+ */
 public class Quixo implements Cloneable{
 
 
@@ -27,8 +32,9 @@ public class Quixo implements Cloneable{
 	}
 	
 	public Quixo() {
+		Main main =  Main.getInstance();
 		this.setHuman(new PlayerHumain("Shox", 0, playerX));
-		this.setAi(new MinMaxOnefunction("nique", 2, playerO));
+		this.setAi(main.getAi());
 		
 		this.move = new ArrayList<Move>();
 		

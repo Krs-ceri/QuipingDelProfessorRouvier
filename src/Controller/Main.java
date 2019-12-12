@@ -2,14 +2,22 @@ package Controller;
 
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 
 
 import javafx.fxml.FXMLLoader;
 import java.io.IOException;
+
+
+import Model.Tictactoe;
+import Players.*;
+
 
 
 
@@ -20,6 +28,9 @@ public class Main extends Application {
 	private AnchorPane root;
 	
 	private static volatile Main instance = null;
+	private Player ai = new MinMaxOnefunction("Min-Max", 3, Tictactoe.CIRCLE);
+	
+	private ObservableList<String> player = FXCollections.observableArrayList();
 	
 	public Main(){
 	    super();
@@ -28,6 +39,10 @@ public class Main extends Application {
 	                getClass()+" is singleton but constructor called more than once");
 	        instance = this;
 	    }
+	}
+	
+	public ObservableList<String> getData(){
+		return player;
 	}
 	@Override
 	public void start(Stage primaryStage) {
@@ -40,6 +55,10 @@ public class Main extends Application {
             tempImage = null;
        }
 		window.getIcons().add(tempImage);
+
+		player.add("Min-Max");
+		player.add("Threaded");
+
 		try
 		{
 			// Permet de charger le menuPrincipal.fxml
@@ -96,5 +115,13 @@ public class Main extends Application {
 	public static void main(String[] args) {
         launch(args);
     }
+
+	public Player getAi() {
+		return ai;
+	}
+
+	public void setAi(Player ai) {
+		this.ai = ai;
+	}
 
 }
