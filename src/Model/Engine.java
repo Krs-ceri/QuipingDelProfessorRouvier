@@ -69,7 +69,4 @@ public final class Engine
 		//System.out.println("Position not on the board !");
 		return false;
 	}
-		
-	
-	
 }

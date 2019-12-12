@@ -47,12 +47,13 @@ public class MinMaxOnefunction extends Player{
 	 								game.ConcretePlay(i, i, i2, j2);
 	 								game.switchPlayer();
 	 								tmp = calcMin(game, prof-1);
+	 								if(game.getBoard()[i][j].equals(Tictactoe.EMPTY ))	tmp+=5;
 	 								if((tmp>max)||(tmp==max )) {
 	 									max = tmp;
-	 									this.xi = j; 
-	 									this.yi = i; 
-	 									this.xx = j2;
-	 									this.yy = i2;
+	 									this.xi = i; 
+	 									this.yi = j; 
+	 									this.xx = i2;
+	 									this.yy = j2;
 	 								}
 	 								game.undoMove();
 	 							}
@@ -80,12 +81,14 @@ public class MinMaxOnefunction extends Player{
                 if (game.getBoard()[i][j].equals(Tictactoe.EMPTY) 
                 	|| game.getBoard()[i][j].equals(Tictactoe.CROSS)) 
                 { 
+                	
                 	for (int i2 = 0; i2 < 5; i2++) {
 						for (int j2 = 0; j2 < 5; j2++) {
 							if(engine.rule(getSigne(), i, j, i2, j2, game)) {
 								game.ConcretePlay(i, i, i2, j2);
  								game.switchPlayer();
  								tmp = calcMax(game, prof-1);
+ 								if(game.getBoard()[i][j].equals(Tictactoe.EMPTY ))	tmp+=5;
  								if(tmp<min) {
  									min = tmp;
  								}
@@ -115,12 +118,14 @@ public class MinMaxOnefunction extends Player{
                 if (game.getBoard()[i][j].equals(Tictactoe.EMPTY) 
                 	|| game.getBoard()[i][j].equals(Tictactoe.CIRCLE)) 
                 { 
+                	
                 	for (int i2 = 0; i2 < 5; i2++) {
 						for (int j2 = 0; j2 < 5; j2++) {
 							if(engine.rule(getSigne(), i, j, i2, j2, game)) {
 								game.ConcretePlay(i, i, i2, j2);
  								game.switchPlayer();
  								tmp = calcMin(game, prof-1);
+ 								if(game.getBoard()[i][j].equals(Tictactoe.EMPTY ))	tmp+=5;
  								if(tmp>max) {
  									max = tmp;
  								}
