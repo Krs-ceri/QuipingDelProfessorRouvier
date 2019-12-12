@@ -231,8 +231,18 @@ public class GameController implements Initializable{
 	        		game.ConcretePlay(ri, ci , rowIndex , colIndex );
 	        		this.game.switchPlayer();
 	        		this.Refresh();
-		        	AiPlay();
+	        		Platform.runLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							AiPlay();
+							
+						}
+					});
+		        
 	        	}
+
 	        	this.Refresh();
 	        }
 	    }
@@ -278,7 +288,7 @@ public class GameController implements Initializable{
 					game.getAi().execute(game);
 					
 					game.switchPlayer();
-					RefreshGrid();
+					Refresh();
 				}
 				play.setDefaultButton(true);
 			}
@@ -372,6 +382,7 @@ public class GameController implements Initializable{
 	
 	public void win()
 	{
+
 			String name;
 			if (this.game.winCondition() == Tictactoe.CIRCLE) 	name = this.game.getAi().getName();
 			else name = this.game.getHuman().getName();
