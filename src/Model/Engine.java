@@ -22,9 +22,9 @@ public final class Engine
 		return false;
 	}
 
-	static boolean verifyTictactoe(int x_pos, int y_pos, Quixo b) {
+	static boolean verifyTictactoe(int x, int y, Quixo b) {
 		
-		if(x_pos == 0 || y_pos == 0 || y_pos == 4 || x_pos == 4)	return true;
+		if(x == 0 || y == 0 || y == 4 || x == 4)	return true;
 		return false;
 	}
 	
@@ -46,8 +46,11 @@ public final class Engine
 				if(Engine.verifyTictactoe(x, y, b) ){
 					if(Engine.verifyTictactoeSecond(xi, yi , x, y,b)){
 						if(c == b.getCurrent()) {
-							//System.out.println("Not your Turn !" );
+							
 							return true;
+						}
+						else {
+							//System.out.println("Not your Turn !" );
 						}
 					}
 					else {

@@ -117,7 +117,7 @@ public class GameController implements Initializable{
 	private ImageView[][] gridImg;
 
 
-	Quixo game = new Quixo();
+	private Quixo game = new Quixo();
 	Main main = Main.getInstance();
 	
     @FXML

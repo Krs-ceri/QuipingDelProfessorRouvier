@@ -7,7 +7,7 @@ import java.util.Scanner;
 import Players.*;
 
 
-public class Quixo{
+public class Quixo implements Cloneable{
 
 
 	private Tictactoe current;
@@ -28,7 +28,7 @@ public class Quixo{
 	
 	public Quixo() {
 		this.setHuman(new PlayerHumain("Shox", 0, playerX));
-		this.setAi(new MinMaxOnefunction("MinMax", 4, playerO));
+		this.setAi(new MinMaxOnefunction("nique", 2, playerO));
 		
 		this.move = new ArrayList<Move>();
 		

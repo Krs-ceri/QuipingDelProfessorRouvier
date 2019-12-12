@@ -1,41 +1,26 @@
 package Players;
 
 import java.util.Vector;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.atomic.AtomicInteger;
+import Threaded.MonThread;
+
 
 import Model.Engine;
 import Model.Quixo;
 import Model.Tictactoe;
 
-public class ThreadMM extends Player{
+public class ThreadMM extends PlayerAi{
 	
-
-	private AtomicInteger xi;
-	private AtomicInteger yi ;
-	private AtomicInteger xx;
-	private AtomicInteger yy;
 
 	public ThreadMM(String name, int p, Tictactoe i) {
 		super(name, p, i);
 		// TODO Auto-generated constructor stub
-		this.xi.set(-1);
-		this.yi.set(-1);
-		this.xx.set(-1);
-		this.yy.set(-1);
 	}
 
-	public void setVariable() {
-		this.xi.set(-1);
-		this.yi.set(-1);
-		this.xx.set(-1);
-		this.yy.set(-1);
-	}
+
 	@Override
 	public void execute(Quixo game) {
 		// TODO Auto-generated method stub
 		Vector<Thread> th = new Vector<Thread>();
-		this.setVariable();
 		Engine engine = new Engine();
     	for (int i = 0; i<5; i++) 
          { 
@@ -47,111 +32,38 @@ public class ThreadMM extends Player{
                  	for (int i2 = 0; i2 < 5; i2++) {
  						for (int j2 = 0; j2 < 5; j2++) {
  							if(engine.rule(getSigne(), i, j, i2, j2, game)) {
- 								th.add(e)
-		this.calcIA(game, 
-				this.getProfondeur());
-		game.ConcretePlay(this.xi.get(), 
-							this.yi.get(),
-							this.xx.get(), 
-							this.yy.get());
+ 								Quixo tmp = game.clone();
+ 								Runnable runnable = new MonThread(tmp, 
+ 																	this, i, j, i2, j2);
+ 								
+ 							    th.add(new Thread(runnable));
+ 							    
+ 							}
+ 						}
+                 	}
+                 }
+             }
+         }
+    	for (Thread t : th) {
+			t.start();
+		}
+    	for (Thread t : th) {
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+    	game.ConcretePlay(this.getXi().intValue()
+    			, this.getYi().intValue()
+    			, this.getXx().intValue()
+    			, this.getYy().intValue());
 	}
-	
-	public void calcIA(Quixo game, int prof, int x, int y) {
-	    int tmp;
-	    int max = -10000;
-	    Engine engine = new Engine();
 
-	 								game.ConcretePlay(i, i, i2, j2);
-	 								game.switchPlayer();
-	 								Quixo b = game.clone();
-	 								Thread th = new Thread(this.getName());
-	 								tmp = calcMin(game, prof-1);
-	 								if((tmp>max)||(tmp==max )) {
-	 									max = tmp;
-	 									this.xi.set(i); 
-	 									this.yi.set(j); 
-	 									this.xx.set(i2);
-	 									this.yy.set(j2);
-	 								}
-	 								game.undoMove();
-	 							}
-	 						}
-	                 	}
-	                 }
-	             }
-	         }
-	    System.out.println("deplacement : " +" best:  "+ max +"  "+this.xi+" "+this.yi+" : " +this.xx+" "+this.yy);
-	    
-	}
-	
-	private int calcMin(Quixo game, int prof)
-	{
-		 Engine engine = new Engine();
-	    int tmp;
-	    int min = 1000;
-	    if(prof==0 || game.winCondition() != null)
-	        return eval(game);
-	 
-	    for (int i = 0; i<5; i++) 
-        { 
-            for (int j = 0; j<5; j++) 
-            { 
-                if (game.getBoard()[i][j].equals(Tictactoe.EMPTY) 
-                	|| game.getBoard()[i][j].equals(Tictactoe.CROSS)) 
-                { 
-                	for (int i2 = 0; i2 < 5; i2++) {
-						for (int j2 = 0; j2 < 5; j2++) {
-							if(engine.rule(getSigne(), i, j, i2, j2, game)) {
-								game.ConcretePlay(i, i, i2, j2);
- 								game.switchPlayer();
- 								tmp = calcMax(game, prof-1);
- 								if(tmp<min) {
- 									min = tmp;
- 								}
- 								game.undoMove();
-							}
-						}
-                	}
-                }
-            }
-        }
-	    return min;
-	}
-	
-	private int calcMax(Quixo game, int prof)
-	{
-		 Engine engine = new Engine();
-	    int tmp;
-	    int max = -1000;
-	    if(prof==0 || game.winCondition() != null)
-	        return eval(game);
 
-	 
-	    for (int i = 0; i<5; i++) 
-        { 
-            for (int j = 0; j<5; j++) 
-            { 
-                if (game.getBoard()[i][j].equals(Tictactoe.EMPTY) 
-                	|| game.getBoard()[i][j].equals(Tictactoe.CIRCLE)) 
-                { 
-                	for (int i2 = 0; i2 < 5; i2++) {
-						for (int j2 = 0; j2 < 5; j2++) {
-							if(engine.rule(getSigne(), i, j, i2, j2, game)) {
-								game.ConcretePlay(i, i, i2, j2);
- 								game.switchPlayer();
- 								tmp = calcMin(game, prof-1);
- 								if(tmp>max) {
- 									max = tmp;
- 								}
- 								game.undoMove();
-							}
-						}
-                	}
-                }
-            }
-        }
-	    return max;
-	}
+	
+	
 	
 	public int eval(Quixo plateau) {
 		Tictactoe winner = null;		//Nobody win
@@ -252,5 +164,7 @@ public class ThreadMM extends Player{
 		}
 		return 3;
 	}
+
+
 
 }
