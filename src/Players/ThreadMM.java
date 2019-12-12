@@ -1,5 +1,6 @@
 package Players;
 
+import java.util.Vector;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -33,7 +34,20 @@ public class ThreadMM extends Player{
 	@Override
 	public void execute(Quixo game) {
 		// TODO Auto-generated method stub
+		Vector<Thread> th = new Vector<Thread>();
 		this.setVariable();
+		Engine engine = new Engine();
+    	for (int i = 0; i<5; i++) 
+         { 
+             for (int j = 0; j<5; j++) 
+             { 
+                 if (game.getBoard()[i][j].equals(Tictactoe.EMPTY) 
+                 	  ||  game.getBoard()[i][j].equals(Tictactoe.CIRCLE)
+                		 ) { 
+                 	for (int i2 = 0; i2 < 5; i2++) {
+ 						for (int j2 = 0; j2 < 5; j2++) {
+ 							if(engine.rule(getSigne(), i, j, i2, j2, game)) {
+ 								th.add(e)
 		this.calcIA(game, 
 				this.getProfondeur());
 		game.ConcretePlay(this.xi.get(), 
@@ -42,21 +56,11 @@ public class ThreadMM extends Player{
 							this.yy.get());
 	}
 	
-	public void calcIA(Quixo game, int prof) {
+	public void calcIA(Quixo game, int prof, int x, int y) {
 	    int tmp;
 	    int max = -10000;
 	    Engine engine = new Engine();
-	    	for (int i = 0; i<5; i++) 
-	         { 
-	             for (int j = 0; j<5; j++) 
-	             { 
-	                 if (game.getBoard()[i][j].equals(Tictactoe.EMPTY) 
-	                 	  //||  game.getBoard()[i][j].equals(Tictactoe.CIRCLE)
-	                		 ) 
-	                 { 
-	                 	for (int i2 = 0; i2 < 5; i2++) {
-	 						for (int j2 = 0; j2 < 5; j2++) {
-	 							if(engine.rule(getSigne(), i, j, i2, j2, game)) {	
+
 	 								game.ConcretePlay(i, i, i2, j2);
 	 								game.switchPlayer();
 	 								Quixo b = game.clone();
