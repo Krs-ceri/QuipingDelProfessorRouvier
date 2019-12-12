@@ -28,7 +28,7 @@ public class Quixo{
 	
 	public Quixo() {
 		this.setHuman(new PlayerHumain("Shox", 0, playerX));
-		this.setAi(new MinMax("MinMax", 2, playerO));
+		this.setAi(new MinMaxOnefunction("MinMax", 1, playerO));
 		
 		this.move = new ArrayList<Move>();
 		
@@ -66,121 +66,19 @@ public class Quixo{
 		}
 		if(this.plateau[2][2] == Tictactoe.CIRCLE || this.plateau[1][1] == Tictactoe.CROSS) {
 			if((this.plateau[0][0] == this.plateau[2][2] 
-					&& this.plateau[1][1] == this.plateau[2][2] 
-							&& this.plateau[3][3] == this.plateau[2][2] 
-									&& this.plateau[4][4] == this.plateau[2][2])  //barre centrale verticale
+						&& this.plateau[1][1] == this.plateau[2][2] 
+						&& this.plateau[3][3] == this.plateau[2][2] 
+						&& this.plateau[4][4] == this.plateau[2][2])  //barre centrale verticale
 					|| (this.plateau[0][4] == this.plateau[2][2] 
 							&& this.plateau[1][3] == this.plateau[2][2] 
-									&& this.plateau[3][1] == this.plateau[2][2] 
-											&& this.plateau[4][0] == this.plateau[2][2])) 	//barre centrale horizontal
+							&& this.plateau[3][1] == this.plateau[2][2] 
+							&& this.plateau[4][0] == this.plateau[2][2])) 	//barre centrale horizontal
 				 { winner = this.plateau[1][1]; }
 		}
 		return winner;
 	}
 	
-	/**
-	 * "O" est l'IA
-	 * @return	valeur 
-	 */
-	public int eval() {
-		Tictactoe winner = null;		//Nobody win
-		for (int i = 0; i < plateau.length; i++) { // ligne verification
-			if(this.plateau[i][0] == Tictactoe.CIRCLE || this.plateau[i][0] == Tictactoe.CROSS) {
-				if((this.plateau[i][1] == this.plateau[i][0] 
-						&& this.plateau[i][2] == this.plateau[i][0] 
-						&& this.plateau[i][3] == this.plateau[i][0] 
-						&& this.plateau[i][4] == this.plateau[i][0] )) 
-				{ 
-					winner = this.plateau[i][0]; 
-					if(winner == Tictactoe.CIRCLE)	return +100;
-					else return -100;
-				}
-				if((this.plateau[i][1] == this.plateau[i][0] 
-						&& this.plateau[i][2] == this.plateau[i][0] 
-						&& this.plateau[i][3] == this.plateau[i][0] 
-						&& this.plateau[i][4] != this.plateau[i][0] )) 
-				{ 
-					winner = this.plateau[i][0]; 
-					if(winner == Tictactoe.CIRCLE)	return +70;
-					else return -70;
-				}
-				if((this.plateau[i][1] == this.plateau[i][0] 
-						&& this.plateau[i][2] == this.plateau[i][0] 
-						&& this.plateau[i][3] != this.plateau[i][0] 
-						&& this.plateau[i][4] != this.plateau[i][0] )) 
-				{ 
-					winner = this.plateau[i][0]; 
-					if(winner == Tictactoe.CIRCLE)	return +50;
-					else return -50;
-				}
-				if((this.plateau[i][1] == this.plateau[i][0] 
-						&& this.plateau[i][2] != this.plateau[i][0] 
-						&& this.plateau[i][3] != this.plateau[i][0] 
-						&& this.plateau[i][4] != this.plateau[i][0] )) 
-				{ 
-					winner = this.plateau[i][0]; 
-					if(winner == Tictactoe.CIRCLE)	return +25;
-					else return -25;
-				}
-			}
-		}
-		for (int i = 0; i < plateau.length; i++) { // colonne verification
-			if(this.plateau[0][i] == Tictactoe.CIRCLE || this.plateau[0][i] == Tictactoe.CROSS) {
-				if((this.plateau[1][i] == this.plateau[0][i] 
-						&& this.plateau[2][i] == this.plateau[0][i] 
-						&& this.plateau[3][i] == this.plateau[0][i]
-						&& this.plateau[4][i] == this.plateau[0][i] )) 
-				{ 
-					winner = this.plateau[0][i]; 
-					if(winner == Tictactoe.CIRCLE)	return +100;
-					else return -100;
-				}
-				if((this.plateau[1][i] == this.plateau[0][i] 
-						&& this.plateau[2][i] == this.plateau[0][i] 
-						&& this.plateau[3][i] == this.plateau[0][i]
-						&& this.plateau[4][i] != this.plateau[0][i] )) 
-				{ 
-					winner = this.plateau[0][i];
-					if(winner == Tictactoe.CIRCLE)	return +70;
-					else return -70;
-				}
-				if((this.plateau[1][i] == this.plateau[0][i] 
-						&& this.plateau[2][i] == this.plateau[0][i] 
-						&& this.plateau[3][i] != this.plateau[0][i]
-						&& this.plateau[4][i] != this.plateau[0][i] )) 
-				{ 
-					winner = this.plateau[0][i];
-					if(winner == Tictactoe.CIRCLE)	return +50;
-					else return -50;
-				}
-				if((this.plateau[1][i] == this.plateau[0][i] 
-						&& this.plateau[2][i] != this.plateau[0][i] 
-						&& this.plateau[3][i] != this.plateau[0][i]
-						&& this.plateau[4][i] != this.plateau[0][i] )) 
-				{ 
-					winner = this.plateau[0][i];
-					if(winner == Tictactoe.CIRCLE)	return +25;
-					else return -25;
-				}
-			}
-		}
-		if(this.plateau[2][2] == Tictactoe.CIRCLE || this.plateau[1][1] == Tictactoe.CROSS) {
-			if((this.plateau[0][0] == this.plateau[2][2] 
-					&& this.plateau[1][1] == this.plateau[2][2] 
-							&& this.plateau[3][3] == this.plateau[2][2] 
-									&& this.plateau[4][4] == this.plateau[2][2])  //barre centrale verticale
-					|| (this.plateau[0][4] == this.plateau[2][2] 
-							&& this.plateau[1][3] == this.plateau[2][2] 
-									&& this.plateau[3][1] == this.plateau[2][2] 
-											&& this.plateau[4][0] == this.plateau[2][2])) 	//barre centrale horizontal
-			{ 
-				winner = this.plateau[0][0]; 
-				if(winner == Tictactoe.CIRCLE)	return +100;
-				else return -100;
-			}
-		}
-		return 0;
-	}
+
 	/**
 	 * 	le joueur "X" est le joueur humain
 	 * le joueur "O" est l'IA cr�er
@@ -190,6 +88,16 @@ public class Quixo{
 			this.current = playerO;
 		}
 		else this.current = playerX;
+	}
+	public boolean hasPlaceLeft() {
+		for (int i = 0; i < plateau.length; i++) {
+			for (int j = 0; j < plateau.length; j++) {
+				if(i == 0 || i == 4 || j == 0 || j == 4) {
+					if(plateau[i][j].equals(Tictactoe.EMPTY))	return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	public void ConcretePlay(int xi, int yi, int xx, int yy) {
@@ -207,7 +115,7 @@ public class Quixo{
 	
 	public void pushColPositive(int xi, int yi, int xx, int yy) {	
 		if(xi < xx && yi == yy) {
-			System.out.println("col pos");
+			System.out.print("col pos : ");
 			for (int i = xi; i < xx; i++) {
 				this.plateau[i][yi] = this.plateau[i+1][yi];			
 			}
@@ -217,7 +125,7 @@ public class Quixo{
 	
 	public void pushColNegative(int xi, int yi, int xx, int yy) {
 		if(xi > xx && yi == yy) {
-			System.out.println("col neg");
+			System.out.print("col neg : ");
 			for (int i = xi; i > xx; i--) {
 				this.plateau[i][yi] = this.plateau[i-1][yi];
 			}
@@ -227,7 +135,7 @@ public class Quixo{
 	
 	public void pushRowNegative(int xi, int yi, int xx, int yy) {
 		if(xi == xx && yi < yy) {
-			System.out.println("row neg");
+			System.out.print("row neg : ");
 			for (int i = yi; i < yy; i++) {
 				this.plateau[xx][i] = this.plateau[xx][i+1];
 			}
@@ -237,7 +145,7 @@ public class Quixo{
 	
 	public void pushRowPositive(int xi, int yi, int xx, int yy) {
 		if(xi == xx && yi > yy) {
-			System.out.println("row pos ");
+			System.out.print("row pos : ");
 			for (int i = yi; i > yy; i--) {
 				this.plateau[xx][i] = this.plateau[xx][i-1];
 			}

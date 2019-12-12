@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -192,6 +193,14 @@ public class GameController implements Initializable{
 		if(this.game.moveEmpty())	this.undo.setDisable(true);
 		else  this.undo.setDisable(false);
 	}
+	
+	void btnPlay() {
+		if(!this.game.getCurrent().equals(Tictactoe.CIRCLE)) this.play.setDisable(true);
+		else this.play.setDisable(false); 
+		if(this.game.winCondition() != null) {
+    		this.win();
+    	}
+	}
 
 	@FXML
 	public void clickGrid(javafx.scene.input.MouseEvent event) {
@@ -206,8 +215,8 @@ public class GameController implements Initializable{
 	        if(colIndex == null)colIndex = 0;
 	        if(rowIndex == null)rowIndex = 0;
 	        
-	        System.out.println("Clique " + rowIndex + " et " + colIndex );
-	        System.out.println(game.getCase(rowIndex, colIndex).toString());
+	        //System.out.println("Clique " + rowIndex + " et " + colIndex );
+	        //System.out.println(game.getCase(rowIndex, colIndex).toString());
 	        if(this.moveId.getId() == null)	{
 	        	
 	        	this.moveId.setId(Integer.toString(rowIndex)+Integer.toString(colIndex));
@@ -219,17 +228,16 @@ public class GameController implements Initializable{
 	        	String mv = this.moveId.getId();
 	        	int ri = Character.getNumericValue(mv.charAt(0));
 	        	int ci = Character.getNumericValue(mv.charAt(1));
-	        	System.out.println("Premier clique "+ ri + " " + ci);
+	        	//System.out.println("Premier clique "+ ri + " " + ci);
 	        	if(engine.rule( game.Current(), ri, ci, rowIndex, colIndex, game)) {
 	        		game.ConcretePlay(ri, ci , rowIndex , colIndex );
-		        	//game.Print();
 	        		this.Refresh();
 		        	if(this.game.winCondition() != null) {
 		        		this.win();
 		        	}
 		        	else {
 			        	this.game.switchPlayer();
-			        	this.Refresh();
+			        	AiPlay();
 		        	}	        	
 	        	}
 	        	else {
@@ -240,6 +248,7 @@ public class GameController implements Initializable{
 	}
 	
 	void Sparkling(int x, int y) {
+		if(this.game.getCurrent().toString().equals("O"))	return ;
 		Light.Spot L = new Light.Spot();
 		L.setColor(Color.KHAKI);
 	    L.setX(70); 
@@ -256,6 +265,7 @@ public class GameController implements Initializable{
 	}
 	
 	void Gray(int x, int y) {
+		if(this.game.getCurrent().toString().equals("O"))	return ;
 		Light.Spot L = new Light.Spot();
 
 	    L.setX(70); 
@@ -269,6 +279,19 @@ public class GameController implements Initializable{
 		gridImg[x][y].setEffect(lighting); 
 	}
 	
+	void AiPlay() {
+		if(this.game.getCurrent().equals(Tictactoe.CIRCLE))	{
+
+			this.game.getAi().execute(game);
+			this.game.switchPlayer();
+			Refresh();
+		}
+		this.play.setDefaultButton(true);
+		if(this.game.winCondition() != null) {
+    		this.win();
+    	}
+	}
+	
 	void Refresh() {
 
 		for (int i = 0; i < gridImg.length; i++) {
@@ -279,17 +302,14 @@ public class GameController implements Initializable{
 		}
 		
 		this.current.setImage(this.game.getCurrent().getImage());
-		/*if(this.game.getCurrent().equals(Tictactoe.CIRCLE))	{
-			this.game.getAi().execute(game);
-			this.game.switchPlayer();
-			Refresh();
-		}*/
+
 		btnUndo();
+		btnPlay();
 		this.moveId.setId(null);
 		
 		
-		/*if(this.game.getCurrent().equals(Tictactoe.CIRCLE)) setBoard(true);	
-		else setBoard(false);*/
+		if(this.game.getCurrent().equals(Tictactoe.CIRCLE)) setBoard(true);	
+		else setBoard(false);
 	}
 	
 	void Board() {
@@ -317,6 +337,7 @@ public class GameController implements Initializable{
 	
 	@FXML
 	void play() {
+		
 		this.game.getAi().execute(game);
 		this.game.switchPlayer();
 		Refresh();
@@ -338,6 +359,7 @@ public class GameController implements Initializable{
 			ButtonType buttonTypeTwo = new ButtonType("Back");
 			ButtonType buttonTypeThree = new ButtonType("Quit");
 			ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+			
 			this.setBoard(true);
 			alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeCancel);
 
@@ -371,52 +393,5 @@ public class GameController implements Initializable{
 			else {
 				
 			}
-		}
-	
-	public void gameNull() {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Fin de la aprtie");
-		alert.setHeaderText("Match null ! Personne n'a gagner");
-		alert.setContentText("Choose your option.");
-
-		ButtonType buttonTypeOne = new ButtonType("Recommencer");
-		ButtonType buttonTypeTwo = new ButtonType("Back");
-		ButtonType buttonTypeThree = new ButtonType("Quit");
-		ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-
-		alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeCancel);
-
-		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == buttonTypeOne)
-		{
-			this.game = new Quixo();
-			Refresh();
-			this.setBoard(false);
-		}
-		else if (result.get() == buttonTypeTwo) {
-			try {
-		    	Main main = Main.getInstance();
-		    	FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../View/MenuView.fxml"));
-		    	
-				main.setRoot(loader.load());
-				
-		    	Scene scene = new Scene(main.getRoot());
-		    	main.getWindow().setScene(scene);
-		    	main.getWindow().show();
-				} catch (IOException e) {
-
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				}
-
-		} 
-		else if (result.get() == buttonTypeThree) {
-			Platform.exit();
-			System.exit(0);
-		}
-		else {
-			// ... user chose CANCEL or closed the dialog
-		}
 	}
 }

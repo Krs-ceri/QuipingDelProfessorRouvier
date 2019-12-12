@@ -17,8 +17,8 @@ public final class Engine
 	}
 
 	static boolean verifyEmpty(int x, int y, Quixo b, Tictactoe c) {
-		if(b.getBoard()[x][y].toString().equals("gr") 
-			|| b.getBoard()[x][y].toString().equals(c.toString())) return true;
+		if(b.getBoard()[x][y].equals(Tictactoe.EMPTY) 
+			|| b.getBoard()[x][y].equals(c)) return true;
 		return false;
 	}
 

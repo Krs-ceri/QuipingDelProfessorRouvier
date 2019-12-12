@@ -16,21 +16,20 @@ public class MinMax extends Player{
 	@Override
 	public void execute(Quixo b) {
 		// TODO Auto-generated method stub
-
 		this.Play(b);
-		
 		b.ConcretePlay(this.xi, this.yi, this.xx, this.yy);
 	}
 	
 	public int minimax(Quixo game, int p ,boolean ia) { 
-	    int score = game.eval(); 
+	    int score = this.eval(game); 
 	    Engine engine = new Engine();
         
 	    if (score == 100) return score; 
-	    if (score == -10)  return score; 
+	    if (score == -100)  return score; 
+	    if(p == this.getProfondeur()) return 0;
 	    if(ia ) {
 	    	int best = -1000; 
-	    	 if(p == this.getProfondeur()) return score;
+	    	
 	         for (int i = 0; i<5; i++) 
 	         { 
 	             for (int j = 0; j<5; j++) 
@@ -42,22 +41,23 @@ public class MinMax extends Player{
 	 						for (int j2 = 0; j2 < 5; j2++) {
 	 							if(engine.rule(getSigne(), i, j, i2, j2, game)) {	
 	 								game.ConcretePlay(i, i, i2, j2);
-	 								game.setCurrent(Tictactoe.CROSS);
-	 			                    best = max( best, minimax(game, p+1, !ia) );
+	 								game.switchPlayer();
+	 			                    best = Math.max( best, minimax(game, p+1, !ia) );
 	 			                   game.undoMove();
 	 							}
 	 						}
 	 					}
 	                 } 
+	                 
 	             } 
 	         } 
 	         return best; 
 	    }
 	    else {
 	    	int best = 1000; 
-	        for (int i = 0; i<3; i++) 
+	        for (int i = 0; i<5; i++) 
 	        { 
-	            for (int j = 0; j<3; j++) 
+	            for (int j = 0; j<5; j++) 
 	            { 
 	            	 if (game.getBoard()[i][j].equals(Tictactoe.EMPTY) 
 	            		|| game.getBoard()[i][j].equals(Tictactoe.CROSS)) { 
@@ -66,9 +66,9 @@ public class MinMax extends Player{
 									if(engine.rule(this.getSigne(), i, j, i2, j2, game)) {
 										
 		            					game.ConcretePlay(i, i, i2, j2);
-		            					game.setCurrent(Tictactoe.CIRCLE);
+		            					game.switchPlayer();
 		            					
-										best = min(best,  minimax(game, p+1, ia));
+										best = Math.min(best,  minimax(game, p+1, ia));
 										game.undoMove();
 									}
 							}
@@ -86,9 +86,9 @@ public class MinMax extends Player{
 	        int best = -1000; 
 	        Engine engine = new Engine();
 
-	        for (int i = 0; i<3; i++) 
+	        for (int i = 0; i<5; i++) 
 	        { 
-	            for (int j = 0; j<3; j++) 
+	            for (int j = 0; j<5; j++) 
 	            { 
 	            	if (game.getBoard()[i][j].equals(Tictactoe.EMPTY) 
 	            		|| game.getBoard()[i][j].equals(Tictactoe.CIRCLE)) { 
@@ -96,8 +96,9 @@ public class MinMax extends Player{
 	            			for (int j2 = 0; j2 < 5; j2++) {
 	            				if(engine.rule(this.getSigne(), i, j, i2, j2, game)) {
 	            					game.ConcretePlay(i, i, i2, j2);
-	            					game.setCurrent(Tictactoe.CROSS);
+	            					game.switchPlayer();
 	            					int move = minimax(game, 0, false); 
+	            					System.out.println("this is the value:"+move);
 	            					game.undoMove();
 	            					if (move > best)  { 
 	        	                        this.xi = i; 
@@ -116,6 +117,110 @@ public class MinMax extends Player{
 	        System.out.println("deplacement : " +" best:  "+ best +"  "+this.xi+" "+this.yi+" : " +this.xx+" "+this.yy); 
 
 	    } 
+	/**
+	 * "O" est l'IA
+	 * @return	valeur 
+	 */
+	
+	public int eval(Quixo plateau) {
+		Tictactoe winner = null;		//Nobody win
+		for (int i = 0; i < plateau.getBoard().length; i++) { // ligne verification
+			if(plateau.getBoard()[i][0] == Tictactoe.CIRCLE || plateau.getBoard()[i][0] == Tictactoe.CROSS) {
+				if((plateau.getBoard()[i][1] == plateau.getBoard()[i][0] 
+						&& plateau.getBoard()[i][2] == plateau.getBoard()[i][0] 
+						&& plateau.getBoard()[i][3] == plateau.getBoard()[i][0] 
+						&& plateau.getBoard()[i][4] == plateau.getBoard()[i][0] )) 
+				{ 
+					winner = plateau.getBoard()[i][0]; 
+					if(winner == Tictactoe.CIRCLE)	return +100;
+					else return -100;
+				}
+				if((plateau.getBoard()[i][1] == plateau.getBoard()[i][0] 
+						&& plateau.getBoard()[i][2] == plateau.getBoard()[i][0] 
+						&& plateau.getBoard()[i][3] == plateau.getBoard()[i][0] 
+						&& plateau.getBoard()[i][4] != plateau.getBoard()[i][0] )) 
+				{ 
+					winner = plateau.getBoard()[i][0]; 
+					if(winner == Tictactoe.CIRCLE)	return +70;
+					else return -70;
+				}
+				if((plateau.getBoard()[i][1] == plateau.getBoard()[i][0] 
+						&& plateau.getBoard()[i][2] == plateau.getBoard()[i][0] 
+						&& plateau.getBoard()[i][3] != plateau.getBoard()[i][0] 
+						&& plateau.getBoard()[i][4] != plateau.getBoard()[i][0] )) 
+				{ 
+					winner = plateau.getBoard()[i][0]; 
+					if(winner == Tictactoe.CIRCLE)	return +50;
+					else return -50;
+				}
+				if((plateau.getBoard()[i][1] == plateau.getBoard()[i][0] 
+						&& plateau.getBoard()[i][2] != plateau.getBoard()[i][0] 
+						&& plateau.getBoard()[i][3] != plateau.getBoard()[i][0] 
+						&& plateau.getBoard()[i][4] != plateau.getBoard()[i][0] )) 
+				{ 
+					winner = plateau.getBoard()[i][0]; 
+					if(winner == Tictactoe.CIRCLE)	return +25;
+					else return -25;
+				}
+			}
+		}
+		for (int i = 0; i < plateau.getBoard().length; i++) { // colonne verification
+			if(plateau.getBoard()[0][i] == Tictactoe.CIRCLE || plateau.getBoard()[0][i] == Tictactoe.CROSS) {
+				if((plateau.getBoard()[1][i] == plateau.getBoard()[0][i] 
+						&& plateau.getBoard()[2][i] == plateau.getBoard()[0][i] 
+						&& plateau.getBoard()[3][i] == plateau.getBoard()[0][i]
+						&& plateau.getBoard()[4][i] == plateau.getBoard()[0][i] )) 
+				{ 
+					winner = plateau.getBoard()[0][i]; 
+					if(winner == Tictactoe.CIRCLE)	return +100;
+					else return -100;
+				}
+				if((plateau.getBoard()[1][i] == plateau.getBoard()[0][i] 
+						&& plateau.getBoard()[2][i] == plateau.getBoard()[0][i] 
+						&& plateau.getBoard()[3][i] == plateau.getBoard()[0][i]
+						&& plateau.getBoard()[4][i] != plateau.getBoard()[0][i] )) 
+				{ 
+					winner = plateau.getBoard()[0][i];
+					if(winner == Tictactoe.CIRCLE)	return +70;
+					else return -70;
+				}
+				if((plateau.getBoard()[1][i] == plateau.getBoard()[0][i] 
+						&& plateau.getBoard()[2][i] == plateau.getBoard()[0][i] 
+						&& plateau.getBoard()[3][i] != plateau.getBoard()[0][i]
+						&& plateau.getBoard()[4][i] != plateau.getBoard()[0][i] )) 
+				{ 
+					winner = plateau.getBoard()[0][i];
+					if(winner == Tictactoe.CIRCLE)	return +50;
+					else return -50;
+				}
+				if((plateau.getBoard()[1][i] == plateau.getBoard()[0][i] 
+						&& plateau.getBoard()[2][i] != plateau.getBoard()[0][i] 
+						&& plateau.getBoard()[3][i] != plateau.getBoard()[0][i]
+						&& plateau.getBoard()[4][i] != plateau.getBoard()[0][i] )) 
+				{ 
+					winner = plateau.getBoard()[0][i];
+					if(winner == Tictactoe.CIRCLE)	return +25;
+					else return -25;
+				}
+			}
+		}
+		if(plateau.getBoard()[2][2] == Tictactoe.CIRCLE || plateau.getBoard()[1][1] == Tictactoe.CROSS) {
+			if((plateau.getBoard()[0][0] == plateau.getBoard()[2][2] 
+					&& plateau.getBoard()[1][1] == plateau.getBoard()[2][2] 
+							&& plateau.getBoard()[3][3] == plateau.getBoard()[2][2] 
+									&& plateau.getBoard()[4][4] == plateau.getBoard()[2][2])  //barre centrale verticale
+					|| (plateau.getBoard()[0][4] == plateau.getBoard()[2][2] 
+							&& plateau.getBoard()[1][3] == plateau.getBoard()[2][2] 
+									&& plateau.getBoard()[3][1] == plateau.getBoard()[2][2] 
+											&& plateau.getBoard()[4][0] == plateau.getBoard()[2][2])) 	//barre centrale horizontal
+			{ 
+				winner = plateau.getBoard()[0][0]; 
+				if(winner == Tictactoe.CIRCLE)	return +100;
+				else return -100;
+			}
+		}
+		return 3;
+	}
 	private int max(int best, int minmax) {
 		if(best > minmax)	return best;
 		else return minmax;
