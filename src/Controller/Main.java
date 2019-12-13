@@ -6,7 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
+
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 
@@ -14,8 +14,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.fxml.FXMLLoader;
 import java.io.IOException;
 
-
-import Model.Tictactoe;
 import Players.*;
 
 
@@ -28,7 +26,8 @@ public class Main extends Application {
 	private AnchorPane root;
 	
 	private static volatile Main instance = null;
-	private Player ai = new MinMaxOnefunction("Min-Max", 3, Tictactoe.CIRCLE);
+	private PlayerAi ai = null;
+	private PlayerHumain human = null;
 	
 	private ObservableList<String> player = FXCollections.observableArrayList();
 	
@@ -58,15 +57,14 @@ public class Main extends Application {
 
 		player.add("Min-Max");
 		player.add("Threaded");
+		
 
 		try
 		{
-			// Permet de charger le menuPrincipal.fxml
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource("../View/MenuView.fxml"));
 			root = (AnchorPane) loader.load();
 
-			// Affiche la scne du menu
 			Scene scene = new Scene(root);
 			window.setScene(scene);
 			window.setResizable(false);
@@ -116,12 +114,20 @@ public class Main extends Application {
         launch(args);
     }
 
-	public Player getAi() {
+	public PlayerAi getAi() {
 		return ai;
 	}
 
-	public void setAi(Player ai) {
+	public void setAi(PlayerAi ai) {
 		this.ai = ai;
+	}
+
+	public PlayerHumain getHuman() {
+		return human;
+	}
+
+	public void setHuman(PlayerHumain human) {
+		this.human = human;
 	}
 
 }

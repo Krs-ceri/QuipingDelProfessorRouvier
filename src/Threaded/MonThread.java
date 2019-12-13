@@ -11,12 +11,12 @@ public class MonThread implements Runnable{
 	private int yi = -1;
 	private int xx = -1;
 	private int yy = -1;
-	private Quixo game = null;
-	private PlayerAi player = null;
+	private Quixo b = null;
+	private ThreadMM player = null;
 
-	public MonThread(Quixo b, PlayerAi player, int xi, int yi, int xx, int yy) {
+	public MonThread(Quixo b, ThreadMM player, int xi, int yi, int xx, int yy) {
 		// TODO Auto-generated constructor stub
-		this.game = b;
+		this.b = b.clone();
 		this.xi = xi;
 		this.xx = xx;
 		this.yi = yi;
@@ -26,16 +26,15 @@ public class MonThread implements Runnable{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		this.calcIA();
+		this.IA();
 		
 	}
-	public void calcIA() {
+	public void IA() {
 	    int tmp;
 	    int max = -1000;
-	    Engine engine = new Engine();
-	    game.ConcretePlay(this.xi,this.yi, this.xx, this.yy);
-	 	game.switchPlayer();
-	 	tmp = calcMin( this.player.getProfondeur()-1);
+	    this.b.ConcretePlay(this.xi,this.yi, this.xx, this.yy);
+	 	this.b.switchPlayer();
+	 	tmp = Min( this.player.getProfondeur()-1);
 	 	int old = this.player.getValue().getAndSet(tmp);
 	 	if((tmp <  old)) {
 	 		this.player.getValue().set(old);
@@ -48,36 +47,36 @@ public class MonThread implements Runnable{
 	 		this.player.getXx().set(xx);
 	 		this.player.getYy().set(yy);
 	 	}
-	 	game = null;
+	 	b = null;
 	    System.out.println("deplacement : " +" best:  "+ max +"  "+this.xi+" "+this.yi+" : " +this.xx+" "+this.yy);
 	    
 	}
 	
-	private int calcMin(int prof)
+	private int Min(int prof)
 	{
 		 Engine engine = new Engine();
 	    int tmp;
 	    int min = 1000;
-	    if(prof==0 || game.winCondition() != null)
-	        return this.player.eval(game);
+	    if(prof==0 || b.winCondition() != null)
+	        return this.player.eval(b);
 	 
 	    for (int i = 0; i<5; i++) 
         { 
             for (int j = 0; j<5; j++) 
             { 
-                if (game.getBoard()[i][j].equals(Tictactoe.EMPTY) 
-                	|| game.getBoard()[i][j].equals(Tictactoe.CROSS)) 
+                if (b.getBoard()[i][j].equals(Tictactoe.EMPTY) 
+                	|| b.getBoard()[i][j].equals(Tictactoe.CROSS)) 
                 { 
                 	for (int i2 = 0; i2 < 5; i2++) {
 						for (int j2 = 0; j2 < 5; j2++) {
-							if(engine.rule(game.getCurrent(), i, j, i2, j2, game)) {
-								game.ConcretePlay(i, i, i2, j2);
-								game.switchPlayer();
-								tmp = calcMax( prof-1);
+							if(engine.rule(b.getCurrent(), i, j, i2, j2, b)) {
+								b.ConcretePlay(i, i, i2, j2);
+								b.switchPlayer();
+								tmp = Max( prof-1);
 								if(tmp>min) {
 									min = tmp;
 								}
-								game.undoMove();
+								b.undoMove();
 							}
 						}
                 	}
@@ -87,31 +86,31 @@ public class MonThread implements Runnable{
 	    return min;
 	}
 	
-	private int calcMax( int prof)
+	private int Max( int prof)
 	{
 		 Engine engine = new Engine();
 	    int tmp;
 	    int max = -1000;
-	    if(prof==0 || game.winCondition() != null)
-	        return this.player.eval(game);
+	    if(prof==0 || b.winCondition() != null)
+	        return this.player.eval(b);
 	 
 	    for (int i = 0; i<5; i++) 
         { 
             for (int j = 0; j<5; j++) 
             { 
-                if (game.getBoard()[i][j].equals(Tictactoe.EMPTY) 
-                	|| game.getBoard()[i][j].equals(Tictactoe.CIRCLE)) 
+                if (b.getBoard()[i][j].equals(Tictactoe.EMPTY) 
+                	|| b.getBoard()[i][j].equals(Tictactoe.CIRCLE)) 
                 { 
                 	for (int i2 = 0; i2 < 5; i2++) {
 						for (int j2 = 0; j2 < 5; j2++) {
-							if(engine.rule(this.player.getSigne(), i, j, i2, j2, game)) {
-								game.ConcretePlay(i, i, i2, j2);
-								game.switchPlayer();
-								tmp = calcMin( prof-1);
+							if(engine.rule(b.getCurrent(), i, j, i2, j2, b)) {
+								b.ConcretePlay(i, i, i2, j2);
+								b.switchPlayer();
+								tmp = Min( prof-1);
 								if(tmp<max) {
 									max = tmp;
 								}
-								game.undoMove();
+								b.undoMove();
 							}
 						}
                 	}

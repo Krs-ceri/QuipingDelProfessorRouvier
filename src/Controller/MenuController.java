@@ -2,9 +2,9 @@ package Controller;
 
 
 import Controller.Main;
+import Model.Tictactoe;
 import Players.Factory;
-import Players.Player;
-import Players.PlayerAi;
+import Players.PlayerHumain;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.application.Platform;
 
@@ -38,12 +39,18 @@ public class MenuController implements Initializable{
     private ComboBox<String> playerID;
     @FXML
     private Label lbl;
-    
+    @FXML
+    private TextField user;
+    private String userx;
     private Factory ftp = new Factory();
 	
     @FXML
 	void showSolo(ActionEvent event) throws IOException{
     	Main main = Main.getInstance();
+    	userx = user.getText().toString();
+		if(userx.isEmpty())	userx = "userX";
+    	main.setHuman(new PlayerHumain(userx, Tictactoe.CROSS));
+    	main.setAi(ftp.getPlayer(playerID.getValue()));
     	
     	FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("../View/GameView.fxml"));
@@ -52,12 +59,8 @@ public class MenuController implements Initializable{
 		Scene scene = new Scene(main.getRoot());
     	main.getWindow().setScene(scene);
     	main.getWindow().show();
-    	
-
-
 	}
     
-	
     @FXML
     void handleQuit(ActionEvent event)
     {
@@ -70,8 +73,10 @@ public class MenuController implements Initializable{
 	{
 		
 		this.quit.setCancelButton(true);
+		this.solo.setDefaultButton(true);
     	playerID.setItems(main.getData()); 
-    	  
+    	playerID.getSelectionModel().selectFirst();
+    	
         // Create action event 
         EventHandler<ActionEvent> event1 = 
                   new EventHandler<ActionEvent>() { 

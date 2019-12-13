@@ -41,33 +41,36 @@ public class MinMaxOnefunction extends PlayerAi{
 	         { 
 	             for (int j = 0; j<5; j++) 
 	             { 
-	                 if (game.getBoard()[i][j].equals(Tictactoe.EMPTY) 
-	                 	  ||  game.getBoard()[i][j].equals(Tictactoe.CIRCLE)
-	                		 ) 
-	                 { 
-	                 	for (int i2 = 0; i2 < 5; i2++) {
-	 						for (int j2 = 0; j2 < 5; j2++) {
-	 							if(engine.rule(getSigne(), i, j, i2, j2, game)) {	
-	 								game.ConcretePlay(i, i, i2, j2);
-	 								game.switchPlayer();
-	 								tmp = Min(game, prof-1);
-	 								if(game.getBoard()[i][j].equals(Tictactoe.EMPTY ))	tmp+=5;
-	 								if((tmp>max)||(tmp==max )) {
-	 									max = tmp;
-	 									this.xi = i; 
-	 									this.yi = j; 
-	 									this.xx = i2;
-	 									this.yy = j2;
-	 								}
-	 								game.undoMove();
-	 							}
-	 						}
-	                 	}
-	                 }
+	            	 if(i == 0 || i == 4 || j == 0 || j == 4) {
+	            		 if (game.getBoard()[i][j].equals(Tictactoe.EMPTY) 
+	   	                 	  ||  game.getBoard()[i][j].equals(Tictactoe.CIRCLE)
+	   	                		 ) 
+	   	                 { 
+	   	                 	for (int i2 = 0; i2 < 5; i2++) {
+	   	 						for (int j2 = 0; j2 < 5; j2++) {
+	   	 							if(i == 0 || i == 4 || j == 0 || j == 4) {
+	   	 								if(engine.rule(game.Current(), i, j, i2, j2, game)) {	
+	   	 									game.ConcretePlay(i, i, i2, j2);
+	   	 									game.switchPlayer();
+	   	 									tmp = Min(game, prof-1);
+	   	 									if(game.getBoard()[i][j].equals(Tictactoe.EMPTY ))	tmp+=5;
+	   	 									if((tmp>max)||(tmp==max )) {
+	   	 										max = tmp;
+	   	 										this.xi = i; 
+	   	 										this.yi = j; 
+	   	 										this.xx = i2;
+	   	 										this.yy = j2;
+	   	 									}
+	   	 									game.undoMove();
+	   	 								} 
+	   	 			            	}
+	   	 						}
+	   	                 	}
+	   	                 }
+	            	 } 
 	             }
 	         }
 	    System.out.println("deplacement : " +" best:  "+ max +"  "+this.xi+" "+this.yi+" : " +this.xx+" "+this.yy);
-	    
 	}
 	
 	private int Min(Quixo game, int prof)
@@ -75,31 +78,36 @@ public class MinMaxOnefunction extends PlayerAi{
 		 Engine engine = new Engine();
 	    int min = 1000;
 	    if(prof==0 || game.winCondition() != null)
-	        return eval(game);
+	        return eval(game)-2*(this.getProfondeur()-prof);
 	 
 	    for (int i = 0; i<5; i++) 
         { 
             for (int j = 0; j<5; j++) 
             { 
+            	if(i == 0 || i == 4 || j == 0 || j == 4) {
                 if (game.getBoard()[i][j].equals(Tictactoe.EMPTY) 
                 	|| game.getBoard()[i][j].equals(Tictactoe.CROSS)) 
                 { 
                 	
                 	for (int i2 = 0; i2 < 5; i2++) {
 						for (int j2 = 0; j2 < 5; j2++) {
-							if(engine.rule(game.Current(), i, j, i2, j2, game)) {
-								game.ConcretePlay(i, i, i2, j2);
- 								game.switchPlayer();
- 								int tmp = Max(game, prof-1);
- 								if(game.getBoard()[i][j].equals(Tictactoe.EMPTY ))	tmp-=5;
- 								if(tmp<min) {
- 									min = tmp;
- 								}
- 								game.undoMove();
+							if(i == 0 || i == 4 || j == 0 || j == 4) {
+								if(engine.rule(game.Current(), i, j, i2, j2, game)) {
+									game.ConcretePlay(i, i, i2, j2);
+	 								game.switchPlayer();
+	 								int tmp = Max(game, prof-1);
+	 								if(game.getBoard()[i][j].equals(Tictactoe.EMPTY ))	tmp-=5;
+	 								if(tmp<min) {
+	 									min = tmp;
+	 								}
+	 								game.undoMove();
+								}
 							}
+							
 						}
                 	}
                 }
+            	}
             }
         }
 	    return min;
@@ -111,20 +119,23 @@ public class MinMaxOnefunction extends PlayerAi{
 	    int tmp;
 	    int max = -1000;
 	    if(prof==0 || game.winCondition() != null)
-	        return eval(game);
+	        return eval(game)-2*(this.getProfondeur()-prof);
 
 	 
 	    for (int i = 0; i<5; i++) 
         { 
             for (int j = 0; j<5; j++) 
             { 
+            	if(i == 0 || i == 4 || j == 0 || j == 4) {
                 if (game.getBoard()[i][j].equals(Tictactoe.EMPTY) 
                 	|| game.getBoard()[i][j].equals(Tictactoe.CIRCLE)) 
                 { 
                 	
                 	for (int i2 = 0; i2 < 5; i2++) {
 						for (int j2 = 0; j2 < 5; j2++) {
-							if(engine.rule(getSigne(), i, j, i2, j2, game)) {
+							
+							if(i == 0 || i == 4 || j == 0 || j == 4) {
+							if(engine.rule(game.Current(), i, j, i2, j2, game)) {
 								game.ConcretePlay(i, i, i2, j2);
  								game.switchPlayer();
  								tmp = Min(game, prof-1);
@@ -137,6 +148,8 @@ public class MinMaxOnefunction extends PlayerAi{
 						}
                 	}
                 }
+            }
+        }
             }
         }
 	    return max;

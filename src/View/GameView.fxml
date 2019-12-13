@@ -68,7 +68,7 @@
       </rowConstraints>
     </GridPane>
     <Button fx:id="back" alignment="TOP_CENTER" layoutX="0.0" layoutY="1.0" mnemonicParsing="false" onAction="#goBack" prefWidth="90.0" text="Back" textAlignment="CENTER" />
-    <ImageView fx:id="current" fitHeight="90.0" fitWidth="90.0" layoutX="484.0" layoutY="28.0" pickOnBounds="true" preserveRatio="false" style="-fx-background-color: transparent;">
+    <ImageView fx:id="current" fitHeight="90.0" fitWidth="90.0" layoutX="484.0" layoutY="28.0" pickOnBounds="true" preserveRatio="false" style="-fx-background-color: transparent;" styleClass="imgviewCurrent">
       <effect>
         <DropShadow spread="0.52" />
       </effect>

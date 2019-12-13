@@ -1,7 +1,10 @@
 .background {
     -fx-background-color: #1d1d1d;
 }
-
+.imgviewCurrent{
+	-fx-border-color: yellow ;
+    -fx-border-width: 5 ; 
+}
 .button {
     -fx-padding: 5 22 5 22;   
     -fx-border-color: #e2e2e2;

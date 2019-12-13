@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 
 
 import javafx.event.ActionEvent;
+
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,7 +22,8 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.application.Platform;
-
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
 import javafx.scene.image.ImageView;
@@ -30,6 +33,7 @@ import javafx.scene.text.Text;
 import Model.Engine;
 import Model.Quixo;
 import Model.Tictactoe;
+import Players.Player;
 
 
 /*
@@ -38,6 +42,7 @@ import Model.Tictactoe;
  * 			-Observer
  * 			-strategie
  * 			-composite
+ * 			-factory
  */
 
 public class GameController implements Initializable{
@@ -115,19 +120,14 @@ public class GameController implements Initializable{
 	private Button play;
 	
 	private ImageView[][] gridImg;
-	
-	private Thread t = null;
 
-
-	private Quixo game = new Quixo();
+	private Quixo game = null;
 	Main main = Main.getInstance();
 	
     @FXML
     void goBack(ActionEvent event) throws IOException
     {
-		//this.game = null;
 		Refresh();
-		//this.setBoard(false);
 		
     	Main main = Main.getInstance();
     	FXMLLoader loader = new FXMLLoader();
@@ -173,14 +173,9 @@ public class GameController implements Initializable{
 		gridImg[4][2] = this.e2;
 		gridImg[4][3] = this.e3;
 		gridImg[4][4] = this.e4;
-		
+		this.game = new Quixo();
 		this.moveId.setVisible(true);
 		this.back.setCancelButton(true);
-		if(game.Current().toString().equals("X")) current.setImage(game.Current().getImage());
-		else {
-			current.setImage(game.Current().getImage());
-			
-		}
 		this.Board();
 		this.Refresh();
 		
@@ -206,14 +201,10 @@ public class GameController implements Initializable{
 		Engine engine = new Engine();
 	    Node clickedNode = event.getPickResult().getIntersectedNode();
 	    if(clickedNode != grid ) {
-	        
-	    	//if(this.game.getCurrent().toString().equals("O"))	return ;
-
 	    	Integer colIndex = GridPane.getColumnIndex(clickedNode);
 	        Integer rowIndex = GridPane.getRowIndex(clickedNode);
 	        if(colIndex == null)colIndex = 0;
 	        if(rowIndex == null)rowIndex = 0;
-	        
 	        //System.out.println("Clique " + rowIndex + " et " + colIndex );
 	        //System.out.println(game.getCase(rowIndex, colIndex).toString());
 	        if(this.moveId.getId() == null)	{
@@ -222,7 +213,6 @@ public class GameController implements Initializable{
 	        	Gray(rowIndex, colIndex);
 	        }
 	        else {
-
 	        	String mv = this.moveId.getId();
 	        	int ri = Character.getNumericValue(mv.charAt(0));
 	        	int ci = Character.getNumericValue(mv.charAt(1));
@@ -231,25 +221,110 @@ public class GameController implements Initializable{
 	        		game.ConcretePlay(ri, ci , rowIndex , colIndex );
 	        		this.game.switchPlayer();
 	        		this.Refresh();
-	        		Platform.runLater(new Runnable() {
-						
-						@Override
-						public void run() {
-							// TODO Auto-generated method stub
-							AiPlay();
-							
-						}
-					});
-		        
 	        	}
-
-	        	this.Refresh();
 	        }
 	    }
 	}
 	
+	void AiPlay() {
+    	Task<Void> task = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				// TODO Auto-generated method stub
+				if(game.getCurrent().equals(Tictactoe.CIRCLE))	{
+					game.getAi().execute(game);
+					game.switchPlayer();
+				}
+				return null;
+			}
+		};
+		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				// TODO Auto-generated method stub
+				Refresh();
+			}
+		});
+		new Thread(task).start();
+	}	
+
+	void Refresh() {
+		this.current.setImage(this.game.getCurrent().getImage());
+		for (int i = 0; i < gridImg.length; i++) {
+			for (int j = 0; j < gridImg.length; j++) {
+				gridImg[i][j].setImage(this.game.getBoard()[i][j].getImage());
+				gridImg[i][j].setEffect(null); 
+			}
+		}
+		
+		btnUndo();
+		btnPlay();
+		this.moveId.setId(null);
+		
+		if(game.winCondition() != null) {
+    		win();
+    	}
+		
+		if(this.game.getCurrent().equals(Tictactoe.CROSS)) {
+			setBoard(false);	
+    		
+		}
+		else {
+			setBoard(true);
+			Platform.runLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					AiPlay();
+				}
+			});
+		}
+	}
+	
+	void RefreshWithoutAI() {
+		this.current.setImage(this.game.getCurrent().getImage());
+		for (int i = 0; i < gridImg.length; i++) {
+			for (int j = 0; j < gridImg.length; j++) {
+				gridImg[i][j].setImage(this.game.getBoard()[i][j].getImage());
+				gridImg[i][j].setEffect(null); 
+			}
+		}
+		
+		btnUndo();
+		btnPlay();
+		this.moveId.setId(null);
+		
+		if(game.winCondition() != null) {
+    		win();
+    	}
+		
+		if(this.game.getCurrent().equals(Tictactoe.CROSS)) {
+			setBoard(false);	
+		}
+		else {
+			setBoard(true);
+		}
+	}
+	
+	void Board() {
+		for (int i = 0; i < gridImg.length; i++) {
+			for (int j = 0; j < gridImg.length; j++) {
+				if(i == 0 || i == 4 || j == 0 || j == 4) {}
+				else gridImg[i][j].setMouseTransparent(true);
+			}
+		}
+	}
+	
+	void setBoard(boolean value) {
+		for (int i = 0; i < gridImg.length; i++) {
+			for (int j = 0; j < gridImg.length; j++) {
+				if(i == 0 || i == 4 || j == 0 || j == 4) gridImg[i][j].setMouseTransparent(value);
+			}
+		}
+	}
 	void Sparkling(int x, int y) {
-		if(this.game.getCurrent().toString().equals("O"))	return ;
+		if(this.game.getCurrent().equals(Tictactoe.CIRCLE))	return ;
 		Light.Spot L = new Light.Spot();
 		L.setColor(Color.KHAKI);
 	    L.setX(70); 
@@ -260,7 +335,7 @@ public class GameController implements Initializable{
 	    Engine e = new Engine();
 		for (int i = 0; i < gridImg.length; i++) {
 			for (int j = 0; j < gridImg.length; j++) {
-				if(e.rule(this.game.getCurrent(), x, y, i, j, this.game)) gridImg[i][j].setEffect(lighting); 
+				if(i == 0 || i == 4 || j == 0 || j == 4) if(e.rule(this.game.getCurrent(), x, y, i, j, this.game)) gridImg[i][j].setEffect(lighting); 
 			}
 		}
 	}
@@ -280,116 +355,27 @@ public class GameController implements Initializable{
 		gridImg[x][y].setEffect(lighting); 
 	}
 	
-	void AiPlay() {
-		this.t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				if(game.getCurrent().equals(Tictactoe.CIRCLE))	{
-					game.getAi().execute(game);
-					
-					game.switchPlayer();
-					Refresh();
-				}
-				play.setDefaultButton(true);
-			}
-		});
-    	t.start();		
- 
-	}	
-	
-
-	
-	void Refresh() {
-
-		for (int i = 0; i < gridImg.length; i++) {
-			for (int j = 0; j < gridImg.length; j++) {
-				gridImg[i][j].setImage(this.game.getBoard()[i][j].getImage());
-				gridImg[i][j].setEffect(null); 
-			}
-		}
-		
-		this.current.setImage(this.game.getCurrent().getImage());
-
-		btnUndo();
-		btnPlay();
-		this.moveId.setId(null);
-		
-		if(game.winCondition() != null) {
-    		win();
-    	}
-		
-		if(this.game.getCurrent().equals(Tictactoe.CIRCLE)) {
-			setBoard(true);	
-			
-		}
-		else setBoard(false);
-	}
-	
-	void RefreshGrid() {
-
-		for (int i = 0; i < gridImg.length; i++) {
-			for (int j = 0; j < gridImg.length; j++) {
-				gridImg[i][j].setImage(this.game.getBoard()[i][j].getImage());
-				gridImg[i][j].setEffect(null); 
-			}
-		}
-		
-		this.current.setImage(this.game.getCurrent().getImage());
-
-		btnUndo();
-		btnPlay();
-		this.moveId.setId(null);
-		
-		if(this.game.getCurrent().equals(Tictactoe.CIRCLE)) {
-			setBoard(true);	
-		}
-		else setBoard(false);
-
-
-	}
-	
-	void Board() {
-		for (int i = 0; i < gridImg.length; i++) {
-			for (int j = 0; j < gridImg.length; j++) {
-				if(i == 0 || i == 4 || j == 0 || j == 4) {}
-				else gridImg[i][j].setMouseTransparent(true);
-			}
-		}
-	}
-	
-	void setBoard(boolean value) {
-		for (int i = 0; i < gridImg.length; i++) {
-			for (int j = 0; j < gridImg.length; j++) {
-				if(i == 0 || i == 4 || j == 0 || j == 4) gridImg[i][j].setMouseTransparent(value);
-			}
-		}
-	}
-	
 	@FXML
 	void undo() {
 		this.game.undoMove();
-		Refresh();
+		RefreshWithoutAI();
 	}
 	
 	@FXML
 	void play() {
-		
-		this.game.getAi().execute(game);
-		this.game.switchPlayer();
-		Refresh();
-		
+		AiPlay();
 	}
 	
 	public void win()
 	{
 
-			String name;
-			if (this.game.winCondition() == Tictactoe.CIRCLE) 	name = this.game.getAi().getName();
-			else name = this.game.getHuman().getName();
+			Player name = null;
+			if (this.game.winCondition() == Tictactoe.CIRCLE) 	name = this.game.getAi();
+			else name = this.game.getHuman();
 
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Congratulations");
-			alert.setHeaderText("The player "+ name + " with ["+this.game.winCondition().toString() +"] won the game !");
+			alert.setHeaderText("The player "+ name.getName() + " with ["+ name.getSigne().toString() +"] won the game !");
 			alert.setContentText("Choose your option.");
 
 			ButtonType buttonTypeOne = new ButtonType("Try again");
@@ -403,8 +389,7 @@ public class GameController implements Initializable{
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == buttonTypeOne) {
 				this.game = new Quixo();
-				Refresh();
-				this.setBoard(false);
+				RefreshWithoutAI();
 			}
 			else if (result.get() == buttonTypeTwo) {
 				try {
@@ -418,7 +403,6 @@ public class GameController implements Initializable{
 		    	main.getWindow().setScene(scene);
 		    	main.getWindow().show();
 				} catch (IOException e) {
-
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				}

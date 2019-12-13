@@ -2,7 +2,7 @@ package Players;
 
 import Model.*;
 
-public class MinMax extends Player{
+public class MinMax extends PlayerAi{
 	
 	private int xi = -1;
 	private int yi = -1;
@@ -13,6 +13,7 @@ public class MinMax extends Player{
 	// TODO Auto-generated constructor stub
 		super(name, profondeur, i);
 	}
+	
 	@Override
 	public void execute(Quixo b) {
 		// TODO Auto-generated method stub

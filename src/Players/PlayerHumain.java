@@ -5,13 +5,9 @@ import Model.*;
 
 public class PlayerHumain extends Player{
 	
-	public PlayerHumain(String name, int profondeur, Tictactoe i) {
+	public PlayerHumain(String name, Tictactoe i) {
 	// TODO Auto-generated constructor stub
-		super(name, profondeur, i);
+		super(name, i);
 	}
-	@Override
-	public void execute(Quixo b) {
-		// TODO Auto-generated method stub
-		
-	}
+
 }

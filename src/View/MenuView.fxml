@@ -20,16 +20,17 @@
     </Label>
     <Button fx:id="solo" contentDisplay="CENTER" layoutX="236.0" layoutY="178.0" mnemonicParsing="false" onAction="#showSolo" prefHeight="44.0" prefWidth="129.0" text="Play" textAlignment="CENTER" />
     <Button fx:id="quit" contentDisplay="CENTER" layoutX="236.0" layoutY="245.0" mnemonicParsing="false" onAction="#handleQuit" prefHeight="44.0" prefWidth="129.0" text="Quit" textAlignment="CENTER" />
-    <ComboBox fx:id="playerID" layoutX="413.0" layoutY="185.0" prefHeight="30.0" prefWidth="119.0">
+    <ComboBox fx:id="playerID" cache="false" layoutX="413.0" layoutY="185.0" prefHeight="30.0" prefWidth="119.0">
       <items>
         <FXCollections fx:factory="observableArrayList">
-          <String fx:value="Item 1" />
-          <String fx:value="Item 2" />
-          <String fx:value="Item 3" />
+          <String fx:value="1" />
+          <String fx:value="2" />
+          <String fx:value="3" />
         </FXCollections>
       </items>
     </ComboBox>
     <Label fx:id="lbl" layoutX="80.0" layoutY="162.0" text="Label" visible="false" />
+    <TextField fx:id="user" layoutX="236.0" layoutY="138.0" prefWidth="129.0" promptText="user" text="" />
   </children>
   <stylesheets>
     <URL value="@Theme.css" />

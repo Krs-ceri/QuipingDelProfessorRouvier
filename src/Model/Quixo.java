@@ -20,8 +20,8 @@ public class Quixo implements Cloneable{
 	private Tictactoe playerX = Tictactoe.CROSS;
 	private Tictactoe playerO = Tictactoe.CIRCLE;
 	private ArrayList<Move> move;
-	private Player human;
-	private Player ai;
+	private PlayerHumain human;
+	private PlayerAi ai;
 	
 
 	public Quixo clone()  {
@@ -33,9 +33,10 @@ public class Quixo implements Cloneable{
 	
 	public Quixo() {
 		Main main =  Main.getInstance();
-		this.setHuman(new PlayerHumain("Shox", 0, playerX));
+		this.setHuman(main.getHuman());
 		this.setAi(main.getAi());
 		
+		System.out.println(this.human.getName() + " VS " + this.ai.getName());
 		this.move = new ArrayList<Move>();
 		
 		this.plateau = new Tictactoe[5][5];
@@ -44,8 +45,13 @@ public class Quixo implements Cloneable{
 				this.plateau[i][j]  = Tictactoe.EMPTY;
 			}
 		}
-		this.current = playerX;		
-		System.out.println("le joueur "+  this.current.toString() + " commence.");
+		boolean choice = Math.random() < 0.5;					// Ramdom
+		if(choice == true)	this.current = playerO;
+		else {
+			this.current = playerX;
+		}	
+		if(this.current.equals(human.getSigne())) System.out.println("The human begin, sometime very lucky" );
+		else System.out.println("The AI :" + this.ai.getName()+ "begin !");
 	}
 	
 	public Tictactoe winCondition() {
@@ -70,7 +76,7 @@ public class Quixo implements Cloneable{
 				}
 			}
 		}
-		if(this.plateau[2][2] == Tictactoe.CIRCLE || this.plateau[1][1] == Tictactoe.CROSS) {
+		if(this.plateau[2][2] == Tictactoe.CIRCLE || this.plateau[2][2] == Tictactoe.CROSS) {
 			if((this.plateau[0][0] == this.plateau[2][2] 
 						&& this.plateau[1][1] == this.plateau[2][2] 
 						&& this.plateau[3][3] == this.plateau[2][2] 
@@ -79,7 +85,7 @@ public class Quixo implements Cloneable{
 							&& this.plateau[1][3] == this.plateau[2][2] 
 							&& this.plateau[3][1] == this.plateau[2][2] 
 							&& this.plateau[4][0] == this.plateau[2][2])) 	//barre centrale horizontal
-				 { winner = this.plateau[1][1]; }
+				 { winner = this.plateau[2][2]; }
 		}
 		return winner;
 	}
@@ -90,21 +96,10 @@ public class Quixo implements Cloneable{
 	 * le joueur "O" est l'IA cr�er
 	 */
 	public void switchPlayer() {
-		if(this.current == playerX) {
-			this.current = playerO;
-		}
+		if(this.current == playerX) this.current = playerO;
 		else this.current = playerX;
 	}
-	public boolean hasPlaceLeft() {
-		for (int i = 0; i < plateau.length; i++) {
-			for (int j = 0; j < plateau.length; j++) {
-				if(i == 0 || i == 4 || j == 0 || j == 4) {
-					if(plateau[i][j].equals(Tictactoe.EMPTY))	return true;
-				}
-			}
-		}
-		return false;
-	}
+
 	
 	public void ConcretePlay(int xi, int yi, int xx, int yy) {
 		Tictactoe tmpi = this.getCase(xi, yi);
@@ -180,7 +175,6 @@ public class Quixo implements Cloneable{
 	
 	public void pushColPositive(Tictactoe si, int xi, int yi, Tictactoe sf, int xx, int yy) {	
 		if(xi < xx && yi == yy) {
-			System.out.println("col pos");
 			this.plateau[xi][yi] = si;
 			for (int i = xi; i < xx; i++) {
 				this.plateau[i][yi] = this.plateau[i+1][yi];			
@@ -191,7 +185,6 @@ public class Quixo implements Cloneable{
 	
 	public void pushColNegative(Tictactoe si, int xi, int yi, Tictactoe sf, int xx, int yy) {
 		if(xi > xx && yi == yy) {
-			System.out.println("col neg");
 			this.plateau[xi][yi] = si;
 			for (int i = xi; i > xx; i--) {
 				this.plateau[i][yi] = this.plateau[i-1][yi];
@@ -202,7 +195,6 @@ public class Quixo implements Cloneable{
 	
 	public void pushRowNegative(Tictactoe si, int xi, int yi, Tictactoe sf, int xx, int yy) {
 		if(xi == xx && yi < yy) {
-			System.out.println("row neg");
 			this.plateau[xi][yi] = si;
 			for (int i = yi; i < yy; i++) {
 				this.plateau[xx][i] = this.plateau[xx][i+1];
@@ -213,7 +205,6 @@ public class Quixo implements Cloneable{
 	
 	public void pushRowPositive(Tictactoe si, int xi, int yi, Tictactoe sf, int xx, int yy) {
 		if(xi == xx && yi > yy) {
-			System.out.println("row pos ");
 			this.plateau[xi][yi] = si;
 			for (int i = yi; i > yy; i--) {
 				this.plateau[xx][i] = this.plateau[xx][i-1];
@@ -296,15 +287,15 @@ public class Quixo implements Cloneable{
 		return human;
 	}
 
-	public void setHuman(Player human) {
+	public void setHuman(PlayerHumain human) {
 		this.human = human;
 	}
 
-	public Player getAi() {
+	public PlayerAi getAi() {
 		return ai;
 	}
 
-	public void setAi(Player ai) {
+	public void setAi(PlayerAi ai) {
 		this.ai = ai;
 	}
 

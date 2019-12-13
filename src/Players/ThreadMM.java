@@ -1,6 +1,8 @@
 package Players;
 
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import Threaded.MonThread;
 
 
@@ -10,12 +12,29 @@ import Model.Tictactoe;
 
 public class ThreadMM extends PlayerAi{
 	
-
+	private AtomicInteger xi;
+	private AtomicInteger yi ;
+	private AtomicInteger xx;
+	private AtomicInteger yy;
+	private AtomicInteger value;
+	
 	public ThreadMM(String name, int p, Tictactoe i) {
 		super(name, p, i);
 		// TODO Auto-generated constructor stub
+		this.xi = new AtomicInteger(-1);
+		this.xx = new AtomicInteger(-1);
+		this.yi = new AtomicInteger(-1);
+		this.yy = new AtomicInteger(-1);
+		this.value = new AtomicInteger(-1000);
 	}
-
+	public void setVar() {
+		this.value.set(-1000);
+		this.xi.set(-1);
+		this.xx.set(-1);
+		this.yi.set(-1);
+		this.yy.set(-1);
+		
+	}
 
 	@Override
 	public void execute(Quixo game) {
@@ -37,6 +56,7 @@ public class ThreadMM extends PlayerAi{
  																	this, i, j, i2, j2);
  								
  							    th.add(new Thread(runnable));
+ 							    
  							    
  							}
  						}
@@ -60,10 +80,6 @@ public class ThreadMM extends PlayerAi{
     			, this.getXx().intValue()
     			, this.getYy().intValue());
 	}
-
-
-	
-	
 	
 	public int eval(Quixo plateau) {
 		Tictactoe winner = null;		//Nobody win
@@ -165,6 +181,45 @@ public class ThreadMM extends PlayerAi{
 		return 3;
 	}
 
+	public AtomicInteger getXi() {
+		return xi;
+	}
+
+	public void setXi(AtomicInteger xi) {
+		this.xi = xi;
+	}
+
+	public AtomicInteger getYi() {
+		return yi;
+	}
+
+	public void setYi(AtomicInteger yi) {
+		this.yi = yi;
+	}
+
+	public AtomicInteger getXx() {
+		return xx;
+	}
+
+	public void setXx(AtomicInteger xx) {
+		this.xx = xx;
+	}
+
+	public AtomicInteger getYy() {
+		return yy;
+	}
+
+	public void setYy(AtomicInteger yy) {
+		this.yy = yy;
+	}
+
+	public AtomicInteger getValue() {
+		return value;
+	}
+
+	public void setValue(AtomicInteger value) {
+		this.value = value;
+	}
 
 
 }
