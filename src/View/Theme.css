@@ -1,10 +1,8 @@
 .background {
     -fx-background-color: #1d1d1d;
 }
-.imgviewCurrent{
-	-fx-border-color: yellow ;
-    -fx-border-width: 5 ; 
-}
+
+
 .button {
     -fx-padding: 5 22 5 22;   
     -fx-border-color: #e2e2e2;
@@ -50,13 +48,73 @@
 }
 
 .title{
-
-
     -fx-font-size: 56pt;
     -fx-font-family: "Segoe UI Light";
     -fx-text-fill: white;
     -fx-opacity: 1;
     -fx-alignment: center ;
+}
 
+.combo-box .list-cell 
+{
+    -fx-background: black;
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-padding: 3 0 2 7;
+    -fx-cell-size: 2em; 
+}
+
+.combo-box-popup .list-view 
+{
+    -fx-background-color: #1d1d1d;
+    -fx-background-insets: 0, 1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 8, 0.0 , 0 , 0 );
+}    
+
+.combo-box-popup .list-view .list-cell 
+{
+    -fx-padding: 4 0 4 5;
+    -fx-background-color: black;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover 
+{
+    -fx-background: -fx-accent;
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: -fx-selection-bar-text;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover 
+{
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: -fx-text-inner-color;
+}
+
+.combo-box-base  
+{
+    -fx-background-color: #1d1d1d;
+    -fx-background-radius: 5, 5, 4, 3;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-padding: 0;
+}
+
+.combo-box-base:hover
+{
+    -fx-color: -fx-hover-base;
+}
+
+.combo-box-base:showing 
+{
+    -fx-color: -fx-pressed-base;
+}
+
+.combo-box-base:focused {
+    -fx-background-color: #1d1d1d;
+    -fx-background-radius: 6.4, 4, 5, 3;
+    -fx-background-insets: -1.4, 0, 1, 2;
+}
+
+.combo-box-base:disabled {
+    -fx-opacity: .4;
 }
 

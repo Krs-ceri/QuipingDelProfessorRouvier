@@ -51,7 +51,7 @@ public class GameController implements Initializable{
 	private GridPane grid;
 	
 	@FXML
-	private AnchorPane f;
+	private AnchorPane fenetre;
 	
 	@FXML
 	private Text moveId;

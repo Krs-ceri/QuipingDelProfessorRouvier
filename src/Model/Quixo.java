@@ -26,9 +26,13 @@ public class Quixo implements Cloneable{
 
 	public Quixo clone()  {
 		// TODO Auto-generated method stub
-		Quixo tmp = new Quixo();
-		tmp = this;
-		return (tmp);
+		Quixo tmp = null;
+		 try {
+		      	tmp = (Quixo) super.clone();
+		    } catch(CloneNotSupportedException e) {
+		      	e.printStackTrace(System.err);
+		    }
+		    return tmp;
 	}
 	
 	public Quixo() {
