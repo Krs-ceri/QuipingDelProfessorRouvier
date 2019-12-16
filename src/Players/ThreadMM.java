@@ -51,7 +51,13 @@ public class ThreadMM extends PlayerAi{
                  	for (int i2 = 0; i2 < 5; i2++) {
  						for (int j2 = 0; j2 < 5; j2++) {
  							if(engine.rule(getSigne(), i, j, i2, j2, game)) {
- 								Quixo tmp = game.clone();
+ 								Quixo tmp = null;
+								try {
+									tmp = (Quixo) game.clone();
+								} catch (CloneNotSupportedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
  								Runnable runnable = new MonThread(tmp, 
  																	this, i, j, i2, j2);
  								
@@ -64,6 +70,7 @@ public class ThreadMM extends PlayerAi{
                  }
              }
          }
+    	
     	for (Thread t : th) {
 			t.start();
 		}
@@ -75,6 +82,7 @@ public class ThreadMM extends PlayerAi{
 				e.printStackTrace();
 			}
 		}
+    	System.out.println("bitjkihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
     	game.ConcretePlay(this.getXi().intValue()
     			, this.getYi().intValue()
     			, this.getXx().intValue()

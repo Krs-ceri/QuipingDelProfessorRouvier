@@ -11,7 +11,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -77,18 +76,6 @@ public class MenuController implements Initializable{
     	playerID.setItems(main.getData()); 
     	playerID.getSelectionModel().selectFirst();
     	
-        // Create action event 
-        EventHandler<ActionEvent> event1 = 
-                  new EventHandler<ActionEvent>() { 
-            public void handle(ActionEvent e) 
-            { 
-            	Main main = Main.getInstance();
-            	main.setAi(ftp.getPlayer(playerID.getValue()));
-            } 
-        }; 
-  
-        // Set on action 
-        playerID.setOnAction(event1); 
 		Main.getInstance().getWindow().setOnCloseRequest( event ->
 		{
 			Platform.exit();

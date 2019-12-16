@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.sun.javafx.scene.control.skin.ComboBoxBaseSkin?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.collections.*?>
@@ -10,7 +11,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.text.Font?>
-<?import com.sun.javafx.scene.control.skin.ComboBoxBaseSkin?>
 
 <AnchorPane fx:id="fenetre" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="Controller.MenuController">
   <children>
@@ -31,7 +31,7 @@
       </items>
     </ComboBox>
     <Label fx:id="lbl" layoutX="80.0" layoutY="162.0" text="Label" visible="false" />
-    <TextField fx:id="user" layoutX="236.0" layoutY="138.0" prefWidth="129.0" promptText="user" text="" />
+    <TextField fx:id="user" layoutX="236.0" layoutY="138.0" prefWidth="129.0" promptText="user" styleClass="text-area" text="" />
   </children>
   <stylesheets>
     <URL value="@Theme.css" />

@@ -24,15 +24,8 @@ public class Quixo implements Cloneable{
 	private PlayerAi ai;
 	
 
-	public Quixo clone()  {
-		// TODO Auto-generated method stub
-		Quixo tmp = null;
-		 try {
-		      	tmp = (Quixo) super.clone();
-		    } catch(CloneNotSupportedException e) {
-		      	e.printStackTrace(System.err);
-		    }
-		    return tmp;
+	public Object clone() throws CloneNotSupportedException  {
+		return super.clone();
 	}
 	
 	public Quixo() {
@@ -103,9 +96,16 @@ public class Quixo implements Cloneable{
 		if(this.current == playerX) this.current = playerO;
 		else this.current = playerX;
 	}
+	
+	public Player getCurrentPlayer() {
+		if(this.current == playerX) return human;
+		else return ai;
+	}
 
 	
-	public void ConcretePlay(int xi, int yi, int xx, int yy) {
+	public boolean ConcretePlay(int xi, int yi, int xx, int yy) {
+		Engine engine = new Engine();
+		if(!engine.rule(current, xi, yi, xx, yy, this)) return false;
 		Tictactoe tmpi = this.getCase(xi, yi);
     	this.pushColNegative(xi, yi , xx , yy );
     	this.pushColPositive(xi, yi , xx , yy );
@@ -116,6 +116,7 @@ public class Quixo implements Cloneable{
     	System.out.println(e.getSigneFinal()+" "+ e.getXf()+" "+ e.getYf()+" "+ 
     						e.getSigneInitial()+" "+ e.getXi()+" "+ e.getYi());
     	this.move.add(e);
+    	return true;
 	}
 	
 	public void pushColPositive(int xi, int yi, int xx, int yy) {	

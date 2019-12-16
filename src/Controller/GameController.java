@@ -30,10 +30,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import Model.Engine;
-import Model.Quixo;
-import Model.Tictactoe;
-import Players.Player;
+import Model.*;
+import Players.*;
+
 
 
 /*
@@ -127,7 +126,7 @@ public class GameController implements Initializable{
     @FXML
     void goBack(ActionEvent event) throws IOException
     {
-		Refresh();
+		//Refresh();
 		
     	Main main = Main.getInstance();
     	FXMLLoader loader = new FXMLLoader();
@@ -247,7 +246,33 @@ public class GameController implements Initializable{
 		});
 		new Thread(task).start();
 	}	
-
+	/*
+	void AivsAi() {
+    	Task<Void> task = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				// TODO Auto-generated method stub
+				if(game.getCurrentPlayer() instanceof PlayerAi) {
+					(PlayerAi) game.getCurrentPlayer().execute(game);	
+				}
+				
+					game.getAi().execute(game);
+					game.switchPlayer();
+				
+				return null;
+			}
+		};
+		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				// TODO Auto-generated method stub
+				Refresh();
+				AivsAi()
+			}
+		});
+		new Thread(task).start();
+	}	
+*/
 	void Refresh() {
 		this.current.setImage(this.game.getCurrent().getImage());
 		for (int i = 0; i < gridImg.length; i++) {

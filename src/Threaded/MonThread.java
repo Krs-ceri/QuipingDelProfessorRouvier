@@ -16,7 +16,7 @@ public class MonThread implements Runnable{
 
 	public MonThread(Quixo b, ThreadMM player, int xi, int yi, int xx, int yy) {
 		// TODO Auto-generated constructor stub
-		this.b = b.clone();
+		this.b = b;
 		this.xi = xi;
 		this.xx = xx;
 		this.yi = yi;

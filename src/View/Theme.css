@@ -55,6 +55,19 @@
     -fx-alignment: center ;
 }
 
+.text-field {
+    -fx-background-color: #1d1d1d;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: white;
+}
+
+.text-field:focused {
+    -fx-background-color: #1d1d1d ;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+    -fx-text-fill: #ffffff;
+}
+  
 .combo-box .list-cell 
 {
     -fx-background: black;
@@ -74,13 +87,13 @@
 .combo-box-popup .list-view .list-cell 
 {
     -fx-padding: 4 0 4 5;
-    -fx-background-color: black;
+    -fx-background-color: #1d1d1d;
 }
 
 .combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover 
 {
     -fx-background: -fx-accent;
-    -fx-background-color: #1d1d1d;
+    -fx-background-color: black;
     -fx-text-fill: -fx-selection-bar-text;
 }
 
