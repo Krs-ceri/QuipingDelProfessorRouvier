@@ -7,19 +7,22 @@ public class Factory {
 	private PlayerAi c ;
 	
 	public PlayerAi getPlayer(String name) {
-			this.c = new MinMaxOnefunction("Min-Max", 3, Tictactoe.CIRCLE);
+			this.c = new MinMax("Min-Max", 3, Tictactoe.CIRCLE);
 			System.out.print("default:->");
 
-		if(name.equals("Min-Max")) {
+		if(name.equals("Min-Max: medium")) {
 
-			this.c = new MinMaxOnefunction("Min-Max", 3, Tictactoe.CIRCLE);
+			this.c = new MinMax("Min-Max", 3, Tictactoe.CIRCLE);
 			System.out.println("minimax");
 		}
-		else if(name.equals("Threaded")){
-			this.c = new ThreadMM("Threaded", 4, Tictactoe.CIRCLE);
+		else if(name.equals("Threaded: hard")){
+			this.c = new ThreadMM("Threaded", 3, Tictactoe.CIRCLE);
 			System.out.println("threaded");
 		}
-		
+		else if(name.equals("Min-max: easy")) {
+			this.c = new MinMaxOnefunction("low minmax", 2, Tictactoe.CIRCLE);
+			System.out.println("one function");
+		}
 		return this.c ;
 	}
 

@@ -172,9 +172,11 @@ public class GameController implements Initializable{
 		gridImg[4][2] = this.e2;
 		gridImg[4][3] = this.e3;
 		gridImg[4][4] = this.e4;
+		
 		this.game = new Quixo();
 		this.moveId.setVisible(true);
 		this.back.setCancelButton(true);
+		
 		this.Board();
 		this.Refresh();
 		
@@ -197,6 +199,7 @@ public class GameController implements Initializable{
 
 	@FXML
 	public void clickGrid(javafx.scene.input.MouseEvent event) {
+		if(this.game.Current().equals(Tictactoe.CIRCLE))	return;
 		Engine engine = new Engine();
 	    Node clickedNode = event.getPickResult().getIntersectedNode();
 	    if(clickedNode != grid ) {
@@ -221,6 +224,7 @@ public class GameController implements Initializable{
 	        		this.game.switchPlayer();
 	        		this.Refresh();
 	        	}
+	        	this.RefreshWithoutAI();
 	        }
 	    }
 	}
@@ -241,7 +245,7 @@ public class GameController implements Initializable{
 			@Override
 			public void handle(WorkerStateEvent event) {
 				// TODO Auto-generated method stub
-				Refresh();
+				RefreshWithoutAI();
 			}
 		});
 		new Thread(task).start();

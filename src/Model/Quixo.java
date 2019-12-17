@@ -12,6 +12,10 @@ import Players.*;
  * @author Nizar
  *
  */
+/**
+ * @author uapv1502995
+ *
+ */
 public class Quixo implements Cloneable{
 
 
@@ -25,8 +29,25 @@ public class Quixo implements Cloneable{
 	
 
 	public Object clone() throws CloneNotSupportedException  {
-		return super.clone();
+        Quixo gameClone = (Quixo) super.clone();
+        Tictactoe currenClone = (Tictactoe) current;
+        Tictactoe[][] boardClone = plateau.clone();
+        gameClone.setCurrent(currenClone);
+        gameClone.setBoard(boardClone);
+        return gameClone;
 	}
+	
+    /**
+     * @param p
+     * @return	factory method
+     */
+    public static Quixo makeCopy(Quixo p) {
+    	Quixo copy = new Quixo();
+    	copy.current = p.getCurrent();
+        copy.setBoard(p.getBoard());
+       
+        return copy;
+    }
 	
 	public Quixo() {
 		Main main =  Main.getInstance();
@@ -102,10 +123,16 @@ public class Quixo implements Cloneable{
 		else return ai;
 	}
 
+	public boolean SimulatePlay(int xi, int yi, int xx, int yy) {
+
+    	this.pushColNegative(xi, yi , xx , yy );
+    	this.pushColPositive(xi, yi , xx , yy );
+    	this.pushRowNegative(xi, yi , xx , yy );
+    	this.pushRowPositive(xi, yi , xx , yy );
+    	return true;
+	}
 	
 	public boolean ConcretePlay(int xi, int yi, int xx, int yy) {
-		Engine engine = new Engine();
-		if(!engine.rule(current, xi, yi, xx, yy, this)) return false;
 		Tictactoe tmpi = this.getCase(xi, yi);
     	this.pushColNegative(xi, yi , xx , yy );
     	this.pushColPositive(xi, yi , xx , yy );
@@ -113,8 +140,8 @@ public class Quixo implements Cloneable{
     	this.pushRowPositive(xi, yi , xx , yy );
     	Tictactoe tmpf = this.getCase(xx, yy);
     	Move e = new Move(tmpi, xi, yi, tmpf, xx, yy);
-    	System.out.println(e.getSigneFinal()+" "+ e.getXf()+" "+ e.getYf()+" "+ 
-    						e.getSigneInitial()+" "+ e.getXi()+" "+ e.getYi());
+    	System.out.println("["+e.getSigneFinal()+"] "+ e.getXf()+" "+ e.getYf()+" ["+ 
+    						e.getSigneInitial()+"] "+ e.getXi()+" "+ e.getYi());
     	this.move.add(e);
     	return true;
 	}
@@ -236,7 +263,14 @@ public class Quixo implements Cloneable{
 	public Tictactoe[][] getBoard() { 
 		return this.plateau; 
 	}
-	
+
+	public void setBoard(Tictactoe[][] b) { 
+		for (int i = 0; i < plateau.length; i++) {
+			for (int j = 0; j < plateau.length; j++) {
+				this.plateau[i][j] = b[i][j];
+			}
+		}
+	}
 	
 	public Tictactoe Current() {
 		return this.current;

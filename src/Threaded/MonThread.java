@@ -35,18 +35,15 @@ public class MonThread implements Runnable{
 	    this.b.ConcretePlay(this.xi,this.yi, this.xx, this.yy);
 	 	this.b.switchPlayer();
 	 	tmp = Min( this.player.getProfondeur()-1);
-	 	int old = this.player.getValue().getAndSet(tmp);
-	 	if((tmp <  old)) {
-	 		this.player.getValue().set(old);
-	 		return;
-	 	}
-	 	else {
+	 	int old = this.player.getValue().get();
+	 	if(tmp >  old) {
 	 		this.player.getValue().set(tmp);
 	 		this.player.getXi().set(xi); 
 	 		this.player.getYi().set(yi); 
 	 		this.player.getXx().set(xx);
 	 		this.player.getYy().set(yy);
 	 	}
+
 	 	b = null;
 	    System.out.println("deplacement : " +" best:  "+ max +"  "+this.xi+" "+this.yi+" : " +this.xx+" "+this.yy);
 	    
