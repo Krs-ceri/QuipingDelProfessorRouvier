@@ -55,9 +55,10 @@ public class Main extends Application {
        }
 		window.getIcons().add(tempImage);
 
+		player.add("Min-max: easy");
 		player.add("Min-Max: medium");
 		player.add("Threaded: hard");
-		player.add("Min-max: easy");
+		
 		
 
 		try

@@ -27,15 +27,6 @@ public class Quixo implements Cloneable{
 	private PlayerHumain human;
 	private PlayerAi ai;
 	
-
-	public Object clone() throws CloneNotSupportedException  {
-        Quixo gameClone = (Quixo) super.clone();
-        Tictactoe currenClone = (Tictactoe) current;
-        Tictactoe[][] boardClone = plateau.clone();
-        gameClone.setCurrent(currenClone);
-        gameClone.setBoard(boardClone);
-        return gameClone;
-	}
 	
     /**
      * @param p
@@ -45,7 +36,6 @@ public class Quixo implements Cloneable{
     	Quixo copy = new Quixo();
     	copy.current = p.getCurrent();
         copy.setBoard(p.getBoard());
-       
         return copy;
     }
 	
@@ -63,12 +53,11 @@ public class Quixo implements Cloneable{
 				this.plateau[i][j]  = Tictactoe.EMPTY;
 			}
 		}
-		boolean choice = Math.random() < 0.5;					// Ramdom
+		boolean choice = Math.random() < 0.45;					// Ramdom
 		if(choice == true)	this.current = playerO;
-		else {
-			this.current = playerX;
-		}	
-		if(this.current.equals(human.getSigne())) System.out.println("The human begin, sometime very lucky" );
+		else this.current = playerX;
+			
+		if(this.current.equals(human.getSigne())) System.out.println("The human begin, you are very lucky" );
 		else System.out.println("The AI :" + this.ai.getName()+ "begin !");
 	}
 	

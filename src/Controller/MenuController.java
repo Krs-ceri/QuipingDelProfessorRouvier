@@ -74,7 +74,7 @@ public class MenuController implements Initializable{
 		this.quit.setCancelButton(true);
 		this.solo.setDefaultButton(true);
     	playerID.setItems(main.getData()); 
-    	playerID.getSelectionModel().selectFirst();
+    	playerID.getSelectionModel().select(1);;
     	
 		Main.getInstance().getWindow().setOnCloseRequest( event ->
 		{
