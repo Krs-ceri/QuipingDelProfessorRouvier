@@ -8,7 +8,9 @@ import java.util.ResourceBundle;
 
 
 import javafx.event.ActionEvent;
-
+import javafx.event.Event;
+import javafx.event.EventDispatchChain;
+import javafx.event.EventDispatcher;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +29,8 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -274,7 +278,11 @@ public class GameController implements Initializable{
 		});
 		new Thread(task).start();
 	}	
+
+	
 */
+	
+	
 	void Refresh() {
 		this.current.setImage(this.game.getCurrent().getImage());
 		for (int i = 0; i < gridImg.length; i++) {
@@ -402,6 +410,7 @@ public class GameController implements Initializable{
 			else name = this.game.getHuman();
 
 			Alert alert = new Alert(AlertType.CONFIRMATION);
+
 			alert.setTitle("Congratulations");
 			alert.setHeaderText("The player "+ name.getName() + " with ["+ name.getSigne().toString() +"] win the game !");
 			alert.setContentText("Choose your option.");
@@ -410,10 +419,10 @@ public class GameController implements Initializable{
 			ButtonType buttonTypeTwo = new ButtonType("Back");
 			ButtonType buttonTypeThree = new ButtonType("Quit");
 			ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-			
+
 			this.setBoard(true);
 			alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeCancel);
-
+			
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == buttonTypeOne) {
 				this.game = new Quixo();

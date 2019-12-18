@@ -26,6 +26,7 @@ public class Quixo implements Cloneable{
 	private ArrayList<Move> move;
 	private PlayerHumain human;
 	private PlayerAi ai;
+	private PlayerAi aiforbattle;
 	
 	
     /**
@@ -59,8 +60,8 @@ public class Quixo implements Cloneable{
 		if(choice == true)	this.current = playerO;
 		else this.current = playerX;
 			
-		if(this.current.equals(human.getSigne())) System.out.println("The human begin, you are very lucky" );
-		else System.out.println("The AI :" + this.ai.getName()+ "begin !");
+		if(this.current.equals(human.getSigne())) System.out.println("The human begin !" );
+		else System.out.println("The AI :" + this.ai.getName()+ " begin !");
 	}
 	
 	public Tictactoe winCondition() {
@@ -327,6 +328,14 @@ public class Quixo implements Cloneable{
 
 	public void setMove(ArrayList<Move> move) {
 		this.move = move;
+	}
+
+	public PlayerAi getAiforbattle() {
+		return aiforbattle;
+	}
+
+	public void setAiforbattle(PlayerAi aiforbattle) {
+		this.aiforbattle = aiforbattle;
 	}
 
 }

@@ -28,6 +28,7 @@ public class Main extends Application {
 	private static volatile Main instance = null;
 	private PlayerAi ai = null;
 	private PlayerHumain human = null;
+	private boolean battle = false;
 	
 	private ObservableList<String> player = FXCollections.observableArrayList();
 	
@@ -130,6 +131,14 @@ public class Main extends Application {
 
 	public void setHuman(PlayerHumain human) {
 		this.human = human;
+	}
+
+	public boolean isBattle() {
+		return battle;
+	}
+
+	public void setBattle(boolean battle) {
+		this.battle = battle;
 	}
 
 }
