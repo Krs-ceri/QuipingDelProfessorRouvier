@@ -126,8 +126,6 @@ public class GameController implements Initializable{
     @FXML
     void goBack(ActionEvent event) throws IOException
     {
-		//Refresh();
-		
     	Main main = Main.getInstance();
     	FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("../View/MenuView.fxml"));
@@ -222,9 +220,9 @@ public class GameController implements Initializable{
 	        	if(engine.rule( game.Current(), ri, ci, rowIndex, colIndex, game)) {
 	        		game.ConcretePlay(ri, ci , rowIndex , colIndex );
 	        		this.game.switchPlayer();
-	        		this.Refresh();
+	        		
 	        	}
-	        	this.RefreshWithoutAI();
+	        	this.Refresh();
 	        }
 	    }
 	}
@@ -245,7 +243,7 @@ public class GameController implements Initializable{
 			@Override
 			public void handle(WorkerStateEvent event) {
 				// TODO Auto-generated method stub
-				RefreshWithoutAI();
+				Refresh();
 			}
 		});
 		new Thread(task).start();
@@ -292,6 +290,7 @@ public class GameController implements Initializable{
 		
 		if(game.winCondition() != null) {
     		win();
+    		return;
     	}
 		
 		if(this.game.getCurrent().equals(Tictactoe.CROSS)) {
@@ -370,7 +369,7 @@ public class GameController implements Initializable{
 	}
 	
 	void Gray(int x, int y) {
-		if(this.game.getCurrent().toString().equals("O"))	return ;
+		if(this.game.getCurrent().equals(Tictactoe.CIRCLE))	return ;
 		Light.Spot L = new Light.Spot();
 
 	    L.setX(70); 
@@ -404,7 +403,7 @@ public class GameController implements Initializable{
 
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Congratulations");
-			alert.setHeaderText("The player "+ name.getName() + " with ["+ name.getSigne().toString() +"] won the game !");
+			alert.setHeaderText("The player "+ name.getName() + " with ["+ name.getSigne().toString() +"] win the game !");
 			alert.setContentText("Choose your option.");
 
 			ButtonType buttonTypeOne = new ButtonType("Try again");
@@ -422,15 +421,7 @@ public class GameController implements Initializable{
 			}
 			else if (result.get() == buttonTypeTwo) {
 				try {
-		    	Main main = Main.getInstance();
-		    	FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../View/MenuView.fxml"));
-		    	
-				main.setRoot(loader.load());
-				
-		    	Scene scene = new Scene(main.getRoot());
-		    	main.getWindow().setScene(scene);
-		    	main.getWindow().show();
+					goBack(null);
 				} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

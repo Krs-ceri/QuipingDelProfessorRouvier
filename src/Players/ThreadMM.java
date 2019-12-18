@@ -102,6 +102,7 @@ public int eval(Quixo plateau) {
 				winner = plateau.getBoard()[i][0]; 
 				if(winner == Tictactoe.CIRCLE)	value += +10000;
 				else value -=10000;
+				return value;
 			}
 			if((plateau.getBoard()[i][1] == plateau.getBoard()[i][0] 
 					&& plateau.getBoard()[i][2] == plateau.getBoard()[i][0] 
@@ -142,6 +143,7 @@ public int eval(Quixo plateau) {
 				winner = plateau.getBoard()[0][i]; 
 				if(winner == Tictactoe.CIRCLE)	value += 10000;
 				else value -= 10000;
+				return value;
 			}
 			if((plateau.getBoard()[1][i] == plateau.getBoard()[0][i] 
 					&& plateau.getBoard()[2][i] == plateau.getBoard()[0][i] 
@@ -185,6 +187,7 @@ public int eval(Quixo plateau) {
 			winner = plateau.getBoard()[0][0]; 
 			if(winner == Tictactoe.CIRCLE)	value += 5000000;
 			else value -= 5001000;
+			return value;
 		}
 	}
 	return value;

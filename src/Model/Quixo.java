@@ -34,8 +34,10 @@ public class Quixo implements Cloneable{
      */
     public static Quixo makeCopy(Quixo p) {
     	Quixo copy = new Quixo();
+    	copy.move = p.getMove();
     	copy.current = p.getCurrent();
         copy.setBoard(p.getBoard());
+        
         return copy;
     }
 	
@@ -87,11 +89,11 @@ public class Quixo implements Cloneable{
 			if((this.plateau[0][0] == this.plateau[2][2] 
 						&& this.plateau[1][1] == this.plateau[2][2] 
 						&& this.plateau[3][3] == this.plateau[2][2] 
-						&& this.plateau[4][4] == this.plateau[2][2])  //barre centrale verticale
+						&& this.plateau[4][4] == this.plateau[2][2])  //barre diag verticale
 					|| (this.plateau[0][4] == this.plateau[2][2] 
 							&& this.plateau[1][3] == this.plateau[2][2] 
 							&& this.plateau[3][1] == this.plateau[2][2] 
-							&& this.plateau[4][0] == this.plateau[2][2])) 	//barre centrale horizontal
+							&& this.plateau[4][0] == this.plateau[2][2])) 	//barre diag horizontal
 				 { winner = this.plateau[2][2]; }
 		}
 		return winner;
@@ -112,14 +114,6 @@ public class Quixo implements Cloneable{
 		else return ai;
 	}
 
-	public boolean SimulatePlay(int xi, int yi, int xx, int yy) {
-
-    	this.pushColNegative(xi, yi , xx , yy );
-    	this.pushColPositive(xi, yi , xx , yy );
-    	this.pushRowNegative(xi, yi , xx , yy );
-    	this.pushRowPositive(xi, yi , xx , yy );
-    	return true;
-	}
 	
 	public boolean ConcretePlay(int xi, int yi, int xx, int yy) {
 		Tictactoe tmpi = this.getCase(xi, yi);
